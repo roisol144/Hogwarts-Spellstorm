@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LayerNames:
   - Default
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Lemon Slice
+  - Glass
+  - Full Glass
+  - Sugar Cube
+  - Unselectable
   - 
   - 
   - 

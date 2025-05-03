@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name="cast_accio">
+    <Stroke>
+        <Point X="400" Y="700" T="0" Pressure="0" />
+        <Point X="450" Y="700" T="0" Pressure="0" />
+        <Point X="500" Y="700" T="0" Pressure="0" />
+        <Point X="550" Y="700" T="0" Pressure="0" />
+        <Point X="600" Y="700" T="0" Pressure="0" />
+        <Point X="590" Y="690" T="0" Pressure="0" />
+        <Point X="600" Y="700" T="0" Pressure="0" />
+        <Point X="590" Y="710" T="0" Pressure="0" />
+    </Stroke>
+    <Stroke>
+        <Point X="410" Y="710" T="0" Pressure="0" />
+        <Point X="460" Y="710" T="0" Pressure="0" />
+        <Point X="510" Y="710" T="0" Pressure="0" />
+        <Point X="560" Y="710" T="0" Pressure="0" />
+        <Point X="610" Y="710" T="0" Pressure="0" />
+        <Point X="600" Y="700" T="0" Pressure="0" />
+        <Point X="610" Y="710" T="0" Pressure="0" />
+        <Point X="600" Y="720" T="0" Pressure="0" />
+    </Stroke>
+    <Stroke>
+        <Point X="420" Y="690" T="0" Pressure="0" />
+        <Point X="470" Y="690" T="0" Pressure="0" />
+        <Point X="520" Y="690" T="0" Pressure="0" />
+        <Point X="570" Y="690" T="0" Pressure="0" />
+        <Point X="620" Y="690" T="0" Pressure="0" />
+        <Point X="610" Y="680" T="0" Pressure="0" />
+        <Point X="620" Y="690" T="0" Pressure="0" />
+        <Point X="610" Y="700" T="0" Pressure="0" />
+    </Stroke>
+    <Stroke>
+        <Point X="430" Y="705" T="0" Pressure="0" />
+        <Point X="480" Y="705" T="0" Pressure="0" />
+        <Point X="530" Y="705" T="0" Pressure="0" />
+        <Point X="580" Y="705" T="0" Pressure="0" />
+        <Point X="630" Y="705" T="0" Pressure="0" />
+        <Point X="620" Y="695" T="0" Pressure="0" />
+        <Point X="630" Y="705" T="0" Pressure="0" />
+        <Point X="620" Y="715" T="0" Pressure="0" />
+    </Stroke>
+    <Stroke>
+        <Point X="440" Y="695" T="0" Pressure="0" />
+        <Point X="490" Y="695" T="0" Pressure="0" />
+        <Point X="540" Y="695" T="0" Pressure="0" />
+        <Point X="590" Y="695" T="0" Pressure="0" />
+        <Point X="640" Y="695" T="0" Pressure="0" />
+        <Point X="630" Y="685" T="0" Pressure="0" />
+        <Point X="640" Y="695" T="0" Pressure="0" />
+        <Point X="630" Y="705" T="0" Pressure="0" />
+    </Stroke>
+</Gesture> 

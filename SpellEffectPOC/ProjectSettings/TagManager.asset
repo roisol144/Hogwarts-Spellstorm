@@ -3,15 +3,36 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Slicer
+  - Full Glass
+  - Empty Glass
+  - Ground
+  - Sugar
+  - Pink Lemonade Syrup
+  - Regular Lemonade
+  - Mint
+  - Dispatch
+  - CustomerManager
+  - Lemon
+  - Basic Lemonade
+  - Sugared Lemonade
+  - Pink Lemonade
+  - Sugared Pink Lemonade
+  - Minty Pink Lemonade
+  - Sugared Minty Pink Lemonade
+  - Minty Lemonade
+  - Sugared Minty Lemonade
+  - XR Rig
+  - Piggy Bank
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Sugared Lemonade
   - Water
   - UI
-  - 
+  - Basic Lemonade
   - 
   - 
   - 
@@ -38,6 +59,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: UI
+    uniqueID: 645371803
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
