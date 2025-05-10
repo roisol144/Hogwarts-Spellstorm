@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <Gesture Name="cast_stupefy">
+    <!-- Large triangle -->
     <Stroke>
-        <Point X="800" Y="600" T="0" Pressure="0" />
-        <Point X="820" Y="650" T="0" Pressure="0" />
-        <Point X="810" Y="700" T="0" Pressure="0" />
-        <Point X="850" Y="750" T="0" Pressure="0" />
-        <Point X="830" Y="800" T="0" Pressure="0" />
-        <Point X="870" Y="850" T="0" Pressure="0" />
-        <Point X="850" Y="900" T="0" Pressure="0" />
-        <Point X="900" Y="950" T="0" Pressure="0" />
-        <Point X="880" Y="1000" T="0" Pressure="0" />
-        <Point X="920" Y="1050" T="0" Pressure="0" />
-        <Point X="900" Y="1100" T="0" Pressure="0" />
-        <Point X="950" Y="1150" T="0" Pressure="0" />
+        <Point X="500" Y="300" T="0" Pressure="0" />
+        <Point X="550" Y="300" T="0" Pressure="0" />
+        <Point X="600" Y="300" T="0" Pressure="0" />
+        <Point X="650" Y="300" T="0" Pressure="0" />
+        <Point X="700" Y="300" T="0" Pressure="0" />
+        <Point X="675" Y="400" T="0" Pressure="0" />
+        <Point X="650" Y="500" T="0" Pressure="0" />
+        <Point X="600" Y="600" T="0" Pressure="0" />
+        <Point X="550" Y="500" T="0" Pressure="0" />
+        <Point X="500" Y="400" T="0" Pressure="0" />
+        <Point X="500" Y="300" T="0" Pressure="0" />
     </Stroke>
+    <!-- Medium triangle -->
     <Stroke>
-        <Point X="810" Y="610" T="0" Pressure="0" />
-        <Point X="830" Y="660" T="0" Pressure="0" />
-        <Point X="820" Y="710" T="0" Pressure="0" />
-        <Point X="860" Y="760" T="0" Pressure="0" />
-        <Point X="840" Y="810" T="0" Pressure="0" />
-        <Point X="880" Y="860" T="0" Pressure="0" />
-        <Point X="860" Y="910" T="0" Pressure="0" />
-        <Point X="910" Y="960" T="0" Pressure="0" />
-        <Point X="890" Y="1010" T="0" Pressure="0" />
-        <Point X="930" Y="1060" T="0" Pressure="0" />
-        <Point X="910" Y="1110" T="0" Pressure="0" />
-        <Point X="960" Y="1160" T="0" Pressure="0" />
+        <Point X="550" Y="350" T="0" Pressure="0" />
+        <Point X="575" Y="350" T="0" Pressure="0" />
+        <Point X="600" Y="350" T="0" Pressure="0" />
+        <Point X="625" Y="350" T="0" Pressure="0" />
+        <Point X="650" Y="350" T="0" Pressure="0" />
+        <Point X="637" Y="400" T="0" Pressure="0" />
+        <Point X="625" Y="450" T="0" Pressure="0" />
+        <Point X="600" Y="500" T="0" Pressure="0" />
+        <Point X="575" Y="450" T="0" Pressure="0" />
+        <Point X="550" Y="400" T="0" Pressure="0" />
+        <Point X="550" Y="350" T="0" Pressure="0" />
     </Stroke>
+    <!-- Small triangle -->
     <Stroke>
-        <Point X="790" Y="590" T="0" Pressure="0" />
-        <Point X="810" Y="640" T="0" Pressure="0" />
-        <Point X="800" Y="690" T="0" Pressure="0" />
-        <Point X="840" Y="740" T="0" Pressure="0" />
-        <Point X="820" Y="790" T="0" Pressure="0" />
-        <Point X="860" Y="840" T="0" Pressure="0" />
-        <Point X="840" Y="890" T="0" Pressure="0" />
-        <Point X="890" Y="940" T="0" Pressure="0" />
-        <Point X="870" Y="990" T="0" Pressure="0" />
-        <Point X="910" Y="1040" T="0" Pressure="0" />
-        <Point X="890" Y="1090" T="0" Pressure="0" />
-        <Point X="940" Y="1140" T="0" Pressure="0" />
+        <Point X="575" Y="375" T="0" Pressure="0" />
+        <Point X="587" Y="375" T="0" Pressure="0" />
+        <Point X="600" Y="375" T="0" Pressure="0" />
+        <Point X="612" Y="375" T="0" Pressure="0" />
+        <Point X="625" Y="375" T="0" Pressure="0" />
+        <Point X="618" Y="400" T="0" Pressure="0" />
+        <Point X="612" Y="425" T="0" Pressure="0" />
+        <Point X="600" Y="450" T="0" Pressure="0" />
+        <Point X="587" Y="425" T="0" Pressure="0" />
+        <Point X="575" Y="400" T="0" Pressure="0" />
+        <Point X="575" Y="375" T="0" Pressure="0" />
     </Stroke>
+    <!-- Very small triangle -->
     <Stroke>
-        <Point X="820" Y="620" T="0" Pressure="0" />
-        <Point X="840" Y="670" T="0" Pressure="0" />
-        <Point X="830" Y="720" T="0" Pressure="0" />
-        <Point X="870" Y="770" T="0" Pressure="0" />
-        <Point X="850" Y="820" T="0" Pressure="0" />
-        <Point X="890" Y="870" T="0" Pressure="0" />
-        <Point X="870" Y="920" T="0" Pressure="0" />
-        <Point X="920" Y="970" T="0" Pressure="0" />
-        <Point X="900" Y="1020" T="0" Pressure="0" />
-        <Point X="940" Y="1070" T="0" Pressure="0" />
-        <Point X="920" Y="1120" T="0" Pressure="0" />
-        <Point X="970" Y="1170" T="0" Pressure="0" />
+        <Point X="585" Y="385" T="0" Pressure="0" />
+        <Point X="592" Y="385" T="0" Pressure="0" />
+        <Point X="600" Y="385" T="0" Pressure="0" />
+        <Point X="607" Y="385" T="0" Pressure="0" />
+        <Point X="615" Y="385" T="0" Pressure="0" />
+        <Point X="610" Y="400" T="0" Pressure="0" />
+        <Point X="605" Y="415" T="0" Pressure="0" />
+        <Point X="600" Y="425" T="0" Pressure="0" />
+        <Point X="595" Y="415" T="0" Pressure="0" />
+        <Point X="590" Y="400" T="0" Pressure="0" />
+        <Point X="585" Y="385" T="0" Pressure="0" />
     </Stroke>
+    <!-- Extra large triangle -->
     <Stroke>
-        <Point X="805" Y="605" T="0" Pressure="0" />
-        <Point X="825" Y="655" T="0" Pressure="0" />
-        <Point X="815" Y="705" T="0" Pressure="0" />
-        <Point X="855" Y="755" T="0" Pressure="0" />
-        <Point X="835" Y="805" T="0" Pressure="0" />
-        <Point X="875" Y="855" T="0" Pressure="0" />
-        <Point X="855" Y="905" T="0" Pressure="0" />
-        <Point X="905" Y="955" T="0" Pressure="0" />
-        <Point X="885" Y="1005" T="0" Pressure="0" />
-        <Point X="925" Y="1055" T="0" Pressure="0" />
-        <Point X="905" Y="1105" T="0" Pressure="0" />
-        <Point X="955" Y="1155" T="0" Pressure="0" />
+        <Point X="400" Y="200" T="0" Pressure="0" />
+        <Point X="500" Y="200" T="0" Pressure="0" />
+        <Point X="600" Y="200" T="0" Pressure="0" />
+        <Point X="700" Y="200" T="0" Pressure="0" />
+        <Point X="800" Y="200" T="0" Pressure="0" />
+        <Point X="750" Y="400" T="0" Pressure="0" />
+        <Point X="700" Y="600" T="0" Pressure="0" />
+        <Point X="600" Y="800" T="0" Pressure="0" />
+        <Point X="500" Y="600" T="0" Pressure="0" />
+        <Point X="400" Y="400" T="0" Pressure="0" />
+        <Point X="400" Y="200" T="0" Pressure="0" />
     </Stroke>
 </Gesture> 
