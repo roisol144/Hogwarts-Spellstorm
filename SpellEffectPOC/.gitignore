@@ -1,0 +1,7 @@
+
+# Specific to your project
+Hogwarts-SpellStorm_BurstDebugInformation_DoNotShip/ 
+Library/
+Logs/
+Temp/
+*.apk

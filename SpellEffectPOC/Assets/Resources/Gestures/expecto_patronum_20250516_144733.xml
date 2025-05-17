@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "2642.862" Y = "1198.464" T = "0" Pressure = "0" />
+		<Point X = "2641.449" Y = "1191.769" T = "0" Pressure = "0" />
+		<Point X = "2640.585" Y = "1185.324" T = "0" Pressure = "0" />
+		<Point X = "2639.682" Y = "1178.13" T = "0" Pressure = "0" />
+		<Point X = "2639.365" Y = "1170.281" T = "0" Pressure = "0" />
+		<Point X = "2646.995" Y = "1173.084" T = "0" Pressure = "0" />
+		<Point X = "2654.46" Y = "1172.824" T = "0" Pressure = "0" />
+		<Point X = "2660.19" Y = "1171.641" T = "0" Pressure = "0" />
+		<Point X = "2666.989" Y = "1169.695" T = "0" Pressure = "0" />
+		<Point X = "2664.213" Y = "1176.551" T = "0" Pressure = "0" />
+		<Point X = "2662.542" Y = "1183.935" T = "0" Pressure = "0" />
+		<Point X = "2661.687" Y = "1190.769" T = "0" Pressure = "0" />
+		<Point X = "2659.327" Y = "1196.986" T = "0" Pressure = "0" />
+		<Point X = "2655.759" Y = "1199.885" T = "0" Pressure = "0" />
+		<Point X = "2651.208" Y = "1200.821" T = "0" Pressure = "0" />
+		<Point X = "2647.497" Y = "1202.753" T = "0" Pressure = "0" />
+		<Point X = "2653.039" Y = "1203.139" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

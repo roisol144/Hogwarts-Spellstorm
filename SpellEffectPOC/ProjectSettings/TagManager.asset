@@ -4,27 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Slicer
-  - Full Glass
-  - Empty Glass
   - Ground
-  - Sugar
-  - Pink Lemonade Syrup
-  - Regular Lemonade
-  - Mint
   - Dispatch
-  - CustomerManager
-  - Lemon
-  - Basic Lemonade
-  - Sugared Lemonade
-  - Pink Lemonade
-  - Sugared Pink Lemonade
-  - Minty Pink Lemonade
-  - Sugared Minty Pink Lemonade
-  - Minty Lemonade
-  - Sugared Minty Lemonade
   - XR Rig
-  - Piggy Bank
+  - Wall
   layers:
   - Default
   - TransparentFX

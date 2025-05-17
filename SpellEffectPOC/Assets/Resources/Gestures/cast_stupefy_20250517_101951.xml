@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_stupefy">
+	<Stroke>
+		<Point X = "2625.004" Y = "1206.596" T = "0" Pressure = "0" />
+		<Point X = "2627.677" Y = "1207.095" T = "0" Pressure = "0" />
+		<Point X = "2632.053" Y = "1207.491" T = "0" Pressure = "0" />
+		<Point X = "2637.342" Y = "1206.161" T = "0" Pressure = "0" />
+		<Point X = "2636.189" Y = "1199.805" T = "0" Pressure = "0" />
+		<Point X = "2632.597" Y = "1196.894" T = "0" Pressure = "0" />
+		<Point X = "2629.952" Y = "1193.757" T = "0" Pressure = "0" />
+		<Point X = "2628.539" Y = "1190.483" T = "0" Pressure = "0" />
+		<Point X = "2629.771" Y = "1184.512" T = "0" Pressure = "0" />
+		<Point X = "2634.193" Y = "1181.863" T = "0" Pressure = "0" />
+		<Point X = "2639.582" Y = "1180.332" T = "0" Pressure = "0" />
+		<Point X = "2646.086" Y = "1178.406" T = "0" Pressure = "0" />
+		<Point X = "2651.468" Y = "1176.324" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

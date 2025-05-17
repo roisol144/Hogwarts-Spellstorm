@@ -87,7 +87,8 @@ public class SpellCastingManager : MonoBehaviour
     {
         if (fireballPrefab != null && wandTip != null)
         {
-            Instantiate(fireballPrefab, wandTip.position, wandTip.rotation);
+            Vector3 spawnPos = wandTip.position + wandTip.forward * 0.5f;
+            Instantiate(fireballPrefab, spawnPos, wandTip.rotation);
             Debug.Log("[SpellCastingManager] Fireball cast!");
         }
         else
