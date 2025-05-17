@@ -4945,7 +4945,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f61f7b258b9d864448124a6186a34bc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  explosionPrefab: {fileID: 5678110300071363309, guid: b1b1e91cbfab1044580f07aff102712b,
+  explosionPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473,
     type: 3}
   explosionRadius: 2
   explosionForce: 10
@@ -4999,7 +4999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 15
   lifetime: 5
-  explosionPrefab: {fileID: 5678110300071363309, guid: b1b1e91cbfab1044580f07aff102712b,
+  explosionPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473,
     type: 3}
   impactSound: {fileID: 8300000, guid: 8514acdb166b1499a9ee49941ff691f0, type: 3}
   damage: 10
