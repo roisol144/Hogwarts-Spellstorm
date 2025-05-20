@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEngine.InputSystem;
 
 public class SpellCastingManager : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private Transform wandTip;
     [SerializeField] private float matchWindowSeconds = 2f;
+
+    [Header("Input")]
+    [SerializeField] private InputAction triggerAction;
 
     private string lastRecognizedGesture = null;
     private float lastGestureTime = -10f;
@@ -31,6 +35,25 @@ public class SpellCastingManager : MonoBehaviour
             movementRecognizer.OnRecognized.AddListener(OnGestureRecognized);
         if (witAiAgent != null)
             witAiAgent.OnIntentRecognized += OnIntentRecognized;
+
+        // Setup trigger input
+        triggerAction.performed += OnTriggerPressed;
+    }
+
+    void OnEnable()
+    {
+        triggerAction.Enable();
+    }
+
+    void OnDisable()
+    {
+        triggerAction.Disable();
+    }
+
+    private void OnTriggerPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log("[SpellCastingManager] Trigger pressed, casting fireball!");
+        FireFireball();
     }
 
     private void OnGestureRecognized(string gestureName)

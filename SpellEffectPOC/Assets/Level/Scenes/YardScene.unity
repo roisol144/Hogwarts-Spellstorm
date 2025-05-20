@@ -6049,7 +6049,7 @@ Transform:
   m_GameObject: {fileID: 185943431}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.0486, y: -0, z: 0}
+  m_LocalPosition: {x: -0.04871, y: -0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -11270,7 +11270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputSource: 5
-  inputButton: 2
+  inputButton: 3
   movementSource: {fileID: 1408564297}
   inputThreshold: 0.1
   newPositionThresholdDistance: 0.05
@@ -11599,6 +11599,31 @@ MonoBehaviour:
   fireballPrefab: {fileID: 100008, guid: 6ff1350c2a91520479532984ca642474, type: 3}
   wandTip: {fileID: 185943432}
   matchWindowSeconds: 3
+  triggerAction:
+    m_Name: Trigger
+    m_Type: 1
+    m_ExpectedControlType: Button
+    m_Id: a3f238ab-bbb5-4db1-af16-15480df07de7
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 88095d11-0560-4ae8-af04-181c3fc4a8cb
+      m_Path: <XRController>{RightHand}/{TriggerButton}
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Trigger
+      m_Flags: 0
+    - m_Name: 
+      m_Id: 1c89a148-3535-493a-bd49-6bd0225aa95a
+      m_Path: <OculusTouchController>{RightHand}/triggerPressed
+      m_Interactions: Press
+      m_Processors: 
+      m_Groups: 
+      m_Action: Trigger
+      m_Flags: 0
+    m_Flags: 0
 --- !u!4 &1283987848
 Transform:
   m_ObjectHideFlags: 0
@@ -12416,7 +12441,7 @@ MonoBehaviour:
     m_SingletonActionBindings:
     - m_Name: 
       m_Id: 767683fb-2c54-428a-9328-16b3ede22e18
-      m_Path: <XRController>/triggerButton
+      m_Path: <XRController>{RightHand}/{GripButton}
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -12424,7 +12449,7 @@ MonoBehaviour:
       m_Flags: 0
     - m_Name: 
       m_Id: 7c751f26-e346-4afd-877a-66ebf90477d9
-      m_Path: <OculusTouchController>/triggerPressed
+      m_Path: <OculusTouchController>{RightHand}/gripPressed
       m_Interactions: 
       m_Processors: 
       m_Groups: 
@@ -13427,6 +13452,94 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!1001 &1622617572
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -3.26
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -19.68
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.6894832
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.72430176
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -92.821
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_Name
+      value: dementor
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      propertyPath: m_TagString
+      value: Wall
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d01ad0506f33a07488a28b20ba534d42, type: 3}
 --- !u!4 &1630853497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2994531682042415193, guid: fd2de4bd876f4ac4980370e624362931,
@@ -15767,3 +15880,4 @@ SceneRoots:
   - {fileID: 1283987848}
   - {fileID: 2001163582}
   - {fileID: 129357665}
+  - {fileID: 1622617572}
