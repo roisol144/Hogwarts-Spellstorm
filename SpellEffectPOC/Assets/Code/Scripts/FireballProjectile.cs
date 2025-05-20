@@ -35,21 +35,32 @@ public class FireballProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        // Optionally, you can apply damage to hit objects here
+        Debug.Log($"Fireball collided with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
 
-        // Instantiate explosion effect if assigned
-        if (explosionPrefab != null)
+        bool hitEnemy = false;
+
+        // Check if we hit an enemy
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            if (enemy != null)
+            {
+                enemy.Die();
+                hitEnemy = true;
+            }
+        }
+
+        // Only show the fireball's explosion if we did NOT hit an enemy
+        if (!hitEnemy && explosionPrefab != null)
         {
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // Play impact sound if assigned
         if (impactSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(impactSound);
         }
 
-        // Destroy the fireball on impact
         Destroy(gameObject);
     }
 }
