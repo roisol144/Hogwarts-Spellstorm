@@ -17,7 +17,18 @@ public class EnemyMovement : MonoBehaviour
         player = Camera.main.transform;
 
         agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("No NavMeshAgent found on " + gameObject.name);
+            return;
+        }
+
+        // Basic NavMeshAgent setup
         agent.stoppingDistance = stopRadius;
+        agent.radius = 0.5f;
+        agent.height = 2f;
+        agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
+        agent.avoidancePriority = 50;
 
         wobbleSeed = Random.value * 1000f;
     }
@@ -26,31 +37,39 @@ public class EnemyMovement : MonoBehaviour
     {
         if (player == null || agent == null) return;
 
-        float distance = Vector3.Distance(transform.position, player.position);
+        Vector3 toPlayer = (player.position - transform.position).normalized;
+        float time = Time.time * wobbleSpeed + wobbleSeed;
+        Vector3 perp = Vector3.Cross(toPlayer, Vector3.up).normalized;
+        float wobble = Mathf.PerlinNoise(time, 0f) * 2f - 1f;
+        Vector3 offset = perp * wobble * wobbleAmount;
+        Vector3 target = player.position - toPlayer * stopRadius + offset;
 
-        if (distance > stopRadius)
+        // Project the target onto the NavMesh
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(target, out hit, 2.0f, NavMesh.AllAreas))
         {
-            // Calculate direction to player
-            Vector3 toPlayer = (player.position - transform.position).normalized;
-
-            // Calculate a smooth wobble offset perpendicular to the direction to the player
-            float time = Time.time * wobbleSpeed + wobbleSeed;
-            Vector3 perp = Vector3.Cross(toPlayer, Vector3.up).normalized;
-            float wobble = Mathf.PerlinNoise(time, 0f) * 2f - 1f; // Range [-1, 1]
-            Vector3 offset = perp * wobble * wobbleAmount;
-
-            // Final target is always in the general direction of the player, with a little drift
-            Vector3 target = player.position - toPlayer * stopRadius + offset;
-
-            Debug.Log($"{gameObject.name} targeting {target} (player at {player.position})");
-
             agent.isStopped = false;
-            agent.SetDestination(target);
+            agent.SetDestination(hit.position);
         }
         else
         {
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
+            Debug.LogWarning($"{gameObject.name} could not find a valid NavMesh position near target!");
+        }
+
+        Debug.Log($"{gameObject.name} agent.isOnNavMesh: {agent.isOnNavMesh}, agent.pathPending: {agent.pathPending}, agent.hasPath: {agent.hasPath}, agent.remainingDistance: {agent.remainingDistance}");
+    }
+
+    void OnDrawGizmos()
+    {
+        if (agent != null)
+        {
+            // Draw the agent's radius
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, agent.radius);
+            
+            // Draw the stopping distance
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, stopRadius);
         }
     }
 } 
