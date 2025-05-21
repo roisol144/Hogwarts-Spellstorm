@@ -31,6 +31,7 @@ public class EnemySpawner : MonoBehaviour
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
 
         Debug.Log("Spawning enemy at: " + spawnPoint.position);
-        Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        GameObject spawned = Instantiate(prefab, spawnPoint.position, spawnPoint.rotation);
+        Debug.Log($"Spawned {spawned.name} at position {spawned.transform.position}");
     }
 }

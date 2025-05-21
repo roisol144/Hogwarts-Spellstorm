@@ -1,38 +1,56 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public float moveSpeed = 2f;
     public float stopRadius = 2f;
+    public float wobbleAmount = 1f; // How far to drift from the direct path
+    public float wobbleSpeed = 0.5f; // How fast the wobble changes
 
     private Transform player;
+    private NavMeshAgent agent;
+    private float wobbleSeed;
 
     void Start()
     {
-        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
-        if (playerObj != null)
-            player = playerObj.transform;
+        // Use the main camera as the player reference
+        player = Camera.main.transform;
 
-        Debug.Log("EnemyMovement started for: " + gameObject.name);
+        agent = GetComponent<NavMeshAgent>();
+        agent.stoppingDistance = stopRadius;
+
+        wobbleSeed = Random.value * 1000f;
     }
 
     void Update()
     {
-        Debug.Log(gameObject.name + " is updating, player is " + (player != null ? player.name : "null"));
+        if (player == null || agent == null) return;
 
-        if (player == null) return;
-
-        Vector3 direction = player.position - transform.position;
-        float distance = direction.magnitude;
+        float distance = Vector3.Distance(transform.position, player.position);
 
         if (distance > stopRadius)
         {
-            // Move toward player
-            Vector3 move = direction.normalized * moveSpeed * Time.deltaTime;
-            if (move.magnitude > distance - stopRadius)
-                move = direction.normalized * (distance - stopRadius);
+            // Calculate direction to player
+            Vector3 toPlayer = (player.position - transform.position).normalized;
 
-            transform.position += move;
+            // Calculate a smooth wobble offset perpendicular to the direction to the player
+            float time = Time.time * wobbleSpeed + wobbleSeed;
+            Vector3 perp = Vector3.Cross(toPlayer, Vector3.up).normalized;
+            float wobble = Mathf.PerlinNoise(time, 0f) * 2f - 1f; // Range [-1, 1]
+            Vector3 offset = perp * wobble * wobbleAmount;
+
+            // Final target is always in the general direction of the player, with a little drift
+            Vector3 target = player.position - toPlayer * stopRadius + offset;
+
+            Debug.Log($"{gameObject.name} targeting {target} (player at {player.position})");
+
+            agent.isStopped = false;
+            agent.SetDestination(target);
+        }
+        else
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
         }
     }
 } 
