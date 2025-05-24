@@ -698,36 +698,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_27 (14)
       objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_TagString
-      value: Wall
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -6867,36 +6837,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wall_27 (13)
       objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_Layer
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_TagString
-      value: Wall
-      objectReference: {fileID: 0}
-    - target: {fileID: 7779381877309823848, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 2147483647
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 9051238300485817969, guid: 2f6c4572e07a60b43b00e1c4f489a806,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -11952,6 +11892,8 @@ MonoBehaviour:
   movementRecognizer: {fileID: 1142242758}
   witAiAgent: {fileID: 124088734}
   fireballPrefab: {fileID: 100008, guid: 6ff1350c2a91520479532984ca642474, type: 3}
+  impact01Prefab: {fileID: 4794043405585894037, guid: 37138c0c33167b04fa1fb90b7f5a794f,
+    type: 3}
   wandTip: {fileID: 185943432}
   matchWindowSeconds: 3
   triggerAction:
@@ -12728,7 +12670,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -16229,7 +16171,7 @@ PrefabInstance:
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.58396643
+      value: 0.17364825
       objectReference: {fileID: 0}
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
@@ -16239,7 +16181,7 @@ PrefabInstance:
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.81177783
+      value: -0.9848078
       objectReference: {fileID: 0}
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
@@ -16254,7 +16196,7 @@ PrefabInstance:
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -108.54
+      value: -160
       objectReference: {fileID: 0}
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}

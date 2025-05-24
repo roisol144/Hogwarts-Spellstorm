@@ -10,7 +10,6 @@ public class FireballProjectile : MonoBehaviour
     [Header("Impact Settings")]
     public GameObject explosionPrefab; // Optional: assign an explosion effect prefab
     public AudioClip impactSound;      // Optional: assign an impact sound
-    public float damage = 10f;         // Optional: if you plan on applying damage
 
     private AudioSource audioSource;
 
@@ -35,7 +34,7 @@ public class FireballProjectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log($"Fireball collided with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
+        Debug.Log($"[Fireball] Fireball collided with: {collision.gameObject.name}, Tag: {collision.gameObject.tag}");
 
         bool hitEnemy = false;
 
@@ -45,14 +44,28 @@ public class FireballProjectile : MonoBehaviour
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             if (enemy != null)
             {
-                enemy.Die();
+                Debug.Log($"[Fireball] Found Enemy component on {collision.gameObject.name}");
+                Debug.Log($"[Fireball] Applying regular damage (Enemy will calculate 1/3 max health)");
+                
+                // Apply regular damage (Enemy calculates actual damage as maxHealth/3)
+                enemy.TakeDamage(0f, false);
                 hitEnemy = true;
+                Debug.Log($"[Fireball] Successfully applied damage to enemy!");
             }
+            else
+            {
+                Debug.LogError($"[Fireball] GameObject {collision.gameObject.name} has 'Enemy' tag but no Enemy component!");
+            }
+        }
+        else
+        {
+            Debug.Log($"[Fireball] Hit non-enemy object: {collision.gameObject.name} (Tag: {collision.gameObject.tag})");
         }
 
         // Only show the fireball's explosion if we did NOT hit an enemy
         if (!hitEnemy && explosionPrefab != null)
         {
+            Debug.Log($"[Fireball] Spawning explosion effect");
             Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         }
 
@@ -61,6 +74,7 @@ public class FireballProjectile : MonoBehaviour
             audioSource.PlayOneShot(impactSound);
         }
 
+        Debug.Log($"[Fireball] Destroying fireball projectile");
         Destroy(gameObject);
     }
 }

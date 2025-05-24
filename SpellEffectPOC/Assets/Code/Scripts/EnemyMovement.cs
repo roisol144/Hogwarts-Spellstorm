@@ -56,7 +56,6 @@ public class EnemyMovement : MonoBehaviour
             Debug.LogWarning($"{gameObject.name} could not find a valid NavMesh position near target!");
         }
 
-        Debug.Log($"{gameObject.name} agent.isOnNavMesh: {agent.isOnNavMesh}, agent.pathPending: {agent.pathPending}, agent.hasPath: {agent.hasPath}, agent.remainingDistance: {agent.remainingDistance}");
     }
 
     void OnDrawGizmos()

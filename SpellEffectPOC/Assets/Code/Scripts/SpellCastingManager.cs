@@ -9,6 +9,7 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private MovementRecognizer movementRecognizer;
     [SerializeField] private WitAiAgent witAiAgent; // Or your voice handler script
     [SerializeField] private GameObject fireballPrefab;
+    [SerializeField] private GameObject impact01Prefab; // New reference for Stupefy spell
     [SerializeField] private Transform wandTip;
     [SerializeField] private float matchWindowSeconds = 2f;
 
@@ -31,6 +32,29 @@ public class SpellCastingManager : MonoBehaviour
     void Start()
     {
         Debug.Log($"[SpellCastingManager] Start called. movementRecognizer: {movementRecognizer}, witAiAgent: {witAiAgent}");
+        Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, impact01Prefab: {impact01Prefab}, wandTip: {wandTip}");
+        
+        // Validate prefab references
+        if (fireballPrefab == null)
+        {
+            Debug.LogError("[SpellCastingManager] CRITICAL: Fireball prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the FireBall prefab from Assets/Spell Effects/FireBall.prefab");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Fireball prefab assigned successfully: {fireballPrefab.name}");
+        }
+        
+        if (impact01Prefab == null)
+        {
+            Debug.LogError("[SpellCastingManager] CRITICAL: Impact01 prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the Impact01 prefab from Assets/Spell Effects/Impact01.prefab");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Impact01 prefab assigned successfully: {impact01Prefab.name}");
+        }
+        
         if (movementRecognizer != null)
             movementRecognizer.OnRecognized.AddListener(OnGestureRecognized);
         if (witAiAgent != null)
@@ -52,8 +76,8 @@ public class SpellCastingManager : MonoBehaviour
 
     private void OnTriggerPressed(InputAction.CallbackContext context)
     {
-        Debug.Log("[SpellCastingManager] Trigger pressed, casting fireball!");
-        FireFireball();
+        Debug.Log("[SpellCastingManager] Trigger pressed, casting default fireball!");
+        CastSpellEffect("default");
     }
 
     private void OnGestureRecognized(string gestureName)
@@ -89,8 +113,8 @@ public class SpellCastingManager : MonoBehaviour
         {
             if (requiredGesture == lastRecognizedGesture)
             {
-                Debug.Log($"[SpellCastingManager] Match found! Firing fireball for intent '{lastRecognizedIntent}' and gesture '{lastRecognizedGesture}'.");
-                FireFireball();
+                Debug.Log($"[SpellCastingManager] Match found! Casting spell effect for intent '{lastRecognizedIntent}' and gesture '{lastRecognizedGesture}'.");
+                CastSpellEffect(lastRecognizedIntent);
                 // Reset so it doesn't double-fire
                 lastRecognizedGesture = null;
                 lastRecognizedIntent = null;
@@ -106,17 +130,84 @@ public class SpellCastingManager : MonoBehaviour
         }
     }
 
-    private void FireFireball()
+    private void CastSpellEffect(string spellIntent)
     {
-        if (fireballPrefab != null && wandTip != null)
+        GameObject prefabToSpawn;
+        string spellName;
+        
+        // Determine which prefab to use based on the spell
+        // All special spells (voice + gesture combinations) use Impact01 for instant kill
+        // Only default trigger uses fireball for regular damage
+        if (spellIntent == "default")
         {
-            Vector3 spawnPos = wandTip.position + wandTip.forward * 0.5f;
-            Instantiate(fireballPrefab, spawnPos, wandTip.rotation);
-            Debug.Log("[SpellCastingManager] Fireball cast!");
+            prefabToSpawn = fireballPrefab;
+            spellName = "Fireball";
         }
         else
         {
-            Debug.LogError("[SpellCastingManager] Fireball prefab or wand tip not assigned!");
+            // All other spells (cast_stupefy, cast_accio, cast_bombardo, cast_expecto_patronum) are special
+            prefabToSpawn = impact01Prefab;
+            spellName = $"Special Spell: {spellIntent} (Impact01)";
         }
+        
+        Debug.Log($"[SpellCastingManager] CastSpellEffect called for '{spellIntent}' using {spellName}");
+        
+        if (prefabToSpawn == null)
+        {
+            Debug.LogError($"[SpellCastingManager] Prefab for {spellName} is null!");
+            return;
+        }
+        
+        if (wandTip == null)
+        {
+            Debug.LogError("[SpellCastingManager] Wand tip is null!");
+            return;
+        }
+        
+        Vector3 spawnPos = wandTip.position + wandTip.forward * 0.5f;
+        Debug.Log($"[SpellCastingManager] Spawning {spellName} at position: {spawnPos}, rotation: {wandTip.rotation}");
+        
+        GameObject spawnedEffect = Instantiate(prefabToSpawn, spawnPos, wandTip.rotation);
+        
+        if (spawnedEffect != null)
+        {
+            // Ensure the effect is active
+            if (!spawnedEffect.activeInHierarchy)
+            {
+                spawnedEffect.SetActive(true);
+                Debug.Log($"[SpellCastingManager] Activated {spellName} GameObject");
+            }
+            
+            Debug.Log($"[SpellCastingManager] {spellName} instantiated successfully! Name: {spawnedEffect.name}, Active: {spawnedEffect.activeInHierarchy}");
+            Debug.Log($"[SpellCastingManager] {spellName} position: {spawnedEffect.transform.position}, scale: {spawnedEffect.transform.localScale}");
+            
+            // Check particle systems
+            ParticleSystem[] particleSystems = spawnedEffect.GetComponentsInChildren<ParticleSystem>();
+            Debug.Log($"[SpellCastingManager] Found {particleSystems.Length} particle systems in {spellName}");
+            
+            for (int i = 0; i < particleSystems.Length; i++)
+            {
+                Debug.Log($"[SpellCastingManager] Particle System {i}: {particleSystems[i].name}, Playing: {particleSystems[i].isPlaying}, Emission: {particleSystems[i].emission.enabled}");
+                
+                // Force play the particle system if it's not playing
+                if (!particleSystems[i].isPlaying)
+                {
+                    particleSystems[i].Play();
+                    Debug.Log($"[SpellCastingManager] Started particle system: {particleSystems[i].name}");
+                }
+            }
+        }
+        else
+        {
+            Debug.LogError($"[SpellCastingManager] {spellName} failed to instantiate!");
+        }
+        
+        Debug.Log($"[SpellCastingManager] {spellName} cast complete!");
+    }
+
+    // Keep the old FireFireball method for backward compatibility (in case it's called elsewhere)
+    private void FireFireball()
+    {
+        CastSpellEffect("default");
     }
 } 

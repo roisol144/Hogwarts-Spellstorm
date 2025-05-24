@@ -90,6 +90,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
@@ -162,7 +167,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 5117912781832176045}
+      addedObject: {fileID: 7810035677774107460}
   m_SourcePrefab: {fileID: 100100000, guid: d01ad0506f33a07488a28b20ba534d42, type: 3}
 --- !u!1 &8318350637884156371 stripped
 GameObject:
@@ -230,7 +235,7 @@ CapsuleCollider:
   m_Height: 18
   m_Direction: 1
   m_Center: {x: 0, y: 8, z: 0}
---- !u!114 &5117912781832176045
+--- !u!114 &7810035677774107460
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -242,5 +247,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7816c3ff7a136b14c8c4b7a1f3a2c842, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  healthBarPrefab: {fileID: 8157853242975691518, guid: 1e463b96d612dd244a0505aad16d51c3,
+    type: 3}
   deathEffectPrefab: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0,
     type: 3}
+  playerCamera: {fileID: 0}
