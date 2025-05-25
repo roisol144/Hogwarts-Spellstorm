@@ -8,18 +8,20 @@ public class Enemy : MonoBehaviour
 
     [Header("Health Bar")]
     [SerializeField] private GameObject healthBarPrefab; // Assign health bar prefab in inspector
-    private Transform healthBarInstance;
+    protected Transform healthBarInstance;
     private HealthBar healthBarComponent;
 
     [Header("Death Effects")]
     public GameObject deathEffectPrefab; // Assign a prefab in the Inspector
+    [SerializeField] private bool useShaderDissolveEffect = true; // Whether to use shader-based dissolving effect
+    private ShaderDissolveEffect shaderDissolveEffect;
 
     [Header("Camera Reference")]
     [SerializeField] private Transform playerCamera; // Will be set automatically if null
 
-    private bool isDead = false;
+    protected bool isDead = false;
 
-    private void Start()
+    protected virtual void Start()
     {
         currentHealth = maxHealth;
         
@@ -30,6 +32,16 @@ public class Enemy : MonoBehaviour
             if (mainCamera != null)
             {
                 playerCamera = mainCamera.transform;
+            }
+        }
+
+        // Get or add shader dissolving effect component
+        if (useShaderDissolveEffect)
+        {
+            shaderDissolveEffect = GetComponent<ShaderDissolveEffect>();
+            if (shaderDissolveEffect == null)
+            {
+                shaderDissolveEffect = gameObject.AddComponent<ShaderDissolveEffect>();
             }
         }
     }
@@ -181,8 +193,35 @@ public class Enemy : MonoBehaviour
             Instantiate(deathEffectPrefab, transform.position, Quaternion.identity);
         }
 
-        // Destroy enemy
-        Destroy(gameObject);
+        // Start shader dissolving effect or destroy immediately
+        if (useShaderDissolveEffect && shaderDissolveEffect != null)
+        {
+            Debug.Log($"[Enemy] Starting shader dissolving effect for {gameObject.name}");
+            
+            // Disable any movement or AI components during dissolving
+            UnityEngine.AI.NavMeshAgent navAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+            if (navAgent != null && navAgent.enabled && navAgent.isOnNavMesh)
+            {
+                navAgent.isStopped = true;
+                navAgent.ResetPath();
+                navAgent.enabled = false;
+            }
+
+            // Disable collider to prevent further interactions
+            Collider enemyCollider = GetComponent<Collider>();
+            if (enemyCollider != null)
+            {
+                enemyCollider.enabled = false;
+            }
+
+            // Start the shader dissolving effect - it will destroy the object when complete
+            shaderDissolveEffect.StartDissolving();
+        }
+        else
+        {
+            // Fallback: destroy immediately if no dissolving effect
+            Destroy(gameObject);
+        }
     }
 
     // Public method to get current health percentage (for external use)

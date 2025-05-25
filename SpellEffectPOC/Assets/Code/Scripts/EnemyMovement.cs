@@ -35,7 +35,8 @@ public class EnemyMovement : MonoBehaviour
 
     void Update()
     {
-        if (player == null || agent == null) return;
+        // Check if player exists, agent exists, agent is enabled, and agent is on NavMesh
+        if (player == null || agent == null || !agent.enabled || !agent.isOnNavMesh) return;
 
         Vector3 toPlayer = (player.position - transform.position).normalized;
         float time = Time.time * wobbleSpeed + wobbleSeed;
