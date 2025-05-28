@@ -53,7 +53,7 @@ public class Dementor : Enemy
             }
             else
             {
-                Debug.LogWarning("[Dementor] Culd not load dementor death sound from Resources/Sounds/enemy_dissolve");
+                Debug.LogWarning("[Dementor] Could not load dementor death sound from Resources/Sounds/enemy_dissolve");
             }
         }
     }
