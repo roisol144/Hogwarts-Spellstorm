@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class SpellCastingManager : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private GameObject fireballPrefab;
     [SerializeField] private GameObject impact01Prefab; // New reference for Stupefy spell
     [SerializeField] private Transform wandTip;
-    [SerializeField] private float matchWindowSeconds = 2f;
+    [SerializeField] private float matchWindowSeconds = 7f;
 
     [Header("Input")]
     [SerializeField] private InputAction triggerAction;
@@ -19,6 +20,9 @@ public class SpellCastingManager : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip gripCastSound;
+
+    [Header("UI")]
+    [SerializeField] private TextMeshProUGUI spellCastText;
 
     private string lastRecognizedGesture = null;
     private float lastGestureTime = -10f;
@@ -217,6 +221,16 @@ public class SpellCastingManager : MonoBehaviour
         
         if (spawnedEffect != null)
         {
+            // Add SpellCasted component to track which spell was cast
+            SpellCasted spellCasted = spawnedEffect.AddComponent<SpellCasted>();
+            spellCasted.Initialize(spellName, spellIntent);
+            
+            // Update UI with spell name
+            if (spellCastText != null)
+            {
+                spellCastText.text = $"Spell Casted: {spellName}";
+            }
+            
             // Ensure the effect is active
             if (!spawnedEffect.activeInHierarchy)
             {

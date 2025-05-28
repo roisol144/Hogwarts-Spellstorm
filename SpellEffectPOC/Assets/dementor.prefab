@@ -260,4 +260,4 @@ MonoBehaviour:
   dementorDissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b,
     type: 2}
   dementorDissolveDirection: {x: 0, y: 1, z: 0}
-  dementorEdgeColor: {r: 0.8207547, g: 0.11077473, b: 0.034843344, a: 1}
+  dementorEdgeColor: {r: 0.21052866, g: 0.71015453, b: 0.7830189, a: 1}
