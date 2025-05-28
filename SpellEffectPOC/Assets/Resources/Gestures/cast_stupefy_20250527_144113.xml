@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_stupefy">
+	<Stroke>
+		<Point X = "2895.243" Y = "1099.489" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

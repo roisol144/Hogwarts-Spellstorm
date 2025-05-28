@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_bombardo">
+	<Stroke>
+		<Point X = "3194.326" Y = "1339.039" T = "0" Pressure = "0" />
+		<Point X = "3207.114" Y = "1321.679" T = "0" Pressure = "0" />
+		<Point X = "3215.911" Y = "1300.464" T = "0" Pressure = "0" />
+		<Point X = "3219.165" Y = "1275.987" T = "0" Pressure = "0" />
+		<Point X = "3214.448" Y = "1252.66" T = "0" Pressure = "0" />
+		<Point X = "3202.152" Y = "1229.885" T = "0" Pressure = "0" />
+		<Point X = "3180.104" Y = "1209.587" T = "0" Pressure = "0" />
+		<Point X = "3152.07" Y = "1193.338" T = "0" Pressure = "0" />
+		<Point X = "3124.532" Y = "1185.528" T = "0" Pressure = "0" />
+		<Point X = "3098.282" Y = "1185.228" T = "0" Pressure = "0" />
+		<Point X = "3071.127" Y = "1190.437" T = "0" Pressure = "0" />
+		<Point X = "3048.984" Y = "1202.378" T = "0" Pressure = "0" />
+		<Point X = "3032.686" Y = "1219.053" T = "0" Pressure = "0" />
+		<Point X = "3023.406" Y = "1240.288" T = "0" Pressure = "0" />
+		<Point X = "3018.857" Y = "1261.729" T = "0" Pressure = "0" />
+		<Point X = "3021.239" Y = "1283.526" T = "0" Pressure = "0" />
+		<Point X = "3027.995" Y = "1304.712" T = "0" Pressure = "0" />
+		<Point X = "3039.444" Y = "1324.291" T = "0" Pressure = "0" />
+		<Point X = "3054.115" Y = "1340.622" T = "0" Pressure = "0" />
+		<Point X = "3071.487" Y = "1353.453" T = "0" Pressure = "0" />
+		<Point X = "3090.177" Y = "1363.048" T = "0" Pressure = "0" />
+		<Point X = "3109.886" Y = "1368.507" T = "0" Pressure = "0" />
+		<Point X = "3130.24" Y = "1369.725" T = "0" Pressure = "0" />
+		<Point X = "3150.048" Y = "1367.443" T = "0" Pressure = "0" />
+		<Point X = "3167.336" Y = "1361.16" T = "0" Pressure = "0" />
+		<Point X = "3181.563" Y = "1350.727" T = "0" Pressure = "0" />
+		<Point X = "3194.177" Y = "1338.124" T = "0" Pressure = "0" />
+		<Point X = "3201.722" Y = "1323.346" T = "0" Pressure = "0" />
+		<Point X = "3203.84" Y = "1307.843" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

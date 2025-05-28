@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_bombardo">
+	<Stroke>
+		<Point X = "3086.82" Y = "1321.011" T = "0" Pressure = "0" />
+		<Point X = "3064.601" Y = "1324.899" T = "0" Pressure = "0" />
+		<Point X = "3048.678" Y = "1323.324" T = "0" Pressure = "0" />
+		<Point X = "3033.579" Y = "1319.456" T = "0" Pressure = "0" />
+		<Point X = "3020.092" Y = "1313.118" T = "0" Pressure = "0" />
+		<Point X = "3010.076" Y = "1304.044" T = "0" Pressure = "0" />
+		<Point X = "3003.039" Y = "1292.175" T = "0" Pressure = "0" />
+		<Point X = "2999.155" Y = "1277.998" T = "0" Pressure = "0" />
+		<Point X = "2998.244" Y = "1261.993" T = "0" Pressure = "0" />
+		<Point X = "3001.55" Y = "1245.526" T = "0" Pressure = "0" />
+		<Point X = "3009.649" Y = "1230.679" T = "0" Pressure = "0" />
+		<Point X = "3022.208" Y = "1216.678" T = "0" Pressure = "0" />
+		<Point X = "3038.007" Y = "1204.757" T = "0" Pressure = "0" />
+		<Point X = "3056.694" Y = "1195.666" T = "0" Pressure = "0" />
+		<Point X = "3077.658" Y = "1190.91" T = "0" Pressure = "0" />
+		<Point X = "3100.043" Y = "1191.386" T = "0" Pressure = "0" />
+		<Point X = "3119.213" Y = "1196.9" T = "0" Pressure = "0" />
+		<Point X = "3134.599" Y = "1205.746" T = "0" Pressure = "0" />
+		<Point X = "3146.045" Y = "1217.104" T = "0" Pressure = "0" />
+		<Point X = "3151.944" Y = "1231.898" T = "0" Pressure = "0" />
+		<Point X = "3150.572" Y = "1249.568" T = "0" Pressure = "0" />
+		<Point X = "3147.078" Y = "1266.455" T = "0" Pressure = "0" />
+		<Point X = "3140.191" Y = "1283.089" T = "0" Pressure = "0" />
+		<Point X = "3130.839" Y = "1298.852" T = "0" Pressure = "0" />
+		<Point X = "3120.502" Y = "1313.148" T = "0" Pressure = "0" />
+		<Point X = "3109.365" Y = "1324.861" T = "0" Pressure = "0" />
+		<Point X = "3097.879" Y = "1332.8" T = "0" Pressure = "0" />
+		<Point X = "3079.933" Y = "1337.169" T = "0" Pressure = "0" />
+		<Point X = "3064.551" Y = "1335.33" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

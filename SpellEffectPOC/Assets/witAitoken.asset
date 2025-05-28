@@ -20,9 +20,9 @@ MonoBehaviour:
     isPrivate: 1
     createdAt: 2025-01-03T07:34:55-0800
     trainingStatus: 1
-    lastTrainDuration: 99
-    lastTrainedAt: 2025-03-24T05:46:17-0700
-    nextTrainAt: 2025-03-24T05:44:38-0700
+    lastTrainDuration: 202
+    lastTrainedAt: 2025-05-27T12:48:38-0700
+    nextTrainAt: 2025-05-27T12:45:16-0700
     intents:
     - id: 904876701850573
       name: cast_accio
@@ -39,7 +39,34 @@ MonoBehaviour:
     - id: 9026598927393753
       name: cast_stupefy
       entities: []
-    entities: []
+    entities:
+    - name: cast_bombardo
+      id: 882207904070119
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: cast_bombardo
+        id: 3982849341979225
+      keywords: []
+    - name: cast_expecto_patronum
+      id: 1040898064205888
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: cast_expecto_patronum
+        id: 1811511329397324
+      keywords: []
+    - name: cast_stupefy
+      id: 2209182066180574
+      lookups:
+      - free-text
+      - keywords
+      roles:
+      - name: cast_stupefy
+        id: 1219823086507687
+      keywords: []
     traits: []
     voices:
     - name: wit$Rebecca
@@ -318,7 +345,7 @@ MonoBehaviour:
     message: 
     dictation: 
   isDemoOnly: 0
-  useConduit: 1
+  useConduit: 0
   _manifestLocalPath: ConduitManifest-78d13dc4-77bc-4ba2-b2df-28e06920fcfe.json
   excludedAssemblies: []
   relaxedResolution: 0

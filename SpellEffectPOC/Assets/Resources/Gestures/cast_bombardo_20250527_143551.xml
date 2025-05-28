@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_bombardo">
+	<Stroke>
+		<Point X = "3076.4" Y = "1259.623" T = "0" Pressure = "0" />
+		<Point X = "3061.983" Y = "1254.797" T = "0" Pressure = "0" />
+		<Point X = "3049.28" Y = "1243.907" T = "0" Pressure = "0" />
+		<Point X = "3039.62" Y = "1231.34" T = "0" Pressure = "0" />
+		<Point X = "3030.407" Y = "1216.58" T = "0" Pressure = "0" />
+		<Point X = "3023.574" Y = "1201.167" T = "0" Pressure = "0" />
+		<Point X = "3018.583" Y = "1184.849" T = "0" Pressure = "0" />
+		<Point X = "3016.355" Y = "1167.754" T = "0" Pressure = "0" />
+		<Point X = "3018.06" Y = "1152.22" T = "0" Pressure = "0" />
+		<Point X = "3023.728" Y = "1139.694" T = "0" Pressure = "0" />
+		<Point X = "3032.658" Y = "1130.073" T = "0" Pressure = "0" />
+		<Point X = "3045.187" Y = "1122.69" T = "0" Pressure = "0" />
+		<Point X = "3060.498" Y = "1118.023" T = "0" Pressure = "0" />
+		<Point X = "3077.344" Y = "1118.334" T = "0" Pressure = "0" />
+		<Point X = "3095.142" Y = "1124.421" T = "0" Pressure = "0" />
+		<Point X = "3111.871" Y = "1134.539" T = "0" Pressure = "0" />
+		<Point X = "3124.642" Y = "1149.315" T = "0" Pressure = "0" />
+		<Point X = "3133.849" Y = "1167.304" T = "0" Pressure = "0" />
+		<Point X = "3139.607" Y = "1187.175" T = "0" Pressure = "0" />
+		<Point X = "3142.281" Y = "1207.451" T = "0" Pressure = "0" />
+		<Point X = "3141.672" Y = "1227.57" T = "0" Pressure = "0" />
+		<Point X = "3137.389" Y = "1244.746" T = "0" Pressure = "0" />
+		<Point X = "3130.578" Y = "1257.816" T = "0" Pressure = "0" />
+		<Point X = "3122.675" Y = "1267.164" T = "0" Pressure = "0" />
+		<Point X = "3113.436" Y = "1272.785" T = "0" Pressure = "0" />
+		<Point X = "3103.185" Y = "1274.163" T = "0" Pressure = "0" />
+		<Point X = "3092.035" Y = "1271.255" T = "0" Pressure = "0" />
+		<Point X = "3076.696" Y = "1264.664" T = "0" Pressure = "0" />
+		<Point X = "3062.022" Y = "1254.527" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

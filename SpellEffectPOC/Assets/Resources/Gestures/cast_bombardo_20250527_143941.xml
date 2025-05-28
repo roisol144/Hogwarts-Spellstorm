@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_bombardo">
+	<Stroke>
+		<Point X = "3137.229" Y = "1362.391" T = "0" Pressure = "0" />
+		<Point X = "3121.532" Y = "1373.518" T = "0" Pressure = "0" />
+		<Point X = "3108.368" Y = "1378.188" T = "0" Pressure = "0" />
+		<Point X = "3093.359" Y = "1379.982" T = "0" Pressure = "0" />
+		<Point X = "3075.764" Y = "1375.487" T = "0" Pressure = "0" />
+		<Point X = "3056.694" Y = "1364.694" T = "0" Pressure = "0" />
+		<Point X = "3040.332" Y = "1351.025" T = "0" Pressure = "0" />
+		<Point X = "3027.861" Y = "1335.635" T = "0" Pressure = "0" />
+		<Point X = "3018.887" Y = "1317.801" T = "0" Pressure = "0" />
+		<Point X = "3013.357" Y = "1298.759" T = "0" Pressure = "0" />
+		<Point X = "3012.862" Y = "1278.404" T = "0" Pressure = "0" />
+		<Point X = "3016.961" Y = "1260.082" T = "0" Pressure = "0" />
+		<Point X = "3024.594" Y = "1243.587" T = "0" Pressure = "0" />
+		<Point X = "3036.558" Y = "1228.749" T = "0" Pressure = "0" />
+		<Point X = "3050.662" Y = "1217.173" T = "0" Pressure = "0" />
+		<Point X = "3066.743" Y = "1209.101" T = "0" Pressure = "0" />
+		<Point X = "3085.654" Y = "1203.979" T = "0" Pressure = "0" />
+		<Point X = "3105.695" Y = "1202.391" T = "0" Pressure = "0" />
+		<Point X = "3124.24" Y = "1204.963" T = "0" Pressure = "0" />
+		<Point X = "3141.461" Y = "1214.604" T = "0" Pressure = "0" />
+		<Point X = "3156.654" Y = "1228.903" T = "0" Pressure = "0" />
+		<Point X = "3167.047" Y = "1246.352" T = "0" Pressure = "0" />
+		<Point X = "3170.679" Y = "1267.366" T = "0" Pressure = "0" />
+		<Point X = "3167.611" Y = "1289.429" T = "0" Pressure = "0" />
+		<Point X = "3161.715" Y = "1309.926" T = "0" Pressure = "0" />
+		<Point X = "3153.866" Y = "1328.598" T = "0" Pressure = "0" />
+		<Point X = "3145.567" Y = "1345.134" T = "0" Pressure = "0" />
+		<Point X = "3139.241" Y = "1358.642" T = "0" Pressure = "0" />
+		<Point X = "3131.807" Y = "1368.282" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

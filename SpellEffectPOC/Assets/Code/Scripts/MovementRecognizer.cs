@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using PDollarGestureRecognizer;
 using System.IO;
 using UnityEngine.Events;
 
@@ -20,51 +19,22 @@ public class MovementRecognizer : MonoBehaviour
     private bool isInTrainingMode = false;
     private string currentGestureName = "";
 
-    public float recognitionThreshold = 0.9f;
+    [SerializeField] private SentisGestureRecognizer sentisRecognizer;
     [SerializeField] private GestureDisplayManager displayManager;
 
     [System.Serializable]
     public class UnityStringEvent : UnityEvent<string> { }
     public UnityStringEvent OnRecognized;
 
-    private List<Gesture> trainingSet = new List<Gesture>();
     private List<Vector3> positionsList = new List<Vector3>();
     public KeyCode debugKey = KeyCode.G;
 
     void Start()
     {
-        trainingSet.Clear();
-        // Load all gesture XMLs from Resources/Gestures
-        TextAsset[] gestureFiles = Resources.LoadAll<TextAsset>("Gestures");
-        foreach (var gestureFile in gestureFiles)
+        if (sentisRecognizer == null)
         {
-            // Each file may have multiple strokes; load each as a separate Gesture
-            var gestures = ReadAllStrokesFromXML(gestureFile.text);
-            trainingSet.AddRange(gestures);
+            Debug.LogError("SentisGestureRecognizer reference is missing!");
         }
-        Debug.Log($"Loaded {trainingSet.Count} gestures from Resources/Gestures");
-    }
-
-    // Helper to parse all strokes in a gesture XML as separate Gesture objects
-    private List<Gesture> ReadAllStrokesFromXML(string xml)
-    {
-        var gestures = new List<Gesture>();
-        var doc = new System.Xml.XmlDocument();
-        doc.LoadXml(xml);
-        var gestureName = doc.DocumentElement.GetAttribute("Name");
-        var strokeNodes = doc.DocumentElement.SelectNodes("Stroke");
-        foreach (System.Xml.XmlNode strokeNode in strokeNodes)
-        {
-            var points = new List<Point>();
-            foreach (System.Xml.XmlNode pointNode in strokeNode.ChildNodes)
-            {
-                float x = float.Parse(pointNode.Attributes["X"].Value, System.Globalization.CultureInfo.InvariantCulture);
-                float y = float.Parse(pointNode.Attributes["Y"].Value, System.Globalization.CultureInfo.InvariantCulture);
-                points.Add(new Point(x, y, 0));
-            }
-            gestures.Add(new Gesture(points.ToArray(), gestureName));
-        }
-        return gestures;
     }
 
     public void SetTrainingMode(bool enable, string gestureName)
@@ -130,22 +100,19 @@ public class MovementRecognizer : MonoBehaviour
     {
         isMoving = false;
 
-        Point[] pointArray = new Point[positionsList.Count];
-        for(int i = 0; i < positionsList.Count; i++)
+        // Convert positions to 2D points
+        var points = new List<Vector2>();
+        foreach (var pos in positionsList)
         {
-            Vector2 screenPoint = Camera.main.WorldToScreenPoint(positionsList[i]);
-            pointArray[i] = new Point(screenPoint.x, screenPoint.y, 0);
+            Vector2 screenPoint = Camera.main.WorldToScreenPoint(pos);
+            points.Add(screenPoint);
         }
 
-        Gesture newGesture = new Gesture(pointArray);
-        
-        if(isInTrainingMode && !string.IsNullOrEmpty(currentGestureName))
+        if (isInTrainingMode && !string.IsNullOrEmpty(currentGestureName))
         {
-            newGesture.Name = currentGestureName;
-            trainingSet.Add(newGesture);
-
+            // Save gesture for training
             string fileName = Application.persistentDataPath + "/" + currentGestureName + ".xml";
-            GestureIO.WriteGesture(pointArray, currentGestureName, fileName);
+            SaveGestureToXML(points, currentGestureName, fileName);
             
             if (displayManager != null)
             {
@@ -154,17 +121,38 @@ public class MovementRecognizer : MonoBehaviour
         }
         else
         {
-            Result result = PointCloudRecognizer.Classify(newGesture, trainingSet.ToArray());
-            Debug.Log("Result: " + result.GestureClass + " with score: " + result.Score);
-            if(result.Score > recognitionThreshold)
+            // Use Sentis for recognition
+            string recognizedGesture = sentisRecognizer.RecognizeGesture(points);
+            if (!string.IsNullOrEmpty(recognizedGesture))
             {
-                OnRecognized.Invoke(result.GestureClass);
+                OnRecognized.Invoke(recognizedGesture);
                 if (displayManager != null)
                 {
-                    displayManager.ShowRecognitionResult(result.GestureClass, result.Score);
+                    displayManager.ShowRecognitionResult(recognizedGesture, 1.0f);
                 }
             }
         }
+    }
+
+    private void SaveGestureToXML(List<Vector2> points, string gestureName, string fileName)
+    {
+        var doc = new System.Xml.XmlDocument();
+        var root = doc.CreateElement("Gesture");
+        root.SetAttribute("Name", gestureName);
+        doc.AppendChild(root);
+
+        var stroke = doc.CreateElement("Stroke");
+        root.AppendChild(stroke);
+
+        foreach (var point in points)
+        {
+            var pointNode = doc.CreateElement("Point");
+            pointNode.SetAttribute("X", point.x.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            pointNode.SetAttribute("Y", point.y.ToString(System.Globalization.CultureInfo.InvariantCulture));
+            stroke.AppendChild(pointNode);
+        }
+
+        doc.Save(fileName);
     }
 
     void UpdateMovement()

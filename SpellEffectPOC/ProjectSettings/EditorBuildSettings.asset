@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Level/Scenes/TutorialScene.unity
     guid: df4149b9e37ab3c428f835bf8c7e9f5c
+  - enabled: 0
+    path: Assets/Level/Scenes/GestureTrainingScene.unity
+    guid: 9ac45132041b24642b32b3c8837bf423
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d088daf41229b5741960d78b10ce7486,
       type: 2}

@@ -11550,7 +11550,7 @@ MonoBehaviour:
   inputThreshold: 0.1
   newPositionThresholdDistance: 0.05
   debugCubePrefab: {fileID: 515484852}
-  recognitionThreshold: 0.8
+  sentisRecognizer: {fileID: 1622617573}
   displayManager: {fileID: 950082863}
   OnRecognized:
     m_PersistentCalls:
@@ -11921,6 +11921,8 @@ MonoBehaviour:
       m_Action: Trigger
       m_Flags: 0
     m_Flags: 0
+  audioSource: {fileID: 0}
+  gripCastSound: {fileID: 8300000, guid: 219cd4cbcb1b843979c0d9f03d66d335, type: 3}
 --- !u!4 &1283987848
 Transform:
   m_ObjectHideFlags: 0
@@ -12670,7 +12672,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13934,6 +13936,55 @@ LightingSettings:
   m_PVRTiledBaking: 0
   m_NumRaysToShootPerTexel: -1
   m_RespectSceneVisibilityWhenBakingGI: 0
+--- !u!1 &1622617572
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1622617574}
+  - component: {fileID: 1622617573}
+  m_Layer: 0
+  m_Name: Sentis
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1622617573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622617572}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bf6547dfc9c245379d5e58379a09e9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  modelAsset: {fileID: 5022602860645237092, guid: 9087864d531d343079b41c1c38bb53a4,
+    type: 3}
+  confidenceThreshold: 0.7
+  numPoints: 32
+  gestureSize: 1
+--- !u!4 &1622617574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1622617572}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1630853497 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2994531682042415193, guid: fd2de4bd876f4ac4980370e624362931,
@@ -16161,7 +16212,7 @@ PrefabInstance:
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 8672010662759929070, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
@@ -16391,3 +16442,4 @@ SceneRoots:
   - {fileID: 129357665}
   - {fileID: 1537110084}
   - {fileID: 1507586506}
+  - {fileID: 1622617574}

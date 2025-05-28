@@ -256,8 +256,8 @@ MonoBehaviour:
   useShaderDissolveEffect: 1
   playerCamera: {fileID: 0}
   useDementorShaderDissolve: 1
-  dementorDeathSound: {fileID: 0}
+  dementorDeathSound: {fileID: 8300000, guid: 62f400e3fac404afca6254bf754b509a, type: 3}
   dementorDissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b,
     type: 2}
   dementorDissolveDirection: {x: 0, y: 1, z: 0}
-  dementorEdgeColor: {r: 0.8, g: 0.2, b: 1, a: 1}
+  dementorEdgeColor: {r: 0.8207547, g: 0.11077473, b: 0.034843344, a: 1}

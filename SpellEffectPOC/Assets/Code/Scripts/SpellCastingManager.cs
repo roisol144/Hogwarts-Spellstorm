@@ -16,6 +16,10 @@ public class SpellCastingManager : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputAction triggerAction;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip gripCastSound;
+
     private string lastRecognizedGesture = null;
     private float lastGestureTime = -10f;
     private string lastRecognizedIntent = null;
@@ -53,6 +57,31 @@ public class SpellCastingManager : MonoBehaviour
         else
         {
             Debug.Log($"[SpellCastingManager] Impact01 prefab assigned successfully: {impact01Prefab.name}");
+        }
+
+        // Setup audio source if not assigned
+        if (audioSource == null)
+        {
+            audioSource = GetComponent<AudioSource>();
+            if (audioSource == null)
+            {
+                audioSource = gameObject.AddComponent<AudioSource>();
+                Debug.Log("[SpellCastingManager] Added AudioSource component");
+            }
+        }
+
+        // Load grip cast sound if not assigned
+        if (gripCastSound == null)
+        {
+            gripCastSound = Resources.Load<AudioClip>("Sounds/magic_spell");
+            if (gripCastSound != null)
+            {
+                Debug.Log("[SpellCastingManager] Loaded grip cast sound from Resources");
+            }
+            else
+            {
+                Debug.LogWarning("[SpellCastingManager] Could not load grip cast sound from Resources/Sounds/magic_spell");
+            }
         }
         
         if (movementRecognizer != null)
@@ -114,6 +143,10 @@ public class SpellCastingManager : MonoBehaviour
             if (requiredGesture == lastRecognizedGesture)
             {
                 Debug.Log($"[SpellCastingManager] Match found! Casting spell effect for intent '{lastRecognizedIntent}' and gesture '{lastRecognizedGesture}'.");
+                
+                // Play grip cast sound effect
+                PlayGripCastSound();
+                
                 CastSpellEffect(lastRecognizedIntent);
                 // Reset so it doesn't double-fire
                 lastRecognizedGesture = null;
@@ -127,6 +160,19 @@ public class SpellCastingManager : MonoBehaviour
         else
         {
             Debug.Log($"[SpellCastingManager] Intent '{lastRecognizedIntent}' not found in mapping.");
+        }
+    }
+
+    private void PlayGripCastSound()
+    {
+        if (audioSource != null && gripCastSound != null)
+        {
+            audioSource.PlayOneShot(gripCastSound);
+            Debug.Log("[SpellCastingManager] Playing grip cast sound effect");
+        }
+        else
+        {
+            Debug.LogWarning("[SpellCastingManager] Cannot play grip cast sound - missing AudioSource or AudioClip");
         }
     }
 

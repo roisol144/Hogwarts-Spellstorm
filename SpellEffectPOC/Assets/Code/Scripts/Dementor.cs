@@ -10,10 +10,14 @@ public class Dementor : Enemy
     [SerializeField] private Color dementorEdgeColor = new Color(0.8f, 0.2f, 1f, 1f); // Purple edge color for dementor
     
     private SafeShaderDissolveEffect dementorShaderDissolveEffect;
+    private AudioSource audioSource;
 
     protected override void Start()
     {
         base.Start();
+        
+        // Setup audio source for dementor death sound
+        SetupAudioSource();
         
         // Setup dementor-specific shader dissolving effect
         if (useDementorShaderDissolve)
@@ -26,6 +30,31 @@ public class Dementor : Enemy
 
             // Configure dementor-specific dissolve settings
             ConfigureDementorDissolve();
+        }
+    }
+
+    private void SetupAudioSource()
+    {
+        // Setup audio source if not assigned
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+            Debug.Log("[Dementor] Added AudioSource component");
+        }
+
+        // Load dementor death sound if not assigned
+        if (dementorDeathSound == null)
+        {
+            dementorDeathSound = Resources.Load<AudioClip>("Sounds/enemy_dissolve");
+            if (dementorDeathSound != null)
+            {
+                Debug.Log("[Dementor] Loaded dementor death sound from Resources");
+            }
+            else
+            {
+                Debug.LogWarning("[Dementor] Culd not load dementor death sound from Resources/Sounds/enemy_dissolve");
+            }
         }
     }
 
@@ -49,12 +78,28 @@ public class Dementor : Enemy
         }
     }
 
+    private void PlayDementorDeathSound()
+    {
+        if (audioSource != null && dementorDeathSound != null)
+        {
+            audioSource.PlayOneShot(dementorDeathSound);
+            Debug.Log("[Dementor] Playing dementor death sound effect");
+        }
+        else
+        {
+            Debug.LogWarning("[Dementor] Cannot play dementor death sound - missing AudioSource or AudioClip");
+        }
+    }
+
     public override void Die()
     {
         if (isDead) return;
         isDead = true;
 
         Debug.Log($"Dementor {gameObject.name} died with dissolving effect!");
+
+        // Play dementor death sound
+        PlayDementorDeathSound();
 
         // Hide health bar
         if (healthBarInstance != null)
