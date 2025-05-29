@@ -21,8 +21,8 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip gripCastSound;
 
-    [Header("UI")]
-    [SerializeField] private TextMeshProUGUI spellCastText;
+    [Header("UI - Legacy (now handled by MagicalDebugUI)")]
+    [SerializeField] private TextMeshProUGUI spellCastText; // Keep for backward compatibility but use MagicalDebugUI instead
 
     private string lastRecognizedGesture = null;
     private float lastGestureTime = -10f;
@@ -197,7 +197,7 @@ public class SpellCastingManager : MonoBehaviour
         {
             // All other spells (cast_stupefy, cast_accio, cast_bombardo, cast_expecto_patronum) are special
             prefabToSpawn = impact01Prefab;
-            spellName = $"Special Spell: {spellIntent} (Impact01)";
+            spellName = GetFriendlySpellName(spellIntent);
         }
         
         Debug.Log($"[SpellCastingManager] CastSpellEffect called for '{spellIntent}' using {spellName}");
@@ -225,7 +225,10 @@ public class SpellCastingManager : MonoBehaviour
             SpellCasted spellCasted = spawnedEffect.AddComponent<SpellCasted>();
             spellCasted.Initialize(spellName, spellIntent);
             
-            // Update UI with spell name
+            // Update the magical debug UI with the spell name (new system)
+            MagicalDebugUI.NotifySpellCast(spellName);
+            
+            // Also update legacy text for backward compatibility
             if (spellCastText != null)
             {
                 spellCastText.text = $"Spell Casted: {spellName}";
@@ -263,6 +266,23 @@ public class SpellCastingManager : MonoBehaviour
         }
         
         Debug.Log($"[SpellCastingManager] {spellName} cast complete!");
+    }
+    
+    private string GetFriendlySpellName(string spellIntent)
+    {
+        switch (spellIntent)
+        {
+            case "cast_stupefy":
+                return "Stupefy";
+            case "cast_accio":
+                return "Accio";
+            case "cast_bombardo":
+                return "Bombardo";
+            case "cast_expecto_patronum":
+                return "Expecto Patronum";
+            default:
+                return spellIntent.Replace("cast_", "").Replace("_", " ");
+        }
     }
 
     // Keep the old FireFireball method for backward compatibility (in case it's called elsewhere)

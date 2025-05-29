@@ -9056,7 +9056,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &655779580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10208,6 +10208,60 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f6c4572e07a60b43b00e1c4f489a806, type: 3}
+--- !u!1 &888120096
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 888120098}
+  - component: {fileID: 888120097}
+  m_Layer: 0
+  m_Name: MagicalDebugUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &888120097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888120096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98e45dff0e0a31c40b4d2ca54b0c177f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  debugCanvas: {fileID: 0}
+  spellText: {fileID: 0}
+  targetCamera: {fileID: 0}
+  offsetFromCamera: {x: 0, y: -0.4, z: 0.8}
+  followSpeed: 10
+  lookAtCamera: 1
+  canvasScale: 0.003
+  canvasSize: {x: 1, y: 0.5}
+  fontSize: 28
+  textColor: {r: 1, g: 0.84, b: 0, a: 1}
+--- !u!4 &888120098
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888120096}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &893554831 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6182452670827713600, guid: cfb04594231799d4092ee0064447ce94,
@@ -13256,6 +13310,7 @@ MonoBehaviour:
   - {fileID: 8318350637884156371, guid: 36ed1eab0507f704e90d912182617903, type: 3}
   spawnPoints:
   - {fileID: 1537110084}
+  spawnInterval: 5
 --- !u!4 &1507586506
 Transform:
   m_ObjectHideFlags: 0
@@ -16680,3 +16735,4 @@ SceneRoots:
   - {fileID: 1507586506}
   - {fileID: 1622617574}
   - {fileID: 655779583}
+  - {fileID: 888120098}
