@@ -12829,7 +12829,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13311,6 +13311,7 @@ MonoBehaviour:
   spawnPoints:
   - {fileID: 1537110084}
   spawnInterval: 5
+  useTimerBasedSpawning: 0
 --- !u!4 &1507586506
 Transform:
   m_ObjectHideFlags: 0

@@ -80,7 +80,7 @@ public class MagicalDebugUI : MonoBehaviour
         {
             canvasGO.transform.position = GetTargetPosition();
             if (lookAtCamera)
-            {
+        {
                 canvasGO.transform.LookAt(targetCamera.transform);
             }
         }
@@ -216,7 +216,7 @@ public class MagicalDebugUI : MonoBehaviour
         else
         {
             // Instant following
-            debugCanvas.transform.position = targetPosition;
+        debugCanvas.transform.position = targetPosition;
             
             if (lookAtCamera)
             {
