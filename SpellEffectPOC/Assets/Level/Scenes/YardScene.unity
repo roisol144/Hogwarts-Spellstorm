@@ -12048,10 +12048,15 @@ MonoBehaviour:
   movementRecognizer: {fileID: 1142242758}
   witAiAgent: {fileID: 124088734}
   fireballPrefab: {fileID: 100008, guid: 6ff1350c2a91520479532984ca642474, type: 3}
-  impact01Prefab: {fileID: 4794043405585894037, guid: 37138c0c33167b04fa1fb90b7f5a794f,
+  stupefyPrefab: {fileID: 4794043405585894037, guid: e04a7f6d5e8d1c470d45e8e6cce0e134,
     type: 3}
+  bombardoPrefab: {fileID: 4794043405585894037, guid: f15c8b7a6c9e2d581e56c9c7ddf1f245,
+    type: 3}
+  expectoPatronumPrefab: {fileID: 4794043405585894037, guid: a26d9e8c7d0f3b692f67d0d8bea2a356,
+    type: 3}
+  accioPrefab: {fileID: 0}
   wandTip: {fileID: 185943432}
-  matchWindowSeconds: 7
+  matchWindowSeconds: 2
   triggerAction:
     m_Name: Trigger
     m_Type: 1

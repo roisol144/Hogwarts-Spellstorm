@@ -120,7 +120,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 997
+  controlID: 2737
   draggingID: 0
 --- !u!114 &6
 MonoBehaviour:
@@ -146,7 +146,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 876
+  controlID: 2611
   draggingID: 0
 --- !u!114 &7
 MonoBehaviour:
@@ -235,7 +235,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 909
+  controlID: 2651
   draggingID: 0
 --- !u!114 &10
 MonoBehaviour:
@@ -13832,7 +13832,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 38c8ffff50c9ffff66d1fffff6faffff
+      m_ExpandedIDs: 28caffff40cbffff56d3fffff6faffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -13902,7 +13902,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Code/Scripts
+    - Assets/Spell Effects
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -13910,16 +13910,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Code/Scripts
+  - Assets/Spell Effects
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\yaron\Unity Projects\Hogwarts-Spellstorm\SpellEffectPOC
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 111}
-    m_SelectedIDs: 66920000
-    m_LastClickedID: 37478
-    m_ExpandedIDs: 00000000fc910000fe91000000920000029200000492000006920000089200000a9200000c9200000e9200001092000030920000
+    scrollPos: {x: 0, y: 158.99994}
+    m_SelectedIDs: 4c920000
+    m_LastClickedID: 37452
+    m_ExpandedIDs: 00000000ec910000ee910000f0910000f2910000f4910000f6910000f8910000fa910000fc910000fe91000000920000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -13947,7 +13947,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 56ba0000
     m_LastClickedID: 47702
-    m_ExpandedIDs: 00000000fc910000fe91000000920000029200000492000006920000089200000a9200000c9200000e92000010920000
+    m_ExpandedIDs: 00000000ec910000ee910000f0910000f2910000f4910000f6910000f8910000fa910000fc910000fe91000000920000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

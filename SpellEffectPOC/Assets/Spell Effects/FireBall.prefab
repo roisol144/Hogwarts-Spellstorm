@@ -19389,7 +19389,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &400008
 Transform:
   m_ObjectHideFlags: 0
@@ -19545,4 +19545,3 @@ MonoBehaviour:
   explosionPrefab: {fileID: 358637981425055526, guid: 8eb503696b886e04faff8fc0f480d473,
     type: 3}
   impactSound: {fileID: 0}
-  damage: 34

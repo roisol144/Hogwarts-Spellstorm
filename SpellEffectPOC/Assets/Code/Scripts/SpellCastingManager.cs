@@ -10,7 +10,10 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private MovementRecognizer movementRecognizer;
     [SerializeField] private WitAiAgent witAiAgent; // Or your voice handler script
     [SerializeField] private GameObject fireballPrefab;
-    [SerializeField] private GameObject impact01Prefab; // New reference for Stupefy spell
+    [SerializeField] private GameObject stupefyPrefab; // Yellow lightning for Stupefy
+    [SerializeField] private GameObject bombardoPrefab; // Red lightning for Bombardo
+    [SerializeField] private GameObject expectoPatronumPrefab; // Blue lightning for Expecto Patronum
+    [SerializeField] private GameObject accioPrefab; // Default to Stupefy for Accio (or create another)
     [SerializeField] private Transform wandTip;
     [SerializeField] private float matchWindowSeconds = 7f;
 
@@ -40,7 +43,7 @@ public class SpellCastingManager : MonoBehaviour
     void Start()
     {
         Debug.Log($"[SpellCastingManager] Start called. movementRecognizer: {movementRecognizer}, witAiAgent: {witAiAgent}");
-        Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, impact01Prefab: {impact01Prefab}, wandTip: {wandTip}");
+        Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, stupefyPrefab: {stupefyPrefab}, bombardoPrefab: {bombardoPrefab}, expectoPatronumPrefab: {expectoPatronumPrefab}, accioPrefab: {accioPrefab}, wandTip: {wandTip}");
         
         // Validate prefab references
         if (fireballPrefab == null)
@@ -53,14 +56,43 @@ public class SpellCastingManager : MonoBehaviour
             Debug.Log($"[SpellCastingManager] Fireball prefab assigned successfully: {fireballPrefab.name}");
         }
         
-        if (impact01Prefab == null)
+        if (stupefyPrefab == null)
         {
-            Debug.LogError("[SpellCastingManager] CRITICAL: Impact01 prefab is null on Start!");
-            Debug.LogError("[SpellCastingManager] Please assign the Impact01 prefab from Assets/Spell Effects/Impact01.prefab");
+            Debug.LogError("[SpellCastingManager] CRITICAL: Stupefy prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the Stupefy prefab from Assets/Spell Effects/Stupefy.prefab");
         }
         else
         {
-            Debug.Log($"[SpellCastingManager] Impact01 prefab assigned successfully: {impact01Prefab.name}");
+            Debug.Log($"[SpellCastingManager] Stupefy prefab assigned successfully: {stupefyPrefab.name}");
+        }
+        
+        if (bombardoPrefab == null)
+        {
+            Debug.LogError("[SpellCastingManager] CRITICAL: Bombardo prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the Bombardo prefab from Assets/Spell Effects/Bombardo.prefab");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Bombardo prefab assigned successfully: {bombardoPrefab.name}");
+        }
+        
+        if (expectoPatronumPrefab == null)
+        {
+            Debug.LogError("[SpellCastingManager] CRITICAL: Expecto Patronum prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the Expecto Patronum prefab from Assets/Spell Effects/ExpectoPatronum.prefab");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Expecto Patronum prefab assigned successfully: {expectoPatronumPrefab.name}");
+        }
+        
+        if (accioPrefab == null)
+        {
+            Debug.LogWarning("[SpellCastingManager] Accio prefab is not assigned. Defaulting to Stupefy.");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Accio prefab assigned successfully: {accioPrefab.name}");
         }
 
         // Setup audio source if not assigned
@@ -185,19 +217,34 @@ public class SpellCastingManager : MonoBehaviour
         GameObject prefabToSpawn;
         string spellName;
         
-        // Determine which prefab to use based on the spell
-        // All special spells (voice + gesture combinations) use Impact01 for instant kill
-        // Only default trigger uses fireball for regular damage
-        if (spellIntent == "default")
+        // Determine which prefab to use based on the specific spell
+        switch (spellIntent)
         {
-            prefabToSpawn = fireballPrefab;
-            spellName = "Fireball";
-        }
-        else
-        {
-            // All other spells (cast_stupefy, cast_accio, cast_bombardo, cast_expecto_patronum) are special
-            prefabToSpawn = impact01Prefab;
-            spellName = GetFriendlySpellName(spellIntent);
+            case "default":
+                prefabToSpawn = fireballPrefab;
+                spellName = "Fireball";
+                break;
+            case "cast_stupefy":
+                prefabToSpawn = stupefyPrefab;
+                spellName = "Stupefy";
+                break;
+            case "cast_bombardo":
+                prefabToSpawn = bombardoPrefab;
+                spellName = "Bombardo";
+                break;
+            case "cast_expecto_patronum":
+                prefabToSpawn = expectoPatronumPrefab;
+                spellName = "Expecto Patronum";
+                break;
+            case "cast_accio":
+                prefabToSpawn = accioPrefab ?? stupefyPrefab; // Fallback to Stupefy if Accio prefab not set
+                spellName = "Accio";
+                break;
+            default:
+                // Fallback to fireball for unknown spells
+                prefabToSpawn = fireballPrefab;
+                spellName = "Unknown Spell (Fireball)";
+                break;
         }
         
         Debug.Log($"[SpellCastingManager] CastSpellEffect called for '{spellIntent}' using {spellName}");
@@ -244,10 +291,11 @@ public class SpellCastingManager : MonoBehaviour
             Debug.Log($"[SpellCastingManager] {spellName} instantiated successfully! Name: {spawnedEffect.name}, Active: {spawnedEffect.activeInHierarchy}");
             Debug.Log($"[SpellCastingManager] {spellName} position: {spawnedEffect.transform.position}, scale: {spawnedEffect.transform.localScale}");
             
-            // Check particle systems
+            // Get all particle systems in the spawned effect (including child objects)
             ParticleSystem[] particleSystems = spawnedEffect.GetComponentsInChildren<ParticleSystem>();
-            Debug.Log($"[SpellCastingManager] Found {particleSystems.Length} particle systems in {spellName}");
+            Debug.Log($"[SpellCastingManager] Found {particleSystems.Length} particle system(s) in {spellName}");
             
+            // Debug each particle system's state
             for (int i = 0; i < particleSystems.Length; i++)
             {
                 Debug.Log($"[SpellCastingManager] Particle System {i}: {particleSystems[i].name}, Playing: {particleSystems[i].isPlaying}, Emission: {particleSystems[i].emission.enabled}");
