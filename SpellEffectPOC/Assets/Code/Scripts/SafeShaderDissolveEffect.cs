@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class SafeShaderDissolveEffect : MonoBehaviour
 {
@@ -110,7 +111,25 @@ public class SafeShaderDissolveEffect : MonoBehaviour
         {
             if (renderers == null || renderers.Length == 0)
             {
-                renderers = GetComponentsInChildren<Renderer>();
+                // Try multiple approaches to find renderers
+                List<Renderer> allRenderers = new List<Renderer>();
+                
+                // Method 1: GetComponentsInChildren with all types
+                allRenderers.AddRange(GetComponentsInChildren<Renderer>(true));
+                allRenderers.AddRange(GetComponentsInChildren<MeshRenderer>(true));
+                allRenderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
+                
+                // Method 2: Manual recursive search (sometimes GetComponentsInChildren misses some)
+                CollectRenderersRecursive(transform, allRenderers);
+                
+                // Remove duplicates
+                renderers = allRenderers.Distinct().ToArray();
+                
+                Debug.Log($"[SafeShaderDissolveEffect] Found {renderers?.Length ?? 0} unique renderers on {gameObject.name}");
+                
+                // Log the hierarchy
+                Debug.Log($"[SafeShaderDissolveEffect] Hierarchy for {gameObject.name}:");
+                LogHierarchy(transform, 0);
             }
             
             if (renderers == null || renderers.Length == 0)
@@ -146,7 +165,6 @@ public class SafeShaderDissolveEffect : MonoBehaviour
             }
 
             dissolveMaterials = dissolveList.ToArray();
-            Debug.Log($"[SafeShaderDissolveEffect] Setup {dissolveMaterials.Length} dissolve materials for {gameObject.name}");
         }
         catch (System.Exception e)
         {
@@ -217,6 +235,14 @@ public class SafeShaderDissolveEffect : MonoBehaviour
                 enemyMovement.enabled = false;
             }
             
+            // CRITICAL: Disable EnemyAttack component to prevent material interference
+            var enemyAttack = GetComponent<EnemyAttack>();
+            if (enemyAttack != null)
+            {
+                enemyAttack.enabled = false;
+                Debug.Log($"[SafeShaderDissolveEffect] Disabled EnemyAttack component to prevent material conflicts");
+            }
+            
             // Also disable collider
             var collider = GetComponent<Collider>();
             if (collider != null)
@@ -232,7 +258,7 @@ public class SafeShaderDissolveEffect : MonoBehaviour
 
     private IEnumerator DissolveCoroutine()
     {
-        Debug.Log($"[SafeShaderDissolveEffect] Starting dissolve for {gameObject.name}");
+        // Starting dissolve effect
 
         bool success = false;
         
@@ -347,6 +373,35 @@ public class SafeShaderDissolveEffect : MonoBehaviour
         
         Debug.Log($"[SafeShaderDissolveEffect] Dissolve completed for {gameObject.name}");
         Destroy(gameObject);
+    }
+
+    private void CollectRenderersRecursive(Transform parent, List<Renderer> rendererList)
+    {
+        // Check current transform
+        Renderer renderer = parent.GetComponent<Renderer>();
+        if (renderer != null && !rendererList.Contains(renderer))
+        {
+            rendererList.Add(renderer);
+        }
+        
+        // Check all children recursively
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            CollectRenderersRecursive(parent.GetChild(i), rendererList);
+        }
+    }
+
+    private void LogHierarchy(Transform parent, int depth)
+    {
+        string indent = new string(' ', depth * 2);
+        Renderer renderer = parent.GetComponent<Renderer>();
+        string rendererInfo = renderer != null ? $" [Renderer: {renderer.GetType().Name}, Materials: {renderer.materials?.Length ?? 0}]" : "";
+        Debug.Log($"[SafeShaderDissolveEffect] {indent}{parent.name}{rendererInfo}");
+        
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            LogHierarchy(parent.GetChild(i), depth + 1);
+        }
     }
 
     private void OnDestroy()

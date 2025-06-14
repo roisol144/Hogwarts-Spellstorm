@@ -51,14 +51,23 @@ public class Enemy : MonoBehaviour
         // Make health bar follow and face the player camera
         if (healthBarInstance != null && playerCamera != null)
         {
-            // Position health bar above enemy (following the enemy)
-            Vector3 healthBarPosition = transform.position + Vector3.up * 3f; // Higher position
+            // Position health bar above enemy (using overridable method)
+            Vector3 healthBarPosition = GetHealthBarPosition();
             healthBarInstance.position = healthBarPosition;
             
             // Make health bar face the player camera
             Vector3 directionToCamera = playerCamera.position - healthBarInstance.position;
             healthBarInstance.rotation = Quaternion.LookRotation(directionToCamera);
         }
+    }
+
+    /// <summary>
+    /// Override this method in derived classes to customize health bar positioning
+    /// </summary>
+    protected virtual Vector3 GetHealthBarPosition()
+    {
+        // Default positioning above enemy center
+        return transform.position + Vector3.up * 3f;
     }
 
     public void TakeDamage(float damage, bool isSpecialAttack = false)
@@ -110,7 +119,7 @@ public class Enemy : MonoBehaviour
         if (healthBarInstance == null && healthBarPrefab != null)
         {
             // Create health bar above enemy
-            Vector3 healthBarPosition = transform.position + Vector3.up * 3f; // Higher position
+            Vector3 healthBarPosition = GetHealthBarPosition();
             healthBarInstance = Instantiate(healthBarPrefab, healthBarPosition, Quaternion.identity).transform;
             
             Debug.Log($"[Enemy] Created health bar at position: {healthBarPosition}");

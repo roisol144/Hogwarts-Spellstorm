@@ -23,10 +23,9 @@ public class EnemyMovement : MonoBehaviour
             return;
         }
 
-        // Basic NavMeshAgent setup
-        agent.stoppingDistance = stopRadius;
-        agent.radius = 0.5f;
-        agent.height = 2f;
+        // Don't override prefab settings for radius and height - use what's configured in prefab
+        // Only set stopping distance to a small value to avoid conflicts with our stopRadius logic
+        agent.stoppingDistance = 0.1f;
         agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         agent.avoidancePriority = 50;
 
@@ -37,6 +36,18 @@ public class EnemyMovement : MonoBehaviour
     {
         // Check if player exists, agent exists, agent is enabled, and agent is on NavMesh
         if (player == null || agent == null || !agent.enabled || !agent.isOnNavMesh) return;
+
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+        
+        // If we're within stop radius, stop the agent
+        if (distanceToPlayer <= stopRadius)
+        {
+            agent.isStopped = true;
+            return;
+        }
+        
+        // If we're outside stop radius, resume movement
+        agent.isStopped = false;
 
         Vector3 toPlayer = (player.position - transform.position).normalized;
         float time = Time.time * wobbleSpeed + wobbleSeed;
@@ -49,14 +60,12 @@ public class EnemyMovement : MonoBehaviour
         NavMeshHit hit;
         if (NavMesh.SamplePosition(target, out hit, 2.0f, NavMesh.AllAreas))
         {
-            agent.isStopped = false;
             agent.SetDestination(hit.position);
         }
         else
         {
             Debug.LogWarning($"{gameObject.name} could not find a valid NavMesh position near target!");
         }
-
     }
 
     void OnDrawGizmos()

@@ -168,6 +168,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 523190069880420898}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1111111111111111111}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: d01ad0506f33a07488a28b20ba534d42,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4444444444444444444}
   m_SourcePrefab: {fileID: 100100000, guid: d01ad0506f33a07488a28b20ba534d42, type: 3}
 --- !u!1 &8318350637884156371 stripped
 GameObject:
@@ -187,8 +195,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53476f2eb605bbf4e8db0a33bff8e2f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stopRadius: 1.5
-  wobbleAmount: 1
+  stopRadius: 2
+  wobbleAmount: 0
   wobbleSpeed: 0.5
 --- !u!195 &8639275489521599069
 NavMeshAgent:
@@ -253,7 +261,7 @@ MonoBehaviour:
     type: 3}
   deathEffectPrefab: {fileID: 2944396702758532163, guid: e190bf97c041e58448af6b043116cba0,
     type: 3}
-  useShaderDissolveEffect: 1
+  useShaderDissolveEffect: 0
   playerCamera: {fileID: 0}
   useDementorShaderDissolve: 1
   dementorDeathSound: {fileID: 8300000, guid: 62f400e3fac404afca6254bf754b509a, type: 3}
@@ -261,3 +269,69 @@ MonoBehaviour:
     type: 2}
   dementorDissolveDirection: {x: 0, y: 1, z: 0}
   dementorEdgeColor: {r: 0.21052866, g: 0.71015453, b: 0.7830189, a: 1}
+--- !u!114 &1111111111111111111
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8318350637884156371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 812ff77ba521bb144aac957ea3481560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDamage: 20
+  attackRange: 3
+  attackCooldown: 2
+  attackAnimationDuration: 0.8
+  attackIndicator: {fileID: 0}
+  attackWarningColor: {r: 1, g: 0, b: 0, a: 1}
+  attackExecuteColor: {r: 1, g: 0.5, b: 0, a: 1}
+  warningDuration: 0.5
+  attackEffectPrefab: {fileID: 0}
+  attackSound: {fileID: 0}
+  attackChargeSound: {fileID: 0}
+  audioSource: {fileID: 0}
+  attackType: 0
+  autoAttack: 1
+  autoAttackInterval: 3
+--- !u!114 &4444444444444444444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8318350637884156371}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae8d5e6d2f2e8334e8e85c0b86a7c3a4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dissolveDuration: 3
+  dissolveCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dissolveMaterial: {fileID: 2100000, guid: 1a50a9ace93fd614db63694d201e262b, type: 2}
+  edgeColor: {r: 0.21052866, g: 0.71015453, b: 0.7830189, a: 1}
