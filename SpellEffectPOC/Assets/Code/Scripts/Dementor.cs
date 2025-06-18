@@ -98,6 +98,9 @@ public class Dementor : Enemy
 
         Debug.Log($"Dementor {gameObject.name} died with dissolving effect!");
 
+        // Award score for kill (same as base Enemy class)
+        ScoreManager.NotifyKill();
+
         // Play dementor death sound
         PlayDementorDeathSound();
 

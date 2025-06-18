@@ -72,7 +72,11 @@ public class Enemy : MonoBehaviour
 
     public void TakeDamage(float damage, bool isSpecialAttack = false)
     {
-        if (isDead) return;
+        if (isDead) 
+        {
+            Debug.Log($"[Enemy] {gameObject.name} is already dead, ignoring damage");
+            return;
+        }
 
         Debug.Log($"[Enemy] {gameObject.name} taking damage. Special attack: {isSpecialAttack}");
         Debug.Log($"[Enemy] Health before damage: {currentHealth}/{maxHealth} ({(currentHealth/maxHealth)*100:F1}%)");
@@ -188,7 +192,12 @@ public class Enemy : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-        Debug.Log($"Enemy {gameObject.name} died!");
+        Debug.Log($"[Enemy] {gameObject.name} died! Calling ScoreManager.NotifyKill()");
+
+        // Award score for kill
+        ScoreManager.NotifyKill();
+        
+        Debug.Log($"[Enemy] ScoreManager.NotifyKill() call completed");
 
         // Hide health bar
         if (healthBarInstance != null)

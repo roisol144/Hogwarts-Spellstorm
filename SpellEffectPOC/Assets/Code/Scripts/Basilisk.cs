@@ -110,6 +110,9 @@ public class Basilisk : Enemy
 
         Debug.Log($"Basilisk {gameObject.name} died with dissolving effect!");
 
+        // Award score for kill (same as base Enemy class)
+        ScoreManager.NotifyKill();
+
         // Play basilisk death sound
         PlayBasiliskDeathSound();
 

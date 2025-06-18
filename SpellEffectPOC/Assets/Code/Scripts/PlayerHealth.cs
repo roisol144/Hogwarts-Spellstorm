@@ -506,20 +506,17 @@ public class PlayerHealth : MonoBehaviour
     private void UpdateHealthUI()
     {
         float healthPercentage = GetHealthPercentage();
-        Debug.Log($"[PlayerHealth] UpdateHealthUI called - Health: {currentHealth:F1}/{maxHealth} ({healthPercentage:F2})");
+        // Removed spammy debug log - only log on errors now
         
         if (healthBarSlider != null)
         {
-            Debug.Log($"[PlayerHealth] Setting slider value to {healthPercentage:F2}");
             healthBarSlider.value = healthPercentage;
-            Debug.Log($"[PlayerHealth] Slider value is now: {healthBarSlider.value:F2}");
             
             // Update color based on health percentage (unless low health effects are active)
             if (healthBarFill != null && lowHealthEffectCoroutine == null)
             {
                 Color newColor = Color.Lerp(Color.red, Color.green, healthPercentage);
                 healthBarFill.color = newColor;
-                Debug.Log($"[PlayerHealth] Setting health bar color to {newColor}");
             }
         }
         else
@@ -531,7 +528,6 @@ public class PlayerHealth : MonoBehaviour
         {
             string newText = $"{Mathf.Ceil(currentHealth)}/{maxHealth}";
             healthText.text = newText;
-            Debug.Log($"[PlayerHealth] Setting health text to: {newText}");
         }
         else
         {
