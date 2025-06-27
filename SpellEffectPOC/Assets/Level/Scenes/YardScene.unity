@@ -15961,6 +15961,8 @@ MonoBehaviour:
     type: 3}
   expectoPatronumPrefab: {fileID: 4794043405585894037, guid: a26d9e8c7d0f3b692f67d0d8bea2a356,
     type: 3}
+  protegoPrefab: {fileID: 1289543790355709915, guid: b99922c2f59b1a542bdd06ae8bee47ae,
+    type: 3}
   accioPrefab: {fileID: 0}
   wandTip: {fileID: 185943432}
   matchWindowSeconds: 2
@@ -15991,6 +15993,12 @@ MonoBehaviour:
     m_Flags: 0
   audioSource: {fileID: 0}
   gripCastSound: {fileID: 8300000, guid: 219cd4cbcb1b843979c0d9f03d66d335, type: 3}
+  protegoCastSound: {fileID: 8300000, guid: 71cb53b9cd9c7421793d679eb22be77f, type: 3}
+  stupefyCastSound: {fileID: 8300000, guid: 219cd4cbcb1b843979c0d9f03d66d335, type: 3}
+  bombardoCastSound: {fileID: 8300000, guid: a7188b183d9d341d7a08194d78f6f37c, type: 3}
+  expectoPatronumCastSound: {fileID: 8300000, guid: 8f732036753f9449d94c0573d3a26acc,
+    type: 3}
+  accioCastSound: {fileID: 0}
   spellCastText: {fileID: 1799508446}
 --- !u!4 &1283987848
 Transform:

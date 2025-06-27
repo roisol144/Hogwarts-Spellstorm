@@ -19,9 +19,10 @@ public class SentisGestureRecognizer : MonoBehaviour
     // Gesture class names
     private readonly string[] gestureClasses = new string[] 
     {
-        "cast_bombardo",    // Circle
-        "cast_expecto_patronum", // Square
-        "cast_stupefy"      // Z
+        "cast_bombardo",    // Triangle
+        "cast_protego",     // Circle
+        "cast_stupefy",     // Zigzag
+        "cast_expecto_patronum" // Square
     };
 
     void Start()

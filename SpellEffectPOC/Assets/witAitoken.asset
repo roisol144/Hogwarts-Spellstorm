@@ -19,10 +19,10 @@ MonoBehaviour:
     lang: en
     isPrivate: 1
     createdAt: 2025-01-03T07:34:55-0800
-    trainingStatus: 1
-    lastTrainDuration: 202
-    lastTrainedAt: 2025-05-27T12:48:38-0700
-    nextTrainAt: 2025-05-27T12:45:16-0700
+    trainingStatus: 2
+    lastTrainDuration: 1208
+    lastTrainedAt: 2025-05-28T10:23:29-0700
+    nextTrainAt: 2025-06-21T14:09:38-0700
     intents:
     - id: 904876701850573
       name: cast_accio
@@ -35,6 +35,9 @@ MonoBehaviour:
       entities: []
     - id: 1575487706505874
       name: cast_expecto_patronum
+      entities: []
+    - id: 577432205425681
+      name: cast_protego
       entities: []
     - id: 9026598927393753
       name: cast_stupefy

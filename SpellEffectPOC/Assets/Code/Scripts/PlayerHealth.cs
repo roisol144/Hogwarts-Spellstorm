@@ -267,8 +267,17 @@ public class PlayerHealth : MonoBehaviour
     {
         if (isDead) return;
         
+        // Check if Protego shield is active
+        ProtegoShield protegoShield = GetComponent<ProtegoShield>();
+        if (protegoShield != null && protegoShield.IsActive())
+        {
+            Debug.Log("[PlayerHealth] Damage blocked by Protego shield!");
+            return; // Shield blocks all damage
+        }
+        
         float previousHealth = currentHealth;
-        currentHealth = Mathf.Max(0, currentHealth - damage);
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0f);
         
         Debug.Log($"[PlayerHealth] Player took {damage} damage. Health: {previousHealth:F1} → {currentHealth:F1}/{maxHealth}");
         
@@ -292,16 +301,18 @@ public class PlayerHealth : MonoBehaviour
         
         // Update UI
         UpdateHealthUI();
+        
+        // Notify listeners
         OnHealthChanged?.Invoke(GetHealthPercentage());
         
-        // Check for death
+        // Check if player died
         if (currentHealth <= 0)
         {
             Die();
         }
         else
         {
-            // Start regeneration timer
+            // Start health regeneration
             StartHealthRegeneration();
             
             // Check for low health effects

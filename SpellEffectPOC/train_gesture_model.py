@@ -7,9 +7,9 @@ import requests
 import gzip
 import shutil
 
-# Download Quick, Draw! data for circle, square, and Z
+# Download Quick, Draw! data for triangle, circle, zigzag, and square
 def download_quickdraw_data():
-    categories = ['circle', 'square', 'zigzag']
+    categories = ['triangle', 'circle', 'zigzag', 'square']
     base_url = 'https://storage.googleapis.com/quickdraw_dataset/full/numpy_bitmap/'
     
     for category in categories:
@@ -21,13 +21,13 @@ def download_quickdraw_data():
 
 # Load and preprocess the data
 def load_and_preprocess_data():
-    categories = ['circle', 'square', 'zigzag']
+    categories = ['triangle', 'circle', 'zigzag', 'square']
     X = []
     y = []
     
     for i, category in enumerate(categories):
         data = np.load(f'{category}.npy')
-        # Take first 10000 samples of each category
+        # Take first 70000 samples of each category
         data = data[:70000]
         # Reshape to 28x28 images
         data = data.reshape(-1, 28, 28, 1)
@@ -52,7 +52,7 @@ def create_and_train_model(X, y):
     x = keras.layers.Conv2D(64, (3, 3), activation='relu')(x)
     x = keras.layers.Flatten()(x)
     x = keras.layers.Dense(64, activation='relu')(x)
-    outputs = keras.layers.Dense(3, activation='softmax')(x)
+    outputs = keras.layers.Dense(4, activation='softmax')(x)  # Changed to 4 classes
     model = keras.Model(inputs=inputs, outputs=outputs)
 
     model.compile(optimizer='adam',
@@ -89,7 +89,7 @@ def main():
     print("Done! Model saved as gesture_model.onnx")
     
     # Clean up downloaded files
-    for category in ['circle', 'square', 'zigzag']:
+    for category in ['triangle', 'circle', 'zigzag', 'square']:
         os.remove(f'{category}.npy')
 
 if __name__ == "__main__":

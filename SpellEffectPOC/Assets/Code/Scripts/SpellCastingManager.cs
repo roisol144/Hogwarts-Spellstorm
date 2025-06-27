@@ -13,6 +13,7 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private GameObject stupefyPrefab; // Yellow lightning for Stupefy
     [SerializeField] private GameObject bombardoPrefab; // Red lightning for Bombardo
     [SerializeField] private GameObject expectoPatronumPrefab; // Blue lightning for Expecto Patronum
+    [SerializeField] private GameObject protegoPrefab; // Blue shield for Protego
     [SerializeField] private GameObject accioPrefab; // Default to Stupefy for Accio (or create another)
     [SerializeField] private Transform wandTip;
     [SerializeField] private float matchWindowSeconds = 7f;
@@ -23,6 +24,13 @@ public class SpellCastingManager : MonoBehaviour
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip gripCastSound;
+    
+    [Header("Individual Spell Sounds")]
+    [SerializeField] private AudioClip protegoCastSound;
+    [SerializeField] private AudioClip stupefyCastSound;
+    [SerializeField] private AudioClip bombardoCastSound;
+    [SerializeField] private AudioClip expectoPatronumCastSound;
+    [SerializeField] private AudioClip accioCastSound;
 
     [Header("UI - Legacy (now handled by MagicalDebugUI)")]
     [SerializeField] private TextMeshProUGUI spellCastText; // Keep for backward compatibility but use MagicalDebugUI instead
@@ -37,13 +45,14 @@ public class SpellCastingManager : MonoBehaviour
         { "cast_accio", "cast_accio" },
         { "cast_bombardo", "cast_bombardo" },
         { "cast_expecto_patronum", "cast_expecto_patronum" },
+        { "cast_protego", "cast_protego" },
         { "cast_stupefy", "cast_stupefy" }
     };
 
     void Start()
     {
         Debug.Log($"[SpellCastingManager] Start called. movementRecognizer: {movementRecognizer}, witAiAgent: {witAiAgent}");
-        Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, stupefyPrefab: {stupefyPrefab}, bombardoPrefab: {bombardoPrefab}, expectoPatronumPrefab: {expectoPatronumPrefab}, accioPrefab: {accioPrefab}, wandTip: {wandTip}");
+        Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, stupefyPrefab: {stupefyPrefab}, bombardoPrefab: {bombardoPrefab}, expectoPatronumPrefab: {expectoPatronumPrefab}, protegoPrefab: {protegoPrefab}, accioPrefab: {accioPrefab}, wandTip: {wandTip}");
         
         // Validate prefab references
         if (fireballPrefab == null)
@@ -84,6 +93,16 @@ public class SpellCastingManager : MonoBehaviour
         else
         {
             Debug.Log($"[SpellCastingManager] Expecto Patronum prefab assigned successfully: {expectoPatronumPrefab.name}");
+        }
+        
+        if (protegoPrefab == null)
+        {
+            Debug.LogError("[SpellCastingManager] CRITICAL: Protego prefab is null on Start!");
+            Debug.LogError("[SpellCastingManager] Please assign the Protego prefab from Assets/Spell Effects/Protego.prefab");
+        }
+        else
+        {
+            Debug.Log($"[SpellCastingManager] Protego prefab assigned successfully: {protegoPrefab.name}");
         }
         
         if (accioPrefab == null)
@@ -181,7 +200,7 @@ public class SpellCastingManager : MonoBehaviour
                 Debug.Log($"[SpellCastingManager] Match found! Casting spell effect for intent '{lastRecognizedIntent}' and gesture '{lastRecognizedGesture}'.");
                 
                 // Play grip cast sound effect
-                PlayGripCastSound();
+                PlayGripCastSound(lastRecognizedIntent);
                 
                 CastSpellEffect(lastRecognizedIntent);
                 // Reset so it doesn't double-fire
@@ -199,16 +218,44 @@ public class SpellCastingManager : MonoBehaviour
         }
     }
 
-    private void PlayGripCastSound()
+    private void PlayGripCastSound(string spellIntent = null)
     {
-        if (audioSource != null && gripCastSound != null)
+        AudioClip soundToPlay = gripCastSound; // Default sound
+        
+        // Check if we have a specific sound for this spell
+        if (!string.IsNullOrEmpty(spellIntent))
         {
-            audioSource.PlayOneShot(gripCastSound);
-            Debug.Log("[SpellCastingManager] Playing grip cast sound effect");
+            switch (spellIntent)
+            {
+                case "cast_protego":
+                    soundToPlay = protegoCastSound ?? gripCastSound;
+                    break;
+                case "cast_stupefy":
+                    soundToPlay = stupefyCastSound ?? gripCastSound;
+                    break;
+                case "cast_bombardo":
+                    soundToPlay = bombardoCastSound ?? gripCastSound;
+                    break;
+                case "cast_expecto_patronum":
+                    soundToPlay = expectoPatronumCastSound ?? gripCastSound;
+                    break;
+                case "cast_accio":
+                    soundToPlay = accioCastSound ?? gripCastSound;
+                    break;
+                default:
+                    soundToPlay = gripCastSound;
+                    break;
+            }
+        }
+        
+        if (audioSource != null && soundToPlay != null)
+        {
+            audioSource.PlayOneShot(soundToPlay);
+            Debug.Log($"[SpellCastingManager] Playing cast sound for spell: {spellIntent ?? "default"}");
         }
         else
         {
-            Debug.LogWarning("[SpellCastingManager] Cannot play grip cast sound - missing AudioSource or AudioClip");
+            Debug.LogWarning($"[SpellCastingManager] Cannot play cast sound for {spellIntent ?? "default"} - missing AudioSource or AudioClip");
         }
     }
 
@@ -235,6 +282,13 @@ public class SpellCastingManager : MonoBehaviour
             case "cast_expecto_patronum":
                 prefabToSpawn = expectoPatronumPrefab;
                 spellName = "Expecto Patronum";
+                break;
+            case "cast_protego":
+                prefabToSpawn = protegoPrefab;
+                spellName = "Protego";
+                
+                // Create Protego shield around the player
+                CreateProtegoShield();
                 break;
             case "cast_accio":
                 prefabToSpawn = accioPrefab ?? stupefyPrefab; // Fallback to Stupefy if Accio prefab not set
@@ -328,6 +382,8 @@ public class SpellCastingManager : MonoBehaviour
                 return "Bombardo";
             case "cast_expecto_patronum":
                 return "Expecto Patronum";
+            case "cast_protego":
+                return "Protego";
             default:
                 return spellIntent.Replace("cast_", "").Replace("_", " ");
         }
@@ -337,5 +393,31 @@ public class SpellCastingManager : MonoBehaviour
     private void FireFireball()
     {
         CastSpellEffect("default");
+    }
+    
+    // Create Protego shield around the player
+    private void CreateProtegoShield()
+    {
+        // Find the player (main camera)
+        Transform player = Camera.main?.transform;
+        if (player == null)
+        {
+            Debug.LogError("[SpellCastingManager] Cannot create Protego shield - no player camera found!");
+            return;
+        }
+        
+        // Check if there's already an active Protego shield
+        ProtegoShield existingShield = player.GetComponent<ProtegoShield>();
+        if (existingShield != null && existingShield.IsActive())
+        {
+            Debug.Log("[SpellCastingManager] Protego shield already active, refreshing duration...");
+            // Destroy the existing shield to create a new one (refreshes duration)
+            Destroy(existingShield);
+        }
+        
+        // Add ProtegoShield component to the player
+        ProtegoShield protegoShield = player.gameObject.AddComponent<ProtegoShield>();
+        
+        Debug.Log($"[SpellCastingManager] Protego shield created around player at {player.position}");
     }
 } 

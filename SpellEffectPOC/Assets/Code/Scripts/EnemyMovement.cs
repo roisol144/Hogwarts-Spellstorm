@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour
     private Transform player;
     private NavMeshAgent agent;
     private float wobbleSeed;
+    private bool protegoShieldActive = false; // New field for Protego shield
 
     void Start()
     {
@@ -35,7 +36,14 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         // Check if player exists, agent exists, agent is enabled, and agent is on NavMesh
-        if (player == null || agent == null || !agent.enabled || !agent.isOnNavMesh) return;
+        if (player == null || agent == null || !agent.isOnNavMesh) return;
+
+        // If Protego shield is active, stop all movement
+        if (protegoShieldActive)
+        {
+            agent.isStopped = true;
+            return;
+        }
 
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         
@@ -81,4 +89,31 @@ public class EnemyMovement : MonoBehaviour
             Gizmos.DrawWireSphere(transform.position, stopRadius);
         }
     }
+
+    // New method to handle Protego shield
+    public void SetProtegoShieldActive(bool active)
+    {
+        protegoShieldActive = active;
+        
+        if (active)
+        {
+            Debug.Log($"[EnemyMovement] {gameObject.name} movement stopped by Protego shield");
+            if (agent != null && agent.isOnNavMesh)
+            {
+                agent.isStopped = true;
+                agent.ResetPath();
+            }
+        }
+        else
+        {
+            Debug.Log($"[EnemyMovement] {gameObject.name} movement resumed after Protego shield");
+            if (agent != null && agent.isOnNavMesh)
+            {
+                agent.isStopped = false;
+            }
+        }
+    }
+
+    // Public getter for shield status
+    public bool IsProtegoShieldActive() => protegoShieldActive;
 } 

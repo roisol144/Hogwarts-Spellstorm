@@ -31,7 +31,8 @@ public class GestureTrainingManager : MonoBehaviour
         "cast_accio",
         "cast_bombardo",
         "cast_expecto_patronum",
-        "cast_stupefy"
+        "cast_stupefy",
+        "cast_protego"
     };
 
     [Header("File Transfer Settings")]

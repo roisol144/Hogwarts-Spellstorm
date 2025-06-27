@@ -45,6 +45,7 @@ public class EnemyAttack : MonoBehaviour
     private Renderer enemyRenderer;
     private Color originalColor;
     private bool hasReachedStopRadius = false;
+    private bool protegoShieldActive = false; // New field for Protego shield
     
     // Events
     public System.Action<float> OnAttackStarted; // float = damage that will be dealt
@@ -619,6 +620,7 @@ public class EnemyAttack : MonoBehaviour
     {
         if (player == null) return false;
         if (enemyComponent != null && enemyComponent.GetHealthPercentage() <= 0) return false;
+        if (protegoShieldActive) return false; // Cannot attack if Protego shield is active
         
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
         
@@ -644,8 +646,26 @@ public class EnemyAttack : MonoBehaviour
         }
     }
     
+    // New method to handle Protego shield
+    public void SetProtegoShieldActive(bool active)
+    {
+        protegoShieldActive = active;
+        
+        if (active)
+        {
+            Debug.Log($"[EnemyAttack] {gameObject.name} attacks stopped by Protego shield");
+            // Stop any ongoing attacks
+            StopAttack();
+        }
+        else
+        {
+            Debug.Log($"[EnemyAttack] {gameObject.name} attacks resumed after Protego shield");
+        }
+    }
+    
     // Getters
     public bool IsAttacking() => isAttacking;
     public bool CanAttack() => canAttack;
     public float GetAttackRange() => attackRange;
+    public bool IsProtegoShieldActive() => protegoShieldActive;
 } 

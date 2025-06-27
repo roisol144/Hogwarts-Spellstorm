@@ -18,7 +18,8 @@ public class FireballIntentHandler : MonoBehaviour
         "cast_bombardo",
         "cast_depulso",
         "cast_expecto_patronum",
-        "cast_stupefy"
+        "cast_stupefy",
+        "cast_protego"
     };
 
     public void OnResponse(WitResponseNode response)
