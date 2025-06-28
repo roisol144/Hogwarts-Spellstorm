@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "3.764044" Y = "1.896059" T = "0" Pressure = "0" />
+		<Point X = "3.754899" Y = "1.838351" T = "0" Pressure = "0" />
+		<Point X = "3.749691" Y = "1.761868" T = "0" Pressure = "0" />
+		<Point X = "3.743162" Y = "1.667791" T = "0" Pressure = "0" />
+		<Point X = "3.741061" Y = "1.572408" T = "0" Pressure = "0" />
+		<Point X = "3.745836" Y = "1.490453" T = "0" Pressure = "0" />
+		<Point X = "3.749159" Y = "1.432357" T = "0" Pressure = "0" />
+		<Point X = "3.759441" Y = "1.383057" T = "0" Pressure = "0" />
+		<Point X = "3.823439" Y = "1.385522" T = "0" Pressure = "0" />
+		<Point X = "3.873833" Y = "1.391873" T = "0" Pressure = "0" />
+		<Point X = "3.943882" Y = "1.388802" T = "0" Pressure = "0" />
+		<Point X = "4.020823" Y = "1.378876" T = "0" Pressure = "0" />
+		<Point X = "4.09233" Y = "1.369413" T = "0" Pressure = "0" />
+		<Point X = "4.152719" Y = "1.370074" T = "0" Pressure = "0" />
+		<Point X = "4.202048" Y = "1.386775" T = "0" Pressure = "0" />
+		<Point X = "4.209893" Y = "1.444154" T = "0" Pressure = "0" />
+		<Point X = "4.196283" Y = "1.514741" T = "0" Pressure = "0" />
+		<Point X = "4.18522" Y = "1.570209" T = "0" Pressure = "0" />
+		<Point X = "4.174244" Y = "1.630155" T = "0" Pressure = "0" />
+		<Point X = "4.164108" Y = "1.693816" T = "0" Pressure = "0" />
+		<Point X = "4.155441" Y = "1.752856" T = "0" Pressure = "0" />
+		<Point X = "4.141001" Y = "1.811602" T = "0" Pressure = "0" />
+		<Point X = "4.088473" Y = "1.842538" T = "0" Pressure = "0" />
+		<Point X = "4.015026" Y = "1.845693" T = "0" Pressure = "0" />
+		<Point X = "3.95543" Y = "1.848731" T = "0" Pressure = "0" />
+		<Point X = "3.89561" Y = "1.855219" T = "0" Pressure = "0" />
+		<Point X = "3.843539" Y = "1.854647" T = "0" Pressure = "0" />
+		<Point X = "3.778003" Y = "1.84416" T = "0" Pressure = "0" />
+		<Point X = "3.730113" Y = "1.828781" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

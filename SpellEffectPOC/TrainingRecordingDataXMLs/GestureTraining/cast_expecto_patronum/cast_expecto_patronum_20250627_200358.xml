@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "1.214302" Y = "1.881323" T = "0" Pressure = "0" />
+		<Point X = "1.256017" Y = "1.857313" T = "0" Pressure = "0" />
+		<Point X = "1.304483" Y = "1.851458" T = "0" Pressure = "0" />
+		<Point X = "1.371823" Y = "1.85208" T = "0" Pressure = "0" />
+		<Point X = "1.453476" Y = "1.855279" T = "0" Pressure = "0" />
+		<Point X = "1.535613" Y = "1.849814" T = "0" Pressure = "0" />
+		<Point X = "1.604185" Y = "1.832348" T = "0" Pressure = "0" />
+		<Point X = "1.653759" Y = "1.820402" T = "0" Pressure = "0" />
+		<Point X = "1.608197" Y = "1.772335" T = "0" Pressure = "0" />
+		<Point X = "1.589212" Y = "1.708523" T = "0" Pressure = "0" />
+		<Point X = "1.58141" Y = "1.623703" T = "0" Pressure = "0" />
+		<Point X = "1.580354" Y = "1.529519" T = "0" Pressure = "0" />
+		<Point X = "1.58506" Y = "1.437868" T = "0" Pressure = "0" />
+		<Point X = "1.584751" Y = "1.366543" T = "0" Pressure = "0" />
+		<Point X = "1.569435" Y = "1.306227" T = "0" Pressure = "0" />
+		<Point X = "1.527833" Y = "1.276074" T = "0" Pressure = "0" />
+		<Point X = "1.479274" Y = "1.296162" T = "0" Pressure = "0" />
+		<Point X = "1.420597" Y = "1.325" T = "0" Pressure = "0" />
+		<Point X = "1.364744" Y = "1.350702" T = "0" Pressure = "0" />
+		<Point X = "1.302767" Y = "1.374255" T = "0" Pressure = "0" />
+		<Point X = "1.248375" Y = "1.38875" T = "0" Pressure = "0" />
+		<Point X = "1.194852" Y = "1.396818" T = "0" Pressure = "0" />
+		<Point X = "1.176429" Y = "1.445229" T = "0" Pressure = "0" />
+		<Point X = "1.188277" Y = "1.492054" T = "0" Pressure = "0" />
+		<Point X = "1.198773" Y = "1.556319" T = "0" Pressure = "0" />
+		<Point X = "1.207844" Y = "1.632204" T = "0" Pressure = "0" />
+		<Point X = "1.217766" Y = "1.708999" T = "0" Pressure = "0" />
+		<Point X = "1.227935" Y = "1.773305" T = "0" Pressure = "0" />
+		<Point X = "1.239865" Y = "1.834023" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

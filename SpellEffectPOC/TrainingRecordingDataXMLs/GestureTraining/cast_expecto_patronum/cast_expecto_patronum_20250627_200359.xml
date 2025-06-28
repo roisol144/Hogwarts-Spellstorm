@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "1.302611" Y = "1.998714" T = "0" Pressure = "0" />
+		<Point X = "1.294029" Y = "1.943887" T = "0" Pressure = "0" />
+		<Point X = "1.282944" Y = "1.879909" T = "0" Pressure = "0" />
+		<Point X = "1.269883" Y = "1.802365" T = "0" Pressure = "0" />
+		<Point X = "1.260568" Y = "1.720246" T = "0" Pressure = "0" />
+		<Point X = "1.252419" Y = "1.648471" T = "0" Pressure = "0" />
+		<Point X = "1.242686" Y = "1.595536" T = "0" Pressure = "0" />
+		<Point X = "1.225933" Y = "1.551413" T = "0" Pressure = "0" />
+		<Point X = "1.274053" Y = "1.511645" T = "0" Pressure = "0" />
+		<Point X = "1.3487" Y = "1.509474" T = "0" Pressure = "0" />
+		<Point X = "1.417807" Y = "1.507734" T = "0" Pressure = "0" />
+		<Point X = "1.494761" Y = "1.504237" T = "0" Pressure = "0" />
+		<Point X = "1.570792" Y = "1.49817" T = "0" Pressure = "0" />
+		<Point X = "1.630835" Y = "1.494335" T = "0" Pressure = "0" />
+		<Point X = "1.676485" Y = "1.50163" T = "0" Pressure = "0" />
+		<Point X = "1.686819" Y = "1.55885" T = "0" Pressure = "0" />
+		<Point X = "1.680073" Y = "1.637626" T = "0" Pressure = "0" />
+		<Point X = "1.670072" Y = "1.70409" T = "0" Pressure = "0" />
+		<Point X = "1.658136" Y = "1.769941" T = "0" Pressure = "0" />
+		<Point X = "1.646139" Y = "1.829964" T = "0" Pressure = "0" />
+		<Point X = "1.637522" Y = "1.882051" T = "0" Pressure = "0" />
+		<Point X = "1.625205" Y = "1.930466" T = "0" Pressure = "0" />
+		<Point X = "1.581585" Y = "1.959897" T = "0" Pressure = "0" />
+		<Point X = "1.510986" Y = "1.95956" T = "0" Pressure = "0" />
+		<Point X = "1.4537" Y = "1.954197" T = "0" Pressure = "0" />
+		<Point X = "1.39327" Y = "1.945555" T = "0" Pressure = "0" />
+		<Point X = "1.342158" Y = "1.934643" T = "0" Pressure = "0" />
+		<Point X = "1.287814" Y = "1.91798" T = "0" Pressure = "0" />
+		<Point X = "1.241698" Y = "1.899351" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

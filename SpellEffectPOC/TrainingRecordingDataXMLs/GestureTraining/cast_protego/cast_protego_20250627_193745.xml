@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_protego">
+	<Stroke>
+		<Point X = "4.193595" Y = "0.9340999" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

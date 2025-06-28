@@ -28,7 +28,6 @@ public class GestureTrainingManager : MonoBehaviour
     [Header("Spell List")]
     [SerializeField] private string[] spellNames = new string[] 
     {
-        "cast_accio",
         "cast_bombardo",
         "cast_expecto_patronum",
         "cast_stupefy",
@@ -126,8 +125,10 @@ public class GestureTrainingManager : MonoBehaviour
         Point[] pointArray = new Point[positionsList.Count];
         for (int i = 0; i < positionsList.Count; i++)
         {
-            Vector2 screenPoint = Camera.main.WorldToScreenPoint(positionsList[i]);
-            pointArray[i] = new Point(screenPoint.x, screenPoint.y, 0);
+            // Use consistent world coordinates (XY plane) instead of screen coordinates
+            // This matches the fix applied to MovementRecognizer.cs
+            Vector2 worldPoint = new Vector2(positionsList[i].x, positionsList[i].y);
+            pointArray[i] = new Point(worldPoint.x, worldPoint.y, 0);
         }
         string spellName = spellNames[currentSpellIndex];
         string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");

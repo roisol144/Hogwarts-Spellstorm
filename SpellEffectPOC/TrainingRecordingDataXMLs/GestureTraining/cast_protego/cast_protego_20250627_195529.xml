@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_protego">
+	<Stroke>
+		<Point X = "3.971401" Y = "1.986574" T = "0" Pressure = "0" />
+		<Point X = "3.908185" Y = "1.95524" T = "0" Pressure = "0" />
+		<Point X = "3.856428" Y = "1.904559" T = "0" Pressure = "0" />
+		<Point X = "3.810636" Y = "1.821614" T = "0" Pressure = "0" />
+		<Point X = "3.803193" Y = "1.769672" T = "0" Pressure = "0" />
+		<Point X = "3.830522" Y = "1.681726" T = "0" Pressure = "0" />
+		<Point X = "3.883214" Y = "1.61409" T = "0" Pressure = "0" />
+		<Point X = "3.947361" Y = "1.593503" T = "0" Pressure = "0" />
+		<Point X = "4.017182" Y = "1.60983" T = "0" Pressure = "0" />
+		<Point X = "4.080669" Y = "1.640702" T = "0" Pressure = "0" />
+		<Point X = "4.1223" Y = "1.687605" T = "0" Pressure = "0" />
+		<Point X = "4.13502" Y = "1.752594" T = "0" Pressure = "0" />
+		<Point X = "4.127056" Y = "1.825936" T = "0" Pressure = "0" />
+		<Point X = "4.094753" Y = "1.885776" T = "0" Pressure = "0" />
+		<Point X = "4.045351" Y = "1.922393" T = "0" Pressure = "0" />
+		<Point X = "3.991193" Y = "1.948068" T = "0" Pressure = "0" />
+		<Point X = "3.937004" Y = "1.959161" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "1.246199" Y = "2.026014" T = "0" Pressure = "0" />
+		<Point X = "1.250179" Y = "1.96223" T = "0" Pressure = "0" />
+		<Point X = "1.259167" Y = "1.874622" T = "0" Pressure = "0" />
+		<Point X = "1.263386" Y = "1.775342" T = "0" Pressure = "0" />
+		<Point X = "1.260358" Y = "1.72767" T = "0" Pressure = "0" />
+		<Point X = "1.248527" Y = "1.660257" T = "0" Pressure = "0" />
+		<Point X = "1.230831" Y = "1.618571" T = "0" Pressure = "0" />
+		<Point X = "1.221277" Y = "1.583188" T = "0" Pressure = "0" />
+		<Point X = "1.28777" Y = "1.578861" T = "0" Pressure = "0" />
+		<Point X = "1.352918" Y = "1.578788" T = "0" Pressure = "0" />
+		<Point X = "1.436174" Y = "1.575253" T = "0" Pressure = "0" />
+		<Point X = "1.526037" Y = "1.571322" T = "0" Pressure = "0" />
+		<Point X = "1.614126" Y = "1.569537" T = "0" Pressure = "0" />
+		<Point X = "1.678561" Y = "1.571199" T = "0" Pressure = "0" />
+		<Point X = "1.714677" Y = "1.583862" T = "0" Pressure = "0" />
+		<Point X = "1.688071" Y = "1.64919" T = "0" Pressure = "0" />
+		<Point X = "1.671829" Y = "1.698119" T = "0" Pressure = "0" />
+		<Point X = "1.65707" Y = "1.756588" T = "0" Pressure = "0" />
+		<Point X = "1.648648" Y = "1.824985" T = "0" Pressure = "0" />
+		<Point X = "1.643428" Y = "1.897018" T = "0" Pressure = "0" />
+		<Point X = "1.633519" Y = "1.95409" T = "0" Pressure = "0" />
+		<Point X = "1.598699" Y = "2.000595" T = "0" Pressure = "0" />
+		<Point X = "1.543954" Y = "1.997607" T = "0" Pressure = "0" />
+		<Point X = "1.48495" Y = "1.990682" T = "0" Pressure = "0" />
+		<Point X = "1.420102" Y = "1.984375" T = "0" Pressure = "0" />
+		<Point X = "1.353778" Y = "1.976222" T = "0" Pressure = "0" />
+		<Point X = "1.30225" Y = "1.97188" T = "0" Pressure = "0" />
+		<Point X = "1.242553" Y = "1.960333" T = "0" Pressure = "0" />
+		<Point X = "1.186649" Y = "1.95934" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

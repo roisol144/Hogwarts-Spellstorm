@@ -18503,11 +18503,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3bf6547dfc9c245379d5e58379a09e9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  modelAsset: {fileID: 5022602860645237092, guid: 9087864d531d343079b41c1c38bb53a4,
+  modelAsset: {fileID: 5022602860645237092, guid: bc367933f8be441ba871b93b780dcc18,
     type: 3}
-  confidenceThreshold: 0.7
-  numPoints: 32
-  gestureSize: 1
+  confidenceThreshold: 0.5
 --- !u!4 &1622617574
 Transform:
   m_ObjectHideFlags: 0

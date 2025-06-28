@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_protego">
+	<Stroke>
+		<Point X = "4.336558" Y = "1.932828" T = "0" Pressure = "0" />
+		<Point X = "4.26507" Y = "1.914901" T = "0" Pressure = "0" />
+		<Point X = "4.212317" Y = "1.887484" T = "0" Pressure = "0" />
+		<Point X = "4.161491" Y = "1.845008" T = "0" Pressure = "0" />
+		<Point X = "4.118655" Y = "1.783577" T = "0" Pressure = "0" />
+		<Point X = "4.088171" Y = "1.715641" T = "0" Pressure = "0" />
+		<Point X = "4.074023" Y = "1.640791" T = "0" Pressure = "0" />
+		<Point X = "4.073718" Y = "1.562773" T = "0" Pressure = "0" />
+		<Point X = "4.089879" Y = "1.488818" T = "0" Pressure = "0" />
+		<Point X = "4.124225" Y = "1.424206" T = "0" Pressure = "0" />
+		<Point X = "4.180504" Y = "1.377309" T = "0" Pressure = "0" />
+		<Point X = "4.244321" Y = "1.345193" T = "0" Pressure = "0" />
+		<Point X = "4.311708" Y = "1.330341" T = "0" Pressure = "0" />
+		<Point X = "4.376567" Y = "1.335582" T = "0" Pressure = "0" />
+		<Point X = "4.432848" Y = "1.36083" T = "0" Pressure = "0" />
+		<Point X = "4.483976" Y = "1.401917" T = "0" Pressure = "0" />
+		<Point X = "4.518805" Y = "1.4608" T = "0" Pressure = "0" />
+		<Point X = "4.540487" Y = "1.530302" T = "0" Pressure = "0" />
+		<Point X = "4.548607" Y = "1.601483" T = "0" Pressure = "0" />
+		<Point X = "4.540769" Y = "1.673971" T = "0" Pressure = "0" />
+		<Point X = "4.521248" Y = "1.740186" T = "0" Pressure = "0" />
+		<Point X = "4.490343" Y = "1.796241" T = "0" Pressure = "0" />
+		<Point X = "4.450503" Y = "1.841885" T = "0" Pressure = "0" />
+		<Point X = "4.406207" Y = "1.874988" T = "0" Pressure = "0" />
+		<Point X = "4.360189" Y = "1.896158" T = "0" Pressure = "0" />
+		<Point X = "4.295254" Y = "1.905088" T = "0" Pressure = "0" />
+		<Point X = "4.237694" Y = "1.890704" T = "0" Pressure = "0" />
+		<Point X = "4.19594" Y = "1.859726" T = "0" Pressure = "0" />
+		<Point X = "4.17852" Y = "1.814659" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

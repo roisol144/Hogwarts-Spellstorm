@@ -25,6 +25,7 @@ public class ProtegoShield : MonoBehaviour
     private List<EnemyMovement> affectedEnemies = new List<EnemyMovement>();
     private List<EnemyAttack> affectedAttacks = new List<EnemyAttack>();
     private GameObject shieldVisual;
+    private GameObject protegoPrefabInstance; // Reference to the protego prefab spawned by SpellCastingManager
     
     // Events
     public System.Action OnShieldActivated;
@@ -89,6 +90,14 @@ public class ProtegoShield : MonoBehaviour
         if (shieldVisual != null)
         {
             Destroy(shieldVisual);
+        }
+        
+        // Destroy the protego prefab instance if it exists
+        if (protegoPrefabInstance != null)
+        {
+            Debug.Log("[ProtegoShield] Destroying protego prefab instance");
+            Destroy(protegoPrefabInstance);
+            protegoPrefabInstance = null;
         }
         
         // Play deactivation sound
@@ -168,74 +177,73 @@ public class ProtegoShield : MonoBehaviour
     
     private IEnumerator ShieldDurationCoroutine()
     {
+        Debug.Log($"[ProtegoShield] Shield will last for {shieldDuration} seconds");
         yield return new WaitForSeconds(shieldDuration);
+        Debug.Log($"[ProtegoShield] Shield duration expired, deactivating...");
         DeactivateShield();
     }
     
     private void NotifyEnemiesAboutShield(bool shieldActive)
     {
-        // Find all enemies within the shield radius
-        Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, shieldRadius, enemyLayerMask);
+        // Target the enemy this shield is attached to specifically
+        EnemyMovement enemyMovement = GetComponent<EnemyMovement>();
+        EnemyAttack enemyAttack = GetComponent<EnemyAttack>();
         
-        foreach (Collider enemyCollider in enemiesInRange)
+        if (enemyMovement != null)
         {
-            EnemyMovement enemyMovement = enemyCollider.GetComponent<EnemyMovement>();
-            EnemyAttack enemyAttack = enemyCollider.GetComponent<EnemyAttack>();
-            
-            if (enemyMovement != null)
+            if (shieldActive)
             {
-                if (shieldActive)
+                // Add to affected enemies if not already there
+                if (!affectedEnemies.Contains(enemyMovement))
                 {
-                    // Add to affected enemies if not already there
-                    if (!affectedEnemies.Contains(enemyMovement))
-                    {
-                        affectedEnemies.Add(enemyMovement);
-                    }
-                    
-                    // Stop enemy movement
-                    enemyMovement.SetProtegoShieldActive(true);
+                    affectedEnemies.Add(enemyMovement);
                 }
-                else
-                {
-                    // Remove from affected enemies
-                    affectedEnemies.Remove(enemyMovement);
-                    
-                    // Resume enemy movement
-                    enemyMovement.SetProtegoShieldActive(false);
-                }
+                
+                // Stop this enemy's movement
+                enemyMovement.SetProtegoShieldActive(true);
+                Debug.Log($"[ProtegoShield] Freezing enemy movement: {gameObject.name}");
             }
-            
-            if (enemyAttack != null)
+            else
             {
-                if (shieldActive)
+                // Remove from affected enemies
+                affectedEnemies.Remove(enemyMovement);
+                
+                // Resume this enemy's movement
+                enemyMovement.SetProtegoShieldActive(false);
+                Debug.Log($"[ProtegoShield] Unfreezing enemy movement: {gameObject.name}");
+            }
+        }
+        
+        if (enemyAttack != null)
+        {
+            if (shieldActive)
+            {
+                // Add to affected attacks if not already there
+                if (!affectedAttacks.Contains(enemyAttack))
                 {
-                    // Add to affected attacks if not already there
-                    if (!affectedAttacks.Contains(enemyAttack))
-                    {
-                        affectedAttacks.Add(enemyAttack);
-                    }
-                    
-                    // Stop enemy attacks
-                    enemyAttack.SetProtegoShieldActive(true);
+                    affectedAttacks.Add(enemyAttack);
                 }
-                else
-                {
-                    // Remove from affected attacks
-                    affectedAttacks.Remove(enemyAttack);
-                    
-                    // Resume enemy attacks
-                    enemyAttack.SetProtegoShieldActive(false);
-                }
+                
+                // Stop this enemy's attacks
+                enemyAttack.SetProtegoShieldActive(true);
+                Debug.Log($"[ProtegoShield] Disabling enemy attacks: {gameObject.name}");
+            }
+            else
+            {
+                // Remove from affected attacks
+                affectedAttacks.Remove(enemyAttack);
+                
+                // Resume this enemy's attacks
+                enemyAttack.SetProtegoShieldActive(false);
+                Debug.Log($"[ProtegoShield] Re-enabling enemy attacks: {gameObject.name}");
             }
         }
     }
     
     private void Update()
     {
-        if (!isActive) return;
-        
-        // Check for new enemies entering the shield radius
-        NotifyEnemiesAboutShield(true);
+        // No longer needed since we're only affecting the specific enemy this shield is attached to
+        // The Update method can be removed or used for other visual effects if needed
     }
     
     private void OnDrawGizmosSelected()
@@ -253,5 +261,12 @@ public class ProtegoShield : MonoBehaviour
         if (!isActive || shieldCoroutine == null) return 0f;
         // This is a simplified version - in a real implementation you'd track the actual remaining time
         return shieldDuration;
+    }
+    
+    // Method to set the protego prefab instance that should be destroyed with the shield
+    public void SetProtegoPrefabInstance(GameObject prefabInstance)
+    {
+        protegoPrefabInstance = prefabInstance;
+        Debug.Log($"[ProtegoShield] Protego prefab instance set: {prefabInstance?.name}");
     }
 } 

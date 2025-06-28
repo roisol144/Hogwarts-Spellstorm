@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_expecto_patronum">
+	<Stroke>
+		<Point X = "3.794436" Y = "1.924122" T = "0" Pressure = "0" />
+		<Point X = "3.787081" Y = "1.855308" T = "0" Pressure = "0" />
+		<Point X = "3.781341" Y = "1.768241" T = "0" Pressure = "0" />
+		<Point X = "3.777377" Y = "1.718384" T = "0" Pressure = "0" />
+		<Point X = "3.773398" Y = "1.666833" T = "0" Pressure = "0" />
+		<Point X = "3.771288" Y = "1.616124" T = "0" Pressure = "0" />
+		<Point X = "3.772932" Y = "1.52511" T = "0" Pressure = "0" />
+		<Point X = "3.77359" Y = "1.461754" T = "0" Pressure = "0" />
+		<Point X = "3.769648" Y = "1.406394" T = "0" Pressure = "0" />
+		<Point X = "3.810918" Y = "1.379522" T = "0" Pressure = "0" />
+		<Point X = "3.883752" Y = "1.374338" T = "0" Pressure = "0" />
+		<Point X = "3.955076" Y = "1.362601" T = "0" Pressure = "0" />
+		<Point X = "4.032976" Y = "1.350587" T = "0" Pressure = "0" />
+		<Point X = "4.102796" Y = "1.342796" T = "0" Pressure = "0" />
+		<Point X = "4.166607" Y = "1.356974" T = "0" Pressure = "0" />
+		<Point X = "4.193435" Y = "1.399566" T = "0" Pressure = "0" />
+		<Point X = "4.200827" Y = "1.46057" T = "0" Pressure = "0" />
+		<Point X = "4.190535" Y = "1.534499" T = "0" Pressure = "0" />
+		<Point X = "4.177063" Y = "1.591651" T = "0" Pressure = "0" />
+		<Point X = "4.162612" Y = "1.649951" T = "0" Pressure = "0" />
+		<Point X = "4.14677" Y = "1.707883" T = "0" Pressure = "0" />
+		<Point X = "4.130654" Y = "1.75556" T = "0" Pressure = "0" />
+		<Point X = "4.101139" Y = "1.813801" T = "0" Pressure = "0" />
+		<Point X = "4.053418" Y = "1.845856" T = "0" Pressure = "0" />
+		<Point X = "4.005503" Y = "1.859785" T = "0" Pressure = "0" />
+		<Point X = "3.947133" Y = "1.87238" T = "0" Pressure = "0" />
+		<Point X = "3.887048" Y = "1.879212" T = "0" Pressure = "0" />
+		<Point X = "3.837343" Y = "1.882563" T = "0" Pressure = "0" />
+		<Point X = "3.788939" Y = "1.872526" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

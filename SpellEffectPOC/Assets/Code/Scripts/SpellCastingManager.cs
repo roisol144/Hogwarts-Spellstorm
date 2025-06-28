@@ -287,8 +287,11 @@ public class SpellCastingManager : MonoBehaviour
                 prefabToSpawn = protegoPrefab;
                 spellName = "Protego";
                 
-                // Create Protego shield around the player
+                // Create Protego shield around the enemy
                 CreateProtegoShield();
+                
+                // Set prefab to null so it doesn't get spawned again at wand tip
+                prefabToSpawn = null;
                 break;
             case "cast_accio":
                 prefabToSpawn = accioPrefab ?? stupefyPrefab; // Fallback to Stupefy if Accio prefab not set
@@ -305,7 +308,16 @@ public class SpellCastingManager : MonoBehaviour
         
         if (prefabToSpawn == null)
         {
-            Debug.LogError($"[SpellCastingManager] Prefab for {spellName} is null!");
+            Debug.Log($"[SpellCastingManager] No prefab to spawn for {spellName} (handled by special logic)");
+            
+            // Update the magical debug UI anyway
+            MagicalDebugUI.NotifySpellCast(spellName);
+            
+            // Also update legacy text for backward compatibility
+            if (spellCastText != null)
+            {
+                spellCastText.text = $"Spell Casted: {spellName}";
+            }
             return;
         }
         
@@ -398,26 +410,90 @@ public class SpellCastingManager : MonoBehaviour
     // Create Protego shield around the player
     private void CreateProtegoShield()
     {
-        // Find the player (main camera)
-        Transform player = Camera.main?.transform;
-        if (player == null)
+        // Find the closest enemy to target with the shield
+        GameObject targetEnemy = FindClosestEnemy();
+        
+        if (targetEnemy == null)
         {
-            Debug.LogError("[SpellCastingManager] Cannot create Protego shield - no player camera found!");
+            Debug.LogWarning("[SpellCastingManager] No enemy found to target with Protego shield!");
             return;
         }
         
-        // Check if there's already an active Protego shield
-        ProtegoShield existingShield = player.GetComponent<ProtegoShield>();
+        // Check if there's already an active Protego shield on this enemy
+        ProtegoShield existingShield = targetEnemy.GetComponent<ProtegoShield>();
         if (existingShield != null && existingShield.IsActive())
         {
-            Debug.Log("[SpellCastingManager] Protego shield already active, refreshing duration...");
+            Debug.Log("[SpellCastingManager] Protego shield already active on enemy, refreshing duration...");
             // Destroy the existing shield to create a new one (refreshes duration)
             Destroy(existingShield);
         }
         
-        // Add ProtegoShield component to the player
-        ProtegoShield protegoShield = player.gameObject.AddComponent<ProtegoShield>();
+        // Spawn protego prefab at enemy location for visual effects
+        GameObject protegoPrefabInstance = null;
+        if (protegoPrefab != null && wandTip != null)
+        {
+            Vector3 spawnPos = targetEnemy.transform.position;
+            protegoPrefabInstance = Instantiate(protegoPrefab, spawnPos, Quaternion.identity);
+            Debug.Log($"[SpellCastingManager] Protego prefab spawned at enemy location: {spawnPos}");
+        }
         
-        Debug.Log($"[SpellCastingManager] Protego shield created around player at {player.position}");
+        // Add ProtegoShield component to the target enemy
+        ProtegoShield protegoShield = targetEnemy.AddComponent<ProtegoShield>();
+        
+        // Pass the prefab instance to the shield so it can destroy it when done
+        if (protegoPrefabInstance != null)
+        {
+            protegoShield.SetProtegoPrefabInstance(protegoPrefabInstance);
+        }
+        
+        Debug.Log($"[SpellCastingManager] Protego shield created around enemy {targetEnemy.name} at {targetEnemy.transform.position}");
+    }
+    
+    private GameObject FindClosestEnemy()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+        if (enemies.Length == 0)
+        {
+            // Try alternative method - find by EnemyMovement component
+            EnemyMovement[] enemyMovements = FindObjectsOfType<EnemyMovement>();
+            if (enemyMovements.Length == 0) 
+            {
+                Debug.LogWarning("[SpellCastingManager] No enemies found!");
+                return null;
+            }
+            
+            // Convert to GameObject array
+            enemies = new GameObject[enemyMovements.Length];
+            for (int i = 0; i < enemyMovements.Length; i++)
+            {
+                enemies[i] = enemyMovements[i].gameObject;
+            }
+        }
+        
+        // Find closest enemy to the player
+        Transform player = Camera.main?.transform;
+        if (player == null) 
+        {
+            Debug.LogError("[SpellCastingManager] Player camera not found!");
+            return enemies[0]; // Return first enemy as fallback
+        }
+        
+        GameObject closestEnemy = null;
+        float closestDistance = float.MaxValue;
+        
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy == null) continue;
+            
+            float distance = Vector3.Distance(player.position, enemy.transform.position);
+            if (distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestEnemy = enemy;
+            }
+        }
+        
+        Debug.Log($"[SpellCastingManager] Found closest enemy: {closestEnemy?.name} at distance {closestDistance}");
+        return closestEnemy;
     }
 } 

@@ -7,11 +7,7 @@ public class SentisGestureRecognizer : MonoBehaviour
 {
     [Header("Model Settings")]
     [SerializeField] private ModelAsset modelAsset;
-    [SerializeField] private float confidenceThreshold = 0.7f;
-    
-    [Header("Gesture Settings")]
-    [SerializeField] private int numPoints = 32; // Number of points to normalize gesture to
-    [SerializeField] private float gestureSize = 1.0f; // Size to normalize gesture to
+    [SerializeField] private float confidenceThreshold = 0.3f; // Very low for testing VR gestures
     
     private Worker worker;
     private Model model;
@@ -103,6 +99,7 @@ public class SentisGestureRecognizer : MonoBehaviour
     {
         var image = new float[width * height];
         
+        // Points are already in pixel coordinates (0-28 range) from NormalizePoints
         // Draw lines between consecutive points
         for (int i = 1; i < points.Count; i++)
         {
@@ -114,11 +111,11 @@ public class SentisGestureRecognizer : MonoBehaviour
 
     private void DrawLine(float[] image, Vector2 p1, Vector2 p2, int width, int height)
     {
-        // Convert normalized coordinates to pixel coordinates
-        int x1 = Mathf.RoundToInt((p1.x + gestureSize * 0.5f) / gestureSize * (width - 1));
-        int y1 = Mathf.RoundToInt((p1.y + gestureSize * 0.5f) / gestureSize * (height - 1));
-        int x2 = Mathf.RoundToInt((p2.x + gestureSize * 0.5f) / gestureSize * (width - 1));
-        int y2 = Mathf.RoundToInt((p2.y + gestureSize * 0.5f) / gestureSize * (height - 1));
+        // Points are already in pixel coordinates, just round and clamp
+        int x1 = Mathf.RoundToInt(p1.x);
+        int y1 = Mathf.RoundToInt(p1.y);
+        int x2 = Mathf.RoundToInt(p2.x);
+        int y2 = Mathf.RoundToInt(p2.y);
         
         // Clamp to image bounds
         x1 = Mathf.Clamp(x1, 0, width - 1);
@@ -126,7 +123,7 @@ public class SentisGestureRecognizer : MonoBehaviour
         x2 = Mathf.Clamp(x2, 0, width - 1);
         y2 = Mathf.Clamp(y2, 0, height - 1);
         
-        // Simple line drawing using Bresenham's algorithm
+        // Bresenham's line algorithm
         int dx = Mathf.Abs(x2 - x1);
         int dy = Mathf.Abs(y2 - y1);
         int sx = x1 < x2 ? 1 : -1;
@@ -152,67 +149,37 @@ public class SentisGestureRecognizer : MonoBehaviour
 
     private List<Vector2> NormalizePoints(List<Vector2> points)
     {
-        // Resample to fixed number of points
-        var resampledPoints = ResamplePoints(points, numPoints);
-        
-        // Normalize scale
-        var bounds = GetBoundingBox(resampledPoints);
-        var scale = gestureSize / Mathf.Max(bounds.size.x, bounds.size.y);
-        
-        // Center and scale points
-        var normalizedPoints = new List<Vector2>();
-        foreach (var point in resampledPoints)
-        {
-            var centered = point - bounds.center;
-            var scaled = centered * scale;
-            normalizedPoints.Add(scaled);
-        }
-        
-        return normalizedPoints;
-    }
+        if (points.Count < 2) return points;
 
-    private List<Vector2> ResamplePoints(List<Vector2> points, int numPoints)
-    {
-        var pathLength = GetPathLength(points);
-        var interval = pathLength / (numPoints - 1);
+        // Step 1: Get bounding box of raw points
+        var bounds = GetBoundingBox(points);
         
-        var resampledPoints = new List<Vector2>();
-        resampledPoints.Add(points[0]);
-        
-        float currentDistance = 0;
-        for (int i = 1; i < points.Count; i++)
+        // Step 2: Center at origin (translate so center is at 0,0)
+        var centeredPoints = new List<Vector2>();
+        foreach (var point in points)
         {
-            var segmentLength = Vector2.Distance(points[i - 1], points[i]);
-            if (currentDistance + segmentLength >= interval)
-            {
-                var ratio = (interval - currentDistance) / segmentLength;
-                var newPoint = Vector2.Lerp(points[i - 1], points[i], ratio);
-                resampledPoints.Add(newPoint);
-                currentDistance = 0;
-            }
-            else
-            {
-                currentDistance += segmentLength;
-            }
+            centeredPoints.Add(point - bounds.center);
         }
         
-        // Ensure we have exactly numPoints
-        while (resampledPoints.Count < numPoints)
+        // Step 3: Scale uniformly so largest dimension fits 27 pixels (preserving aspect ratio)
+        // This leaves a 1-pixel border in the 28x28 image, matching Quick, Draw! preprocessing
+        float maxDimension = Mathf.Max(bounds.size.x, bounds.size.y);
+        float scale = 27.0f / Mathf.Max(bounds.size.x, bounds.size.y); // Scale to fit 27 pixels max
+        
+        var scaledPoints = new List<Vector2>();
+        foreach (var point in centeredPoints)
         {
-            resampledPoints.Add(points[points.Count - 1]);
+            scaledPoints.Add(point * scale);
         }
         
-        return resampledPoints;
-    }
-
-    private float GetPathLength(List<Vector2> points)
-    {
-        float length = 0;
-        for (int i = 1; i < points.Count; i++)
+        // Step 4: Shift to center of 28x28 image (move from origin to pixel 14,14)
+        var finalPoints = new List<Vector2>();
+        foreach (var point in scaledPoints)
         {
-            length += Vector2.Distance(points[i - 1], points[i]);
+            finalPoints.Add(point + new Vector2(14f, 14f));
         }
-        return length;
+        
+        return finalPoints;
     }
 
     private Rect GetBoundingBox(List<Vector2> points)

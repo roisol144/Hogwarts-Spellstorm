@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_bombardo">
+	<Stroke>
+		<Point X = "4.523647" Y = "1.859435" T = "0" Pressure = "0" />
+		<Point X = "4.484513" Y = "1.829724" T = "0" Pressure = "0" />
+		<Point X = "4.443005" Y = "1.79377" T = "0" Pressure = "0" />
+		<Point X = "4.395034" Y = "1.747629" T = "0" Pressure = "0" />
+		<Point X = "4.347065" Y = "1.697522" T = "0" Pressure = "0" />
+		<Point X = "4.297661" Y = "1.641491" T = "0" Pressure = "0" />
+		<Point X = "4.251648" Y = "1.587749" T = "0" Pressure = "0" />
+		<Point X = "4.211607" Y = "1.53948" T = "0" Pressure = "0" />
+		<Point X = "4.177351" Y = "1.496388" T = "0" Pressure = "0" />
+		<Point X = "4.127976" Y = "1.422832" T = "0" Pressure = "0" />
+		<Point X = "4.100222" Y = "1.364826" T = "0" Pressure = "0" />
+		<Point X = "4.154245" Y = "1.324523" T = "0" Pressure = "0" />
+		<Point X = "4.238049" Y = "1.323379" T = "0" Pressure = "0" />
+		<Point X = "4.33631" Y = "1.319845" T = "0" Pressure = "0" />
+		<Point X = "4.391195" Y = "1.317034" T = "0" Pressure = "0" />
+		<Point X = "4.445542" Y = "1.313047" T = "0" Pressure = "0" />
+		<Point X = "4.496514" Y = "1.308441" T = "0" Pressure = "0" />
+		<Point X = "4.586375" Y = "1.300597" T = "0" Pressure = "0" />
+		<Point X = "4.661631" Y = "1.297848" T = "0" Pressure = "0" />
+		<Point X = "4.713541" Y = "1.307858" T = "0" Pressure = "0" />
+		<Point X = "4.731105" Y = "1.366252" T = "0" Pressure = "0" />
+		<Point X = "4.712804" Y = "1.418911" T = "0" Pressure = "0" />
+		<Point X = "4.685981" Y = "1.47929" T = "0" Pressure = "0" />
+		<Point X = "4.651139" Y = "1.545546" T = "0" Pressure = "0" />
+		<Point X = "4.614961" Y = "1.622615" T = "0" Pressure = "0" />
+		<Point X = "4.574547" Y = "1.695941" T = "0" Pressure = "0" />
+		<Point X = "4.526523" Y = "1.756171" T = "0" Pressure = "0" />
+		<Point X = "4.487208" Y = "1.802976" T = "0" Pressure = "0" />
+		<Point X = "4.444209" Y = "1.835156" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>

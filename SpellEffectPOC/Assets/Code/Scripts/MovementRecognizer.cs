@@ -30,9 +30,6 @@ public class MovementRecognizer : MonoBehaviour
     private List<Vector3> positionsList = new List<Vector3>();
     public KeyCode debugKey = KeyCode.G;
 
-    private const int GRID_SIZE = 28; // Match the model's expected input size
-    private const int NUM_POINTS = 28; // Number of points to resample to
-
     void Start()
     {
         if (sentisRecognizer == null)
@@ -113,7 +110,7 @@ public class MovementRecognizer : MonoBehaviour
         // Calculate scale to fit in 28x28 grid while maintaining aspect ratio
         float width = maxX - minX;
         float height = maxY - minY;
-        float scale = Mathf.Min(GRID_SIZE / width, GRID_SIZE / height) * 0.8f; // 0.8 to add some padding
+        float scale = Mathf.Min(28 / width, 28 / height) * 0.8f; // 0.8 to add some padding
 
         // Normalize points to 0-1 range
         List<Vector2> normalizedPoints = points.Select(p => new Vector2(
@@ -129,7 +126,7 @@ public class MovementRecognizer : MonoBehaviour
             totalLength += Vector2.Distance(normalizedPoints[i], normalizedPoints[i - 1]);
         }
 
-        float segmentLength = totalLength / (NUM_POINTS - 1);
+        float segmentLength = totalLength / (28 - 1);
         float currentLength = 0;
         resampledPoints.Add(normalizedPoints[0]);
 
@@ -147,8 +144,8 @@ public class MovementRecognizer : MonoBehaviour
             currentLength += segmentDistance;
         }
 
-        // Ensure we have exactly NUM_POINTS
-        while (resampledPoints.Count < NUM_POINTS)
+        // Ensure we have exactly 28 points
+        while (resampledPoints.Count < 28)
         {
             resampledPoints.Add(resampledPoints[resampledPoints.Count - 1]);
         }
@@ -160,23 +157,29 @@ public class MovementRecognizer : MonoBehaviour
     {
         isMoving = false;
 
-        // Convert positions to 2D points
+        // Convert VR world positions to consistent 2D plane (XY plane for front-facing gestures)
+        // This avoids screen coordinate variations between different VR headsets/FOV
         var points = new List<Vector2>();
         foreach (var pos in positionsList)
         {
-            Vector2 screenPoint = Camera.main.WorldToScreenPoint(pos);
-            points.Add(screenPoint);
+            // Project to XY plane (front-facing gestures) instead of XZ plane (top-down)
+            Vector2 planePoint = new Vector2(pos.x, pos.y);
+            points.Add(planePoint);
         }
 
-        // Normalize and resample points
-        var processedPoints = NormalizeAndResamplePoints(points);
+        // DEBUG: Log the raw 2D points to see the shape
+        Debug.Log($"[MovementRecognizer] Raw 2D points count: {points.Count}");
+        for (int i = 0; i < Mathf.Min(points.Count, 10); i++)
+        {
+            Debug.Log($"[MovementRecognizer] Point {i}: {points[i]}");
+        }
 
         if (isInTrainingMode && !string.IsNullOrEmpty(currentGestureName))
         {
-            // Save gesture for training
+            // For training, keep normalization and resampling for XML
+            var processedPoints = NormalizeAndResamplePoints(points);
             string fileName = Application.persistentDataPath + "/" + currentGestureName + ".xml";
             SaveGestureToXML(processedPoints, currentGestureName, fileName);
-            
             if (displayManager != null)
             {
                 displayManager.ShowRecognitionResult($"Saved: {currentGestureName}", 1.0f);
@@ -184,8 +187,8 @@ public class MovementRecognizer : MonoBehaviour
         }
         else
         {
-            // Use Sentis for recognition
-            string recognizedGesture = sentisRecognizer.RecognizeGesture(processedPoints);
+            // For recognition, pass raw 2D points to Sentis (let it handle normalization)
+            string recognizedGesture = sentisRecognizer.RecognizeGesture(points);
             if (!string.IsNullOrEmpty(recognizedGesture))
             {
                 OnRecognized.Invoke(recognizedGesture);
@@ -193,6 +196,14 @@ public class MovementRecognizer : MonoBehaviour
                 {
                     displayManager.ShowRecognitionResult(recognizedGesture, 1.0f);
                 }
+                // --- DEBUG: Automatically save image for cast_bombardo gesture ---
+                // REMOVE THIS BLOCK AFTER TESTING
+                if (recognizedGesture == "cast_bombardo")
+                {
+                    SaveGestureImage(points, 28, 28, "bombardo_debug.png");
+                    Debug.Log("[DEBUG] Saved bombardo_debug.png to persistentDataPath. Remove this code after testing.");
+                }
+                // --- END DEBUG BLOCK ---
             }
         }
     }
@@ -216,6 +227,64 @@ public class MovementRecognizer : MonoBehaviour
         }
 
         doc.Save(fileName);
+    }
+
+    // --- DEBUG: Utility to save gesture as PNG. REMOVE AFTER TESTING ---
+    private void SaveGestureImage(List<Vector2> points, int width, int height, string filename)
+    {
+        // Normalize and scale points to fit in image
+        float minX = points.Min(p => p.x);
+        float maxX = points.Max(p => p.x);
+        float minY = points.Min(p => p.y);
+        float maxY = points.Max(p => p.y);
+        float scale = Mathf.Min((width - 2) / (maxX - minX), (height - 2) / (maxY - minY));
+        var normPoints = points.Select(p => new Vector2(
+            (p.x - minX) * scale + 1,
+            (p.y - minY) * scale + 1
+        )).ToList();
+
+        // Flip Y to match image convention (Y=0 at top)
+        //for (int i = 0; i < normPoints.Count; i++)
+        //{
+        //    normPoints[i] = new Vector2(normPoints[i].x, height - 1 - normPoints[i].y);
+        //}
+
+        Texture2D tex = new Texture2D(width, height, TextureFormat.RGB24, false);
+        Color32 black = new Color32(0, 0, 0, 255);
+        Color32 white = new Color32(255, 255, 255, 255);
+        Color32[] pixels = Enumerable.Repeat(black, width * height).ToArray();
+
+        // Draw lines between points
+        for (int i = 1; i < normPoints.Count; i++)
+        {
+            DrawLineOnArray((int)normPoints[i - 1].x, (int)normPoints[i - 1].y, (int)normPoints[i].x, (int)normPoints[i].y, width, height, pixels, white);
+        }
+        tex.SetPixels32(pixels);
+        tex.Apply();
+
+        // Save to persistent data path
+        byte[] png = tex.EncodeToPNG();
+        string path = Path.Combine(Application.persistentDataPath, filename);
+        File.WriteAllBytes(path, png);
+        Debug.Log("[DEBUG] Saved gesture image to: " + path);
+    }
+
+    // Bresenham's line algorithm for pixel array
+    // --- DEBUG: Utility for image saving. REMOVE AFTER TESTING ---
+    private void DrawLineOnArray(int x0, int y0, int x1, int y1, int width, int height, Color32[] pixels, Color32 color)
+    {
+        int dx = Mathf.Abs(x1 - x0), sx = x0 < x1 ? 1 : -1;
+        int dy = -Mathf.Abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+        int err = dx + dy, e2;
+        while (true)
+        {
+            if (x0 >= 0 && x0 < width && y0 >= 0 && y0 < height)
+                pixels[y0 * width + x0] = color;
+            if (x0 == x1 && y0 == y1) break;
+            e2 = 2 * err;
+            if (e2 >= dy) { err += dy; x0 += sx; }
+            if (e2 <= dx) { err += dx; y0 += sy; }
+        }
     }
 
     void UpdateMovement()

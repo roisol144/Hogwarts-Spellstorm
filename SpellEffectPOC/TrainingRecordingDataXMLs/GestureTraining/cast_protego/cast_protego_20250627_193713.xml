@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Gesture Name = "cast_protego">
+	<Stroke>
+		<Point X = "4.317194" Y = "1.98517" T = "0" Pressure = "0" />
+		<Point X = "4.246764" Y = "1.951787" T = "0" Pressure = "0" />
+		<Point X = "4.169064" Y = "1.887803" T = "0" Pressure = "0" />
+		<Point X = "4.132338" Y = "1.84369" T = "0" Pressure = "0" />
+		<Point X = "4.100079" Y = "1.791911" T = "0" Pressure = "0" />
+		<Point X = "4.076086" Y = "1.733539" T = "0" Pressure = "0" />
+		<Point X = "4.059579" Y = "1.675056" T = "0" Pressure = "0" />
+		<Point X = "4.053859" Y = "1.616609" T = "0" Pressure = "0" />
+		<Point X = "4.056015" Y = "1.559819" T = "0" Pressure = "0" />
+		<Point X = "4.061639" Y = "1.508992" T = "0" Pressure = "0" />
+		<Point X = "4.093922" Y = "1.432405" T = "0" Pressure = "0" />
+		<Point X = "4.139459" Y = "1.385558" T = "0" Pressure = "0" />
+		<Point X = "4.204329" Y = "1.353027" T = "0" Pressure = "0" />
+		<Point X = "4.278678" Y = "1.341424" T = "0" Pressure = "0" />
+		<Point X = "4.353268" Y = "1.355244" T = "0" Pressure = "0" />
+		<Point X = "4.420507" Y = "1.394245" T = "0" Pressure = "0" />
+		<Point X = "4.473764" Y = "1.452914" T = "0" Pressure = "0" />
+		<Point X = "4.505289" Y = "1.527007" T = "0" Pressure = "0" />
+		<Point X = "4.524454" Y = "1.60728" T = "0" Pressure = "0" />
+		<Point X = "4.52382" Y = "1.687157" T = "0" Pressure = "0" />
+		<Point X = "4.501613" Y = "1.762598" T = "0" Pressure = "0" />
+		<Point X = "4.467141" Y = "1.825978" T = "0" Pressure = "0" />
+		<Point X = "4.419421" Y = "1.874261" T = "0" Pressure = "0" />
+		<Point X = "4.361391" Y = "1.90511" T = "0" Pressure = "0" />
+		<Point X = "4.299966" Y = "1.914047" T = "0" Pressure = "0" />
+		<Point X = "4.243907" Y = "1.901448" T = "0" Pressure = "0" />
+		<Point X = "4.195866" Y = "1.872998" T = "0" Pressure = "0" />
+		<Point X = "4.160492" Y = "1.832506" T = "0" Pressure = "0" />
+		<Point X = "4.136832" Y = "1.767259" T = "0" Pressure = "0" />
+	</Stroke>
+</Gesture>
