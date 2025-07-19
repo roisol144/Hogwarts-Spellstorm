@@ -121,6 +121,17 @@ public class PlayerHealthSetup : MonoBehaviour
             enemyAttack.SetAttackRange(baseStopRadius + 1f); // Slightly larger for area attacks
             enemyAttack.SetAttackCooldown(2.5f);
         }
+        else if (enemyName.Contains("troll"))
+        {
+            // Troll - very powerful animation-only attacks (strongest enemy, no movement)
+            enemyAttack.SetAttackDamage(40f);
+            enemyAttack.SetAttackRange(baseStopRadius + 1f); // Large reach for big troll
+            enemyAttack.SetAttackCooldown(3.5f);
+            
+            // Set troll to use AnimationOnly attack (no tackle/lunge movement)
+            enemyAttack.SetAttackType(EnemyAttack.AttackType.AnimationOnly);
+            Debug.Log($"[PlayerHealthSetup] {enemy.gameObject.name} set to use AnimationOnly attack");
+        }
         else
         {
             // Default enemy settings

@@ -85,6 +85,18 @@ public class Enemy : MonoBehaviour
         {
             // Special attack (Impact01) - instant kill
             Debug.Log($"[Enemy] Special attack - instant kill!");
+            
+            // Set health to 0 for consistency
+            currentHealth = 0f;
+            
+            // Trigger death animation if TrollAnimationController is present
+            var trollAnimController = GetComponent<TrollAnimationController>();
+            if (trollAnimController != null)
+            {
+                trollAnimController.TriggerDeath();
+                Debug.Log($"[Enemy] Triggered death animation for special attack kill");
+            }
+            
             Die();
             return;
         }
@@ -224,6 +236,13 @@ public class Enemy : MonoBehaviour
                 navAgent.ResetPath();
                 navAgent.enabled = false;
             }
+            
+            // Stop enemy animations
+            EnemyAnimationController animController = GetComponent<EnemyAnimationController>();
+            if (animController != null)
+            {
+                animController.StopAnimation();
+            }
 
             // Disable collider to prevent further interactions
             Collider enemyCollider = GetComponent<Collider>();
@@ -246,5 +265,56 @@ public class Enemy : MonoBehaviour
     public float GetHealthPercentage()
     {
         return currentHealth / maxHealth;
+    }
+
+    /// <summary>
+    /// Public method to set max health (for setup scripts)
+    /// </summary>
+    public void SetMaxHealth(float newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+        currentHealth = maxHealth; // Reset current health to max when changing max health
+        Debug.Log($"[Enemy] Max health set to {maxHealth} for {gameObject.name}");
+    }
+    
+    /// <summary>
+    /// Public method to get max health
+    /// </summary>
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+    
+    public float GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+    
+    public virtual void TakeDamage(float damage)
+    {
+        if (currentHealth <= 0)
+            return;
+            
+        currentHealth -= damage;
+        
+        // Trigger hit animation if TrollAnimationController is present
+        var trollAnimController = GetComponent<TrollAnimationController>();
+        if (trollAnimController != null)
+        {
+            trollAnimController.TriggerHit();
+        }
+        
+        Debug.Log($"💥 {gameObject.name} took {damage} damage. Health: {currentHealth}/{maxHealth}");
+        
+        if (healthBarComponent != null)
+        {
+            float healthPercentage = currentHealth / maxHealth;
+            healthBarComponent.UpdateHealthBar(healthPercentage);
+        }
+        
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 } 

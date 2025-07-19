@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Sentis;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,6 +12,9 @@ public class SentisGestureRecognizer : MonoBehaviour
     
     private Worker worker;
     private Model model;
+    private bool isWarmedUp = false;
+    
+    public bool IsWarmedUp => isWarmedUp;
     
     // Gesture class names
     private readonly string[] gestureClasses = new string[] 
@@ -32,6 +36,9 @@ public class SentisGestureRecognizer : MonoBehaviour
 
         model = ModelLoader.Load(modelAsset);
         worker = new Worker(model, BackendType.CPU);
+        
+        // Warm up the ML model with dummy inference calls
+        StartCoroutine(WarmUpModel());
     }
 
     public string RecognizeGesture(List<Vector2> points)
@@ -40,6 +47,11 @@ public class SentisGestureRecognizer : MonoBehaviour
         {
             Debug.LogError("Worker is not initialized!");
             return null;
+        }
+        
+        if (!isWarmedUp)
+        {
+            Debug.LogWarning("Gesture recognition called before warm-up completed. This may result in slower performance.");
         }
 
         if (points.Count < 3)
@@ -190,6 +202,75 @@ public class SentisGestureRecognizer : MonoBehaviour
         var maxY = points.Max(p => p.y);
         
         return new Rect(minX, minY, maxX - minX, maxY - minY);
+    }
+
+    private IEnumerator WarmUpModel()
+    {
+        Debug.Log("[SentisGestureRecognizer] Starting ML model warm-up...");
+        
+        // Wait a frame to ensure everything is initialized
+        yield return null;
+        
+        if (worker == null)
+        {
+            Debug.LogError("[SentisGestureRecognizer] Worker not initialized for warm-up!");
+            yield break;
+        }
+        
+        // Create dummy gesture data for warm-up - simulate simple shapes
+        List<Vector2> dummyGestures = new List<Vector2>
+        {
+            // Dummy gesture 1: Simple triangle
+            new Vector2(0f, 0f),
+            new Vector2(5f, 0f),
+            new Vector2(2.5f, 4.33f),
+            new Vector2(0f, 0f)
+        };
+        
+        // Perform 2 dummy inference calls to warm up the model
+        for (int i = 0; i < 2; i++)
+        {
+            Debug.Log($"[SentisGestureRecognizer] Warm-up inference {i + 1}/2...");
+            
+            try
+            {
+                // Create slightly different dummy data for each warm-up call
+                var warmupPoints = new List<Vector2>(dummyGestures);
+                
+                // Add some variation to each warm-up call
+                for (int j = 0; j < warmupPoints.Count; j++)
+                {
+                    warmupPoints[j] += new Vector2(i * 0.1f, i * 0.1f);
+                }
+                
+                // Normalize points
+                var normalizedPoints = NormalizePoints(warmupPoints);
+                
+                // Convert to image data
+                var imageData = PointsToImage(normalizedPoints, 28, 28);
+                
+                // Create tensor and run inference
+                var shape = new TensorShape(1, 28, 28, 1);
+                using (var inputTensor = new Tensor<float>(shape, imageData))
+                {
+                    worker.Schedule(inputTensor);
+                    var outputTensor = worker.PeekOutput() as Tensor<float>;
+                    var results = outputTensor.DownloadToArray();
+                }
+                
+                Debug.Log($"[SentisGestureRecognizer] Warm-up inference {i + 1} completed successfully");
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogError($"[SentisGestureRecognizer] Warm-up inference {i + 1} failed: {e.Message}");
+            }
+            
+            // Small delay between warm-up calls (outside try-catch)
+            yield return new WaitForSeconds(0.1f);
+        }
+        
+        isWarmedUp = true;
+        Debug.Log("[SentisGestureRecognizer] ML model warm-up completed! System ready for gesture recognition.");
     }
 
     void OnDestroy()

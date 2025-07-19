@@ -28,9 +28,10 @@ public class EnemyAttack : MonoBehaviour
     
     public enum AttackType
     {
-        Melee,       // Close range attack
+        Melee,       // Close range attack with lunge/tackle
         Projectile,  // Ranged attack with projectile
-        Area         // Area of effect attack
+        Area,        // Area of effect attack
+        AnimationOnly // Animation-only attack (no movement) - for troll
     }
     
     // Private variables
@@ -323,11 +324,19 @@ public class EnemyAttack : MonoBehaviour
         
         OnAttackStarted?.Invoke(attackDamage);
         
-        // Warning phase
-        yield return StartCoroutine(AttackWarningPhase());
-        
-        // Execute phase
-        yield return StartCoroutine(AttackExecutePhase());
+        // For AnimationOnly attacks, skip warning/execute phases to avoid visual indicators
+        if (attackType == AttackType.AnimationOnly)
+        {
+            yield return StartCoroutine(ExecuteAnimationOnlyAttack());
+        }
+        else
+        {
+            // Warning phase
+            yield return StartCoroutine(AttackWarningPhase());
+            
+            // Execute phase
+            yield return StartCoroutine(AttackExecutePhase());
+        }
         
         // Cleanup
         isAttacking = false;
@@ -421,6 +430,10 @@ public class EnemyAttack : MonoBehaviour
                 break;
             case AttackType.Area:
                 yield return StartCoroutine(ExecuteAreaAttack());
+                break;
+            case AttackType.AnimationOnly:
+                // Skip warning/execute phases - just do the animation attack directly
+                yield return StartCoroutine(ExecuteAnimationOnlyAttack());
                 break;
         }
     }
@@ -569,6 +582,52 @@ public class EnemyAttack : MonoBehaviour
         }
     }
     
+    private IEnumerator ExecuteAnimationOnlyAttack()
+    {
+        Debug.Log($"[EnemyAttack] {gameObject.name} executing animation-only attack (no visual indicators)");
+        
+        // Trigger attack animation via TrollAnimationController
+        var trollAnimController = GetComponent<TrollAnimationController>();
+        if (trollAnimController != null)
+        {
+            trollAnimController.TriggerAttack();
+            Debug.Log($"[EnemyAttack] Triggered attack animation for {gameObject.name}");
+        }
+        else
+        {
+            Debug.LogWarning($"[EnemyAttack] No TrollAnimationController found on {gameObject.name}");
+        }
+        
+        // Play attack sound
+        if (attackSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(attackSound);
+        }
+        
+        // Wait for the animation to reach the damage point (roughly halfway through)
+        float damageDelay = attackAnimationDuration * 0.6f; // 60% through the animation
+        yield return new WaitForSeconds(damageDelay);
+        
+        // Deal damage if player is still in range (without spawning attack effects)
+        if (CanAttackPlayer())
+        {
+            // Deal damage directly without visual effects for clean animation-only attack
+            if (playerHealth != null)
+            {
+                playerHealth.TakeDamage(attackDamage, transform.position);
+                Debug.Log($"[EnemyAttack] {gameObject.name} animation attack hit for {attackDamage} damage!");
+            }
+        }
+        else
+        {
+            Debug.Log($"[EnemyAttack] {gameObject.name} animation attack missed - player out of range");
+        }
+        
+        // Wait for the rest of the animation to complete
+        float remainingTime = attackAnimationDuration * 0.4f;
+        yield return new WaitForSeconds(remainingTime);
+    }
+    
     private void DealDamageToPlayer()
     {
         if (playerHealth != null)
@@ -633,6 +692,7 @@ public class EnemyAttack : MonoBehaviour
     public void SetAttackDamage(float damage) => attackDamage = damage;
     public void SetAttackRange(float range) => attackRange = range;
     public void SetAttackCooldown(float cooldown) => attackCooldown = cooldown;
+    public void SetAttackType(AttackType type) => attackType = type;
     public void SetAutoAttack(bool enabled) 
     { 
         autoAttack = enabled;
@@ -668,4 +728,5 @@ public class EnemyAttack : MonoBehaviour
     public bool CanAttack() => canAttack;
     public float GetAttackRange() => attackRange;
     public bool IsProtegoShieldActive() => protegoShieldActive;
+    public AttackType GetAttackType() => attackType;
 } 

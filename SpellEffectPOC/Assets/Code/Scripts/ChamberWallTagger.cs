@@ -17,6 +17,9 @@ public class ChamberWallTagger : MonoBehaviour
     [Tooltip("Tag to assign to all mesh objects")]
     public string wallTag = "Wall";
     
+    [Tooltip("Layer to assign to wall objects (leave empty to skip layer assignment)")]
+    public string wallLayer = "Wall";
+    
     [Tooltip("Also add colliders to objects that don't have them")]
     public bool addCollidersIfMissing = true;
     
@@ -49,6 +52,18 @@ public class ChamberWallTagger : MonoBehaviour
         int taggedCount = 0;
         int collidersAdded = 0;
         int poolsFound = 0;
+        int layersSet = 0;
+
+        // Get the layer index for wall layer
+        int wallLayerIndex = -1;
+        if (!string.IsNullOrEmpty(wallLayer))
+        {
+            wallLayerIndex = LayerMask.NameToLayer(wallLayer);
+            if (wallLayerIndex == -1)
+            {
+                Debug.LogWarning($"Layer '{wallLayer}' does not exist! Please create it in the Layer Manager. Skipping layer assignment.");
+            }
+        }
 
         // Get all MeshRenderer components in children
         MeshRenderer[] meshRenderers = chamberRootObject.GetComponentsInChildren<MeshRenderer>(true);
@@ -77,6 +92,13 @@ public class ChamberWallTagger : MonoBehaviour
                 }
             }
             
+            // Set layer if specified and valid
+            if (wallLayerIndex != -1 && obj.layer != wallLayerIndex)
+            {
+                obj.layer = wallLayerIndex;
+                layersSet++;
+            }
+            
             // Add collider if missing and option is enabled
             if (addCollidersIfMissing && obj.GetComponent<Collider>() == null)
             {
@@ -94,7 +116,7 @@ public class ChamberWallTagger : MonoBehaviour
             }
         }
 
-        Debug.Log($"Tagging complete! Tagged {taggedCount} objects as '{wallTag}' (including {poolsFound} pool/water objects) and added {collidersAdded} colliders.");
+        Debug.Log($"Tagging complete! Tagged {taggedCount} objects as '{wallTag}' (including {poolsFound} pool/water objects), set {layersSet} layers, and added {collidersAdded} colliders.");
     }
 
     /// <summary>

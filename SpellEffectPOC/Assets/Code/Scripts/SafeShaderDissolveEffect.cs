@@ -243,6 +243,15 @@ public class SafeShaderDissolveEffect : MonoBehaviour
                 Debug.Log($"[SafeShaderDissolveEffect] Disabled EnemyAttack component to prevent material conflicts");
             }
             
+            // Disable EnemyAnimationController to stop walking animations during dissolve
+            var enemyAnimationController = GetComponent<EnemyAnimationController>();
+            if (enemyAnimationController != null)
+            {
+                enemyAnimationController.StopAnimation();
+                enemyAnimationController.enabled = false;
+                Debug.Log($"[SafeShaderDissolveEffect] Disabled EnemyAnimationController during dissolve");
+            }
+            
             // Also disable collider
             var collider = GetComponent<Collider>();
             if (collider != null)
