@@ -5,9 +5,9 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Level/Scenes/MainMenu.unity
-    guid: b85db708282ea48888dc45253f7be93a
+    guid: cc10df96022b19841ac18003dab61704
   - enabled: 1
     path: Assets/Level/Scenes/YardScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Level/Scenes/GestureTrainingScene.unity
     guid: 9ac45132041b24642b32b3c8837bf423
+  - enabled: 0
+    path: Assets/Level/Scenes/MainMenu.unity
+    guid: cc10df96022b19841ac18003dab61704
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: d088daf41229b5741960d78b10ce7486,
       type: 2}
