@@ -367,4 +367,21 @@ public class ScoreManager : MonoBehaviour
             Debug.LogWarning("[ScoreManager] No ScoreManager instance found! Cannot add score.");
         }
     }
+    
+    /// <summary>
+    /// Reduces score as a penalty for wrong actions (like using wrong spells)
+    /// </summary>
+    public static void NotifyPenalty(int penaltyPoints, string reason = "")
+    {
+        if (Instance != null)
+        {
+            int actualPenalty = -Mathf.Abs(penaltyPoints); // Ensure it's negative
+            Debug.Log($"[ScoreManager] Applying penalty: {actualPenalty} points. Reason: {reason}");
+            Instance.AddScore(actualPenalty);
+        }
+        else
+        {
+            Debug.LogWarning("[ScoreManager] No ScoreManager instance found! Cannot apply penalty.");
+        }
+    }
 } 

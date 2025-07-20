@@ -336,4 +336,72 @@ public class MagicalDebugUI : MonoBehaviour
             Debug.LogWarning("[MagicalDebugUI] No MagicalDebugUI instance found in scene!");
         }
     }
+    
+    // Public method to show hint messages for wrong spells
+    public static void ShowHint(string hintMessage)
+    {
+        MagicalDebugUI instance = FindObjectOfType<MagicalDebugUI>();
+        if (instance != null)
+        {
+            instance.UpdateHintText(hintMessage);
+        }
+        else
+        {
+            Debug.LogWarning("[MagicalDebugUI] No MagicalDebugUI instance found in scene!");
+        }
+    }
+    
+    public void UpdateHintText(string hintMessage)
+    {
+        if (spellText != null)
+        {
+            spellText.text = hintMessage;
+            
+            // Stop any existing animation before starting a new one
+            if (currentAnimation != null)
+            {
+                StopCoroutine(currentAnimation);
+                currentAnimation = null;
+            }
+            
+            // Use a red color for hints to indicate wrong usage
+            spellText.color = new Color(1f, 0.3f, 0.3f, 1f); // Red color for hints
+            
+            // Start hint animation
+            currentAnimation = StartCoroutine(AnimateHintText());
+        }
+        
+        Debug.Log($"[MagicalDebugUI] Updated hint text to: {hintMessage}");
+    }
+    
+    private System.Collections.IEnumerator AnimateHintText()
+    {
+        if (spellText == null) yield break;
+        
+        Color hintColor = new Color(1f, 0.3f, 0.3f, 1f); // Red color for hints
+        Color originalColor = textColor; // Golden color
+        
+        // Stay red for a moment to emphasize the hint
+        yield return new WaitForSeconds(2f);
+        
+        // Animate back to original color
+        float duration = 0.5f;
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float t = elapsed / duration;
+            spellText.color = Color.Lerp(hintColor, originalColor, t);
+            yield return null;
+        }
+        
+        // Ensure we're back to original color and show ready message
+        spellText.color = originalColor;
+        spellText.text = "Ready to cast...";
+        
+        // Clear the coroutine reference
+        currentAnimation = null;
+        
+        Debug.Log("[MagicalDebugUI] Hint animation completed, returned to ready state");
+    }
 } 
