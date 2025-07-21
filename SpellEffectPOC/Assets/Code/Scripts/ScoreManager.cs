@@ -14,7 +14,8 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image scoreBackground;
     
-    [Header("VR UI Positioning")]
+    [Header("VR UI Positioning (Legacy - Use StaticScoreDisplay instead)")]
+    [SerializeField] private bool enableCameraFollowingUI = false; // DISABLED: Use StaticScoreDisplay instead
     [SerializeField] private Vector3 offsetFromCamera = new Vector3(0.4f, 0.3f, 0.8f); // Position relative to camera (right, above spell debug, forward)
     [SerializeField] private float followSpeed = 5f; // How fast to follow (0 = instant, higher = smoother)
     [SerializeField] private bool lookAtCamera = true; // Whether to face the camera
@@ -82,8 +83,8 @@ public class ScoreManager : MonoBehaviour
     
     private void LateUpdate()
     {
-        // Follow the camera smoothly for VR UI
-        if (playerCamera != null && scoreCanvas != null)
+        // Follow the camera smoothly for VR UI (only if camera-following UI is enabled)
+        if (enableCameraFollowingUI && playerCamera != null && scoreCanvas != null)
         {
             FollowCamera();
         }
@@ -91,7 +92,8 @@ public class ScoreManager : MonoBehaviour
     
     private void SetupScoreUI()
     {
-        if (scoreCanvas == null)
+        // Only create camera-following UI if enabled (disabled by default in favor of StaticScoreDisplay)
+        if (scoreCanvas == null && enableCameraFollowingUI)
         {
             // Create score canvas for VR (World Space)
             GameObject canvasObject = new GameObject("ScoreCanvas_WorldSpace");

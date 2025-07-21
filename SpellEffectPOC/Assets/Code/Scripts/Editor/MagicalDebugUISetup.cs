@@ -164,7 +164,8 @@ namespace MagicalUI.Editor
                 return;
             }
 
-            MagicalDebugUI.NotifySpellCast("Expelliarmus (Test)");
+            // COMMENTED OUT: Regular spell casting debug text
+            // MagicalDebugUI.NotifySpellCast("Expelliarmus (Test)");
             Debug.Log("[MagicalDebugUI Setup] Test spell cast triggered!");
         }
     }
@@ -186,17 +187,20 @@ namespace MagicalUI.Editor
             {
                 if (GUILayout.Button("Test Spell: Expelliarmus"))
                 {
-                    MagicalDebugUI.NotifySpellCast("Expelliarmus");
+                    // COMMENTED OUT: Regular spell casting debug text
+                    // MagicalDebugUI.NotifySpellCast("Expelliarmus");
                 }
 
                 if (GUILayout.Button("Test Spell: Avada Kedavra"))
                 {
-                    MagicalDebugUI.NotifySpellCast("Avada Kedavra");
+                    // COMMENTED OUT: Regular spell casting debug text
+                    // MagicalDebugUI.NotifySpellCast("Avada Kedavra");
                 }
 
                 if (GUILayout.Button("Test Spell: Expecto Patronum"))
                 {
-                    MagicalDebugUI.NotifySpellCast("Expecto Patronum");
+                    // COMMENTED OUT: Regular spell casting debug text
+                    // MagicalDebugUI.NotifySpellCast("Expecto Patronum");
                 }
             }
             else

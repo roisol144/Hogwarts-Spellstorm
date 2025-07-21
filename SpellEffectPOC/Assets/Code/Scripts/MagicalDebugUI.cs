@@ -131,7 +131,9 @@ public class MagicalDebugUI : MonoBehaviour
         }
         
         // Configure the text
-        spellText.text = "Ready to cast...";
+        // COMMENTED OUT: Ready to cast text
+        // spellText.text = "Ready to cast...";
+        spellText.text = ""; // Show empty text instead
         spellText.fontSize = fontSize;
         spellText.color = textColor;
         spellText.alignment = TextAlignmentOptions.Center;
@@ -413,7 +415,9 @@ public class MagicalDebugUI : MonoBehaviour
         
         // Ensure we're back to original color and show ready message
         spellText.color = originalColor;
-        spellText.text = "Ready to cast...";
+        // COMMENTED OUT: Ready to cast text
+        // spellText.text = "Ready to cast...";
+        spellText.text = ""; // Show empty text instead
         
         // Clear the coroutine reference
         currentAnimation = null;

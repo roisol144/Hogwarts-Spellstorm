@@ -311,7 +311,8 @@ public class SpellCastingManager : MonoBehaviour
             Debug.Log($"[SpellCastingManager] No prefab to spawn for {spellName} (handled by special logic)");
             
             // Update the magical debug UI anyway
-            MagicalDebugUI.NotifySpellCast(spellName);
+            // COMMENTED OUT: Regular spell casting debug text
+            // MagicalDebugUI.NotifySpellCast(spellName);
             
             // Also update legacy text for backward compatibility
             if (spellCastText != null)
@@ -339,7 +340,8 @@ public class SpellCastingManager : MonoBehaviour
             spellCasted.Initialize(spellName, spellIntent);
             
             // Update the magical debug UI with the spell name (new system)
-            MagicalDebugUI.NotifySpellCast(spellName);
+            // COMMENTED OUT: Regular spell casting debug text
+            // MagicalDebugUI.NotifySpellCast(spellName);
             
             // Also update legacy text for backward compatibility
             if (spellCastText != null)
