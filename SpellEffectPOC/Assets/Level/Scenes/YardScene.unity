@@ -17766,32 +17766,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d9e2bd56cdc45b408ad1dc6105ea936, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPointConfigs:
-  - spawnPoint: {fileID: 2123456790}
-    enemyPrefabs: []
-    customPortalPrefab: {fileID: 3992058561654064293, guid: 13c990b8270c70b4c9f196019286028c,
+  enemyPortalConfigs:
+  - enemyPrefab: {fileID: 8318350637884156371, guid: 36ed1eab0507f704e90d912182617903,
       type: 3}
-  - spawnPoint: {fileID: 1133077132}
-    enemyPrefabs:
-    - {fileID: 8318350637884156371, guid: 36ed1eab0507f704e90d912182617903, type: 3}
-    customPortalPrefab: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791,
+    portalPrefab: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791,
       type: 3}
-  - spawnPoint: {fileID: 2123456790}
-    enemyPrefabs: []
-    customPortalPrefab: {fileID: 4752457369876416285, guid: 5ad33d58a66ab154a89c9e88255601e5,
+    heightOffset: 0
+    useRandomHeight: 1
+    minHeightOffset: 2
+    maxHeightOffset: 8
+  - enemyPrefab: {fileID: 4771754527510926757, guid: 8a60be3658c755c419f83fa55cb89c8d,
       type: 3}
-  enemyPrefabs:
-  - {fileID: 8318350637884156371, guid: 36ed1eab0507f704e90d912182617903, type: 3}
-  spawnPoints:
-  - {fileID: 1537110084}
+    portalPrefab: {fileID: 3992058561654064293, guid: 13c990b8270c70b4c9f196019286028c,
+      type: 3}
+    heightOffset: 0
+    useRandomHeight: 0
+    minHeightOffset: 2
+    maxHeightOffset: 8
+  - enemyPrefab: {fileID: 510617572619742755, guid: 6912dddc4af330446ae8b4e2bcfaa01f,
+      type: 3}
+    portalPrefab: {fileID: 1507586504}
+    heightOffset: 0
+    useRandomHeight: 0
+    minHeightOffset: 2
+    maxHeightOffset: 8
+  spawnCenter: {x: -30, y: 0.4520089, z: -40.3}
+  spawnRadius: 100
+  maxSpawnAttempts: 50
+  navMeshSampleDistance: 10
+  minDistanceFromPlayer: 15
   spawnInterval: 5
-  portalPrefab: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791,
-    type: 3}
   portalDuration: 3
   enemySpawnDelay: 1
-  portalHeightOffset: 2
   enemyEmergenceDuration: 1
-  useTimerBasedSpawning: 0
+  useTimerBasedSpawning: 1
 --- !u!4 &1507586506
 Transform:
   m_ObjectHideFlags: 0

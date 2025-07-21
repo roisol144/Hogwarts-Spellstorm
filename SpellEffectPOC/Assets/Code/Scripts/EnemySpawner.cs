@@ -1,68 +1,106 @@
 using UnityEngine;
+using UnityEngine.AI;
 using System.Collections.Generic;
 using System.Collections;
 
 [System.Serializable]
-public class SpawnPointConfig
+public class EnemyPortalConfig
 {
-    [Tooltip("The transform where enemies will spawn")]
-    public Transform spawnPoint;
+    [Tooltip("Enemy prefab to spawn")]
+    public GameObject enemyPrefab;
     
-    [Tooltip("List of enemy prefabs that can spawn at this point")]
-    public List<GameObject> enemyPrefabs;
+    [Tooltip("Portal prefab to use for this enemy")]
+    public GameObject portalPrefab;
     
-    [Tooltip("Optional: Leave empty to use global portal, or assign specific portal for this spawn point")]
-    public GameObject customPortalPrefab;
+    [Tooltip("Height offset for this enemy above ground")]
+    public float heightOffset = 1f;
+    
+    [Header("Dementor Special Settings")]
+    [Tooltip("Enable random height for dementors - randomize between min and max")]
+    public bool useRandomHeight = false;
+    
+    [Tooltip("Minimum height offset for random height (dementors)")]
+    public float minHeightOffset = 1f;
+    
+    [Tooltip("Maximum height offset for random height (dementors)")]
+    public float maxHeightOffset = 5f;
 }
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Spawning Configuration")]
-    [Tooltip("Configure each spawn point with its specific enemy types")]
-    public List<SpawnPointConfig> spawnPointConfigs;
+    [Header("Enemy-Portal Configuration")]
+    [Tooltip("Configure enemy-portal pairs with individual settings")]
+    public List<EnemyPortalConfig> enemyPortalConfigs = new List<EnemyPortalConfig>();
     
-    [Header("Legacy Support (Optional)")]
-    [Tooltip("Legacy: Global enemy prefabs list - only used if spawnPointConfigs is empty")]
-    public List<GameObject> enemyPrefabs; // Keep for backward compatibility
-    [Tooltip("Legacy: Global spawn points list - only used if spawnPointConfigs is empty")]
-    public List<Transform> spawnPoints;   // Keep for backward compatibility
+    [Header("Spawn Area Configuration")]
+    [Tooltip("Center point for spawn area")]
+    [SerializeField] private Vector3 spawnCenter = Vector3.zero;
+    
+    [Tooltip("Radius of spawn area")]
+    [SerializeField] private float spawnRadius = 50f;
+    
+    [Tooltip("Maximum attempts to find valid spawn location")]
+    [SerializeField] private int maxSpawnAttempts = 50;
+    
+    [Tooltip("NavMesh sample distance for finding valid positions")]
+    [SerializeField] private float navMeshSampleDistance = 10f;
+    
+    [Tooltip("Minimum distance from player to spawn enemies")]
+    [SerializeField] private float minDistanceFromPlayer = 10f;
     
     [Header("Timing")]
-    public float spawnInterval = 5f;      // Seconds between spawns
-
-    [Header("Portal Effects")]
-    [Tooltip("Default portal prefab - used when spawn point doesn't have custom portal")]
-    public GameObject portalPrefab; // Assign one of the portal prefabs from Hovl Studio/Magic effects pack/Prefabs/Portals
+    public float spawnInterval = 5f;
     
+    [Header("Portal Effects")]
     [Tooltip("How long the portal should stay active before being destroyed")]
     public float portalDuration = 3f;
     
-    [Tooltip("Delay between portal spawn and enemy spawn (to simulate enemy coming through portal)")]
+    [Tooltip("Delay between portal spawn and enemy spawn")]
     public float enemySpawnDelay = 1f;
-    
-    [Tooltip("Height offset for portal above spawn point")]
-    public float portalHeightOffset = 2f;
     
     [Tooltip("Duration for enemy emergence animation")]
     public float enemyEmergenceDuration = 1f;
-
+    
     [Header("Spawning Mode")]
-    [Tooltip("When true: spawn enemies every spawnInterval seconds. When false: only spawn one enemy at a time, new one spawns when current dies")]
+    [Tooltip("When true: spawn enemies every spawnInterval seconds. When false: only spawn one enemy at a time")]
     public bool useTimerBasedSpawning = true;
 
+    // Private variables
     private float timer;
-    private List<GameObject> activeEnemies = new List<GameObject>(); // Track active enemies
-    private bool isSpawning = false; // Prevent multiple simultaneous spawns in single enemy mode
+    private List<GameObject> activeEnemies = new List<GameObject>();
+    private bool isSpawning = false;
+    private Transform playerTransform;
+
+    void Start()
+    {
+        // Find player reference
+        Camera mainCamera = Camera.main;
+        if (mainCamera != null)
+        {
+            playerTransform = mainCamera.transform;
+        }
+        
+        // Validate configuration
+        if (enemyPortalConfigs.Count == 0)
+        {
+            Debug.LogError("[EnemySpawner] No enemy-portal configurations set! Please configure at least one enemy-portal pair in the inspector.");
+            return;
+        }
+        
+        Debug.Log($"[EnemySpawner] System initialized with {enemyPortalConfigs.Count} enemy types. Spawn center: {spawnCenter}, radius: {spawnRadius}");
+    }
 
     void Update()
     {
+        if (enemyPortalConfigs.Count == 0) return;
+        
         if (useTimerBasedSpawning)
         {
-            // Original timer-based spawning
+            // Timer-based spawning
             timer += Time.deltaTime;
             if (timer >= spawnInterval)
             {
-                StartCoroutine(SpawnEnemyWithPortal());
+                StartCoroutine(SpawnRandomEnemyWithPortal());
                 timer = 0f;
             }
         }
@@ -75,38 +113,15 @@ public class EnemySpawner : MonoBehaviour
             // If no enemies are alive and not currently spawning, spawn a new one
             if (activeEnemies.Count == 0 && !isSpawning)
             {
-                StartCoroutine(SpawnEnemyWithPortal());
+                StartCoroutine(SpawnRandomEnemyWithPortal());
             }
         }
     }
 
     /// <summary>
-    /// Spawns a portal effect followed by an enemy after a delay
+    /// Spawns a random enemy at a random NavMesh location with portal effect
     /// </summary>
-    private IEnumerator SpawnEnemyWithPortal()
-    {
-        // Check if we have configured spawn points
-        if (spawnPointConfigs.Count > 0)
-        {
-            // Use new spawn point configuration system
-            yield return StartCoroutine(SpawnEnemyFromConfig());
-        }
-        else if (enemyPrefabs.Count > 0 && spawnPoints.Count > 0)
-        {
-            // Fall back to legacy system
-            yield return StartCoroutine(SpawnEnemyLegacy());
-        }
-        else
-        {
-            Debug.LogWarning("[EnemySpawner] No spawn points configured! Please set up spawnPointConfigs or legacy lists.");
-            yield break;
-        }
-    }
-
-    /// <summary>
-    /// New spawn system using configured spawn points
-    /// </summary>
-    private IEnumerator SpawnEnemyFromConfig()
+    private IEnumerator SpawnRandomEnemyWithPortal()
     {
         // Set spawning flag for single enemy mode
         if (!useTimerBasedSpawning)
@@ -114,38 +129,48 @@ public class EnemySpawner : MonoBehaviour
             isSpawning = true;
         }
 
-        // Pick a random spawn point configuration
-        SpawnPointConfig config = spawnPointConfigs[Random.Range(0, spawnPointConfigs.Count)];
+        // Pick a random enemy-portal configuration
+        EnemyPortalConfig config = enemyPortalConfigs[Random.Range(0, enemyPortalConfigs.Count)];
         
         // Validate the configuration
-        if (config.spawnPoint == null || config.enemyPrefabs.Count == 0)
+        if (config.enemyPrefab == null)
         {
-            Debug.LogWarning($"[EnemySpawner] Invalid spawn point config - missing spawn point or enemy prefabs");
+            Debug.LogWarning("[EnemySpawner] Invalid configuration - missing enemy prefab");
             if (!useTimerBasedSpawning) isSpawning = false;
             yield break;
         }
 
-        // Pick a random enemy from this spawn point's available enemies
-        GameObject prefab = config.enemyPrefabs[Random.Range(0, config.enemyPrefabs.Count)];
-        Transform spawnPoint = config.spawnPoint;
+        // Find a random valid spawn position
+        Vector3 spawnPosition = FindValidSpawnPosition();
+        if (spawnPosition == Vector3.zero)
+        {
+            Debug.LogWarning("[EnemySpawner] Could not find valid spawn position");
+            if (!useTimerBasedSpawning) isSpawning = false;
+            yield break;
+        }
 
-        // Use custom portal if available, otherwise use default
-        GameObject portalToUse = config.customPortalPrefab != null ? config.customPortalPrefab : portalPrefab;
+        // Calculate height offset (with special handling for dementors)
+        float heightOffset = config.heightOffset;
+        if (config.useRandomHeight)
+        {
+            heightOffset = Random.Range(config.minHeightOffset, config.maxHeightOffset);
+            Debug.Log($"[EnemySpawner] Using random height offset for {config.enemyPrefab.name}: {heightOffset}");
+        }
 
-        // Calculate portal position (higher than spawn point)
-        Vector3 portalPosition = spawnPoint.position + Vector3.up * portalHeightOffset;
+        // Calculate portal position (above spawn point with height offset)
+        Vector3 portalPosition = spawnPosition + Vector3.up * (heightOffset + 2f); // Extra 2 units for portal
         
         // Calculate portal rotation to face the player
-        Quaternion portalRotation = CalculatePortalRotation(portalPosition, spawnPoint.rotation);
+        Quaternion portalRotation = CalculatePortalRotation(portalPosition);
         
-        Debug.Log($"[EnemySpawner] Spawning {prefab.name} at {spawnPoint.name} with portal at: {portalPosition}");
+        Debug.Log($"[EnemySpawner] Spawning {config.enemyPrefab.name} at random position: {spawnPosition} with portal at: {portalPosition}");
         
         // Spawn portal effect if available
         GameObject portal = null;
-        if (portalToUse != null)
+        if (config.portalPrefab != null)
         {
-            portal = Instantiate(portalToUse, portalPosition, portalRotation);
-            Debug.Log($"Spawned portal {portal.name} at position {portal.transform.position} facing player");
+            portal = Instantiate(config.portalPrefab, portalPosition, portalRotation);
+            Debug.Log($"[EnemySpawner] Spawned portal {portal.name} at position {portal.transform.position}");
             
             // Destroy portal after duration
             Destroy(portal, portalDuration);
@@ -154,16 +179,16 @@ public class EnemySpawner : MonoBehaviour
         // Wait for the enemy spawn delay
         yield return new WaitForSeconds(enemySpawnDelay);
 
-        // Find the actual ground level beneath the portal using raycast
-        Vector3 groundPosition = FindGroundPosition(portalPosition, spawnPoint.position);
+        // Calculate final enemy position with height offset
+        Vector3 enemySpawnPosition = spawnPosition + Vector3.up * heightOffset;
 
         // Spawn the enemy at portal height first (for emergence effect)
-        Debug.Log($"[EnemySpawner] Spawning {prefab.name} at portal height: {portalPosition}");
-        GameObject spawned = Instantiate(prefab, portalPosition, portalRotation);
-        Debug.Log($"Spawned {spawned.name} at position {spawned.transform.position}");
+        Debug.Log($"[EnemySpawner] Spawning {config.enemyPrefab.name} at height: {enemySpawnPosition}");
+        GameObject spawned = Instantiate(config.enemyPrefab, portalPosition, portalRotation);
+        Debug.Log($"[EnemySpawner] Spawned {spawned.name} at position {spawned.transform.position}");
 
-        // Add enemy emergence animation to the actual ground
-        StartCoroutine(AnimateEnemyEmergence(spawned, portalPosition, groundPosition));
+        // Add enemy emergence animation to the final ground position
+        StartCoroutine(AnimateEnemyEmergence(spawned, portalPosition, enemySpawnPosition));
 
         // Add to active enemies list if using single enemy mode
         if (!useTimerBasedSpawning)
@@ -175,73 +200,49 @@ public class EnemySpawner : MonoBehaviour
     }
 
     /// <summary>
-    /// Legacy spawn system for backward compatibility
+    /// Finds a valid spawn position on the NavMesh away from the player
     /// </summary>
-    private IEnumerator SpawnEnemyLegacy()
+    private Vector3 FindValidSpawnPosition()
     {
-        // Set spawning flag for single enemy mode
-        if (!useTimerBasedSpawning)
+        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
         {
-            isSpawning = true;
-        }
-
-        // Pick a random enemy and spawn point
-        GameObject prefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-        Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Count)];
-
-        // Calculate portal position (higher than spawn point)
-        Vector3 portalPosition = spawnPoint.position + Vector3.up * portalHeightOffset;
-        
-        // Calculate portal rotation to face the player
-        Quaternion portalRotation = CalculatePortalRotation(portalPosition, spawnPoint.rotation);
-        
-        Debug.Log("Spawning portal at: " + portalPosition);
-        
-        // Spawn portal effect if available
-        GameObject portal = null;
-        if (portalPrefab != null)
-        {
-            portal = Instantiate(portalPrefab, portalPosition, portalRotation);
-            Debug.Log($"Spawned portal {portal.name} at position {portal.transform.position} facing player");
+            // Generate random position within spawn radius
+            Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
+            Vector3 randomPosition = spawnCenter + new Vector3(randomCircle.x, 0, randomCircle.y);
             
-            // Destroy portal after duration
-            Destroy(portal, portalDuration);
+            // Try to find valid NavMesh position
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, NavMesh.AllAreas))
+            {
+                Vector3 navMeshPosition = hit.position;
+                
+                // Check distance from player
+                if (playerTransform != null)
+                {
+                    float distanceFromPlayer = Vector3.Distance(navMeshPosition, playerTransform.position);
+                    if (distanceFromPlayer < minDistanceFromPlayer)
+                    {
+                        continue; // Too close to player, try again
+                    }
+                }
+                
+                Debug.Log($"[EnemySpawner] Found valid spawn position: {navMeshPosition} (attempt {attempt + 1})");
+                return navMeshPosition;
+            }
         }
-
-        // Wait for the enemy spawn delay
-        yield return new WaitForSeconds(enemySpawnDelay);
-
-        // Find the actual ground level beneath the portal using raycast
-        Vector3 groundPosition = FindGroundPosition(portalPosition, spawnPoint.position);
-
-        // Spawn the enemy at portal height first (for emergence effect)
-        Debug.Log("Spawning enemy at portal height: " + portalPosition);
-        GameObject spawned = Instantiate(prefab, portalPosition, portalRotation);
-        Debug.Log($"Spawned {spawned.name} at position {spawned.transform.position}");
-
-        // Add enemy emergence animation to the actual ground
-        StartCoroutine(AnimateEnemyEmergence(spawned, portalPosition, groundPosition));
-
-        // Add to active enemies list if using single enemy mode
-        if (!useTimerBasedSpawning)
-        {
-            activeEnemies.Add(spawned);
-            Debug.Log($"[EnemySpawner] Added enemy to tracking list. Active enemies: {activeEnemies.Count}");
-            isSpawning = false; // Reset spawning flag
-        }
+        
+        Debug.LogWarning($"[EnemySpawner] Failed to find valid spawn position after {maxSpawnAttempts} attempts.");
+        return Vector3.zero;
     }
 
     /// <summary>
     /// Calculates the rotation for the portal to face towards the player
     /// </summary>
-    private Quaternion CalculatePortalRotation(Vector3 portalPosition, Quaternion fallbackRotation)
+    private Quaternion CalculatePortalRotation(Vector3 portalPosition)
     {
-        // Try to find the player using the main camera
-        Camera mainCamera = Camera.main;
-        if (mainCamera != null)
+        if (playerTransform != null)
         {
-            Vector3 playerPosition = mainCamera.transform.position;
-            Vector3 directionToPlayer = (playerPosition - portalPosition).normalized;
+            Vector3 directionToPlayer = (playerTransform.position - portalPosition).normalized;
             
             // Make the portal face the player (portal "looks at" the player)
             // We only care about horizontal rotation (Y-axis), ignore vertical differences
@@ -250,43 +251,14 @@ public class EnemySpawner : MonoBehaviour
             if (directionToPlayer.magnitude > 0.01f) // Make sure we have a valid direction
             {
                 Quaternion lookRotation = Quaternion.LookRotation(directionToPlayer);
-                Debug.Log($"Portal facing player at direction: {directionToPlayer}");
+                Debug.Log($"[EnemySpawner] Portal facing player at direction: {directionToPlayer}");
                 return lookRotation;
             }
         }
         
-        // Fallback to spawn point rotation if player not found
-        Debug.Log("Player not found, using spawn point rotation for portal");
-        return fallbackRotation;
-    }
-
-    /// <summary>
-    /// Finds the actual ground position beneath the portal using raycast
-    /// </summary>
-    private Vector3 FindGroundPosition(Vector3 portalPos, Vector3 fallbackPos)
-    {
-        // Cast a ray downward from the portal position to find the ground
-        RaycastHit hit;
-        Vector3 rayStart = portalPos;
-        Vector3 rayDirection = Vector3.down;
-        float maxDistance = portalHeightOffset + 10f; // Look a bit further than expected
-
-        // Use a layermask to hit ground/terrain layers (you can adjust this as needed)
-        int layerMask = ~(1 << LayerMask.NameToLayer("Enemy")); // Ignore enemy layer
-        
-        if (Physics.Raycast(rayStart, rayDirection, out hit, maxDistance, layerMask))
-        {
-            // Found ground, use that position
-            Vector3 groundPos = hit.point;
-            Debug.Log($"Found ground at: {groundPos}, hit object: {hit.collider.name}");
-            return groundPos;
-        }
-        else
-        {
-            // No ground found, use the original spawn point as fallback
-            Debug.Log($"No ground found beneath portal, using fallback position: {fallbackPos}");
-            return fallbackPos;
-        }
+        // Fallback to default rotation if player not found
+        Debug.Log("[EnemySpawner] Player not found, using default rotation for portal");
+        return Quaternion.identity;
     }
 
     /// <summary>
@@ -341,21 +313,12 @@ public class EnemySpawner : MonoBehaviour
         return t * t;
     }
 
-    /// <summary>
-    /// Legacy method for backward compatibility - now uses portal system
-    /// </summary>
-    void SpawnEnemy()
-    {
-        StartCoroutine(SpawnEnemyWithPortal());
-    }
-
-    // Public method to manually spawn an enemy (for external calls)
+    // Public methods for external control
     public void ForceSpawnEnemy()
     {
-        StartCoroutine(SpawnEnemyWithPortal());
+        StartCoroutine(SpawnRandomEnemyWithPortal());
     }
 
-    // Public method to get the count of active enemies (useful for debugging)
     public int GetActiveEnemyCount()
     {
         if (!useTimerBasedSpawning)
@@ -371,11 +334,29 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    // Public method to clear all active enemies (useful for resetting)
     public void ClearActiveEnemies()
     {
         activeEnemies.Clear();
-        isSpawning = false; // Reset spawning flag
+        isSpawning = false;
         Debug.Log("[EnemySpawner] Cleared active enemies list");
+    }
+
+    // Gizmos for visualizing spawn area
+    void OnDrawGizmos()
+    {
+        // Draw spawn area
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(spawnCenter, spawnRadius);
+        
+        // Draw center point
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(spawnCenter, 1f);
+        
+        // Draw minimum distance from player
+        if (playerTransform != null)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(playerTransform.position, minDistanceFromPlayer);
+        }
     }
 }
