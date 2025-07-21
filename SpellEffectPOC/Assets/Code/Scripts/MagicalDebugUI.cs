@@ -340,10 +340,16 @@ public class MagicalDebugUI : MonoBehaviour
     // Public method to show hint messages for wrong spells
     public static void ShowHint(string hintMessage)
     {
+        ShowHint(hintMessage, 2f); // Default 2 seconds
+    }
+    
+    // Public method to show hint messages with custom duration
+    public static void ShowHint(string hintMessage, float duration)
+    {
         MagicalDebugUI instance = FindObjectOfType<MagicalDebugUI>();
         if (instance != null)
         {
-            instance.UpdateHintText(hintMessage);
+            instance.UpdateHintText(hintMessage, duration);
         }
         else
         {
@@ -352,6 +358,11 @@ public class MagicalDebugUI : MonoBehaviour
     }
     
     public void UpdateHintText(string hintMessage)
+    {
+        UpdateHintText(hintMessage, 2f); // Default 2 seconds
+    }
+    
+    public void UpdateHintText(string hintMessage, float duration)
     {
         if (spellText != null)
         {
@@ -367,30 +378,35 @@ public class MagicalDebugUI : MonoBehaviour
             // Use a red color for hints to indicate wrong usage
             spellText.color = new Color(1f, 0.3f, 0.3f, 1f); // Red color for hints
             
-            // Start hint animation
-            currentAnimation = StartCoroutine(AnimateHintText());
+            // Start hint animation with custom duration
+            currentAnimation = StartCoroutine(AnimateHintText(duration));
         }
         
-        Debug.Log($"[MagicalDebugUI] Updated hint text to: {hintMessage}");
+        Debug.Log($"[MagicalDebugUI] Updated hint text to: {hintMessage} (duration: {duration}s)");
     }
     
     private System.Collections.IEnumerator AnimateHintText()
+    {
+        yield return StartCoroutine(AnimateHintText(2f)); // Default 2 seconds
+    }
+    
+    private System.Collections.IEnumerator AnimateHintText(float displayDuration)
     {
         if (spellText == null) yield break;
         
         Color hintColor = new Color(1f, 0.3f, 0.3f, 1f); // Red color for hints
         Color originalColor = textColor; // Golden color
         
-        // Stay red for a moment to emphasize the hint
-        yield return new WaitForSeconds(2f);
+        // Stay red for the specified duration to emphasize the hint
+        yield return new WaitForSeconds(displayDuration);
         
         // Animate back to original color
-        float duration = 0.5f;
+        float fadeDuration = 0.5f;
         float elapsed = 0f;
-        while (elapsed < duration)
+        while (elapsed < fadeDuration)
         {
             elapsed += Time.deltaTime;
-            float t = elapsed / duration;
+            float t = elapsed / fadeDuration;
             spellText.color = Color.Lerp(hintColor, originalColor, t);
             yield return null;
         }
@@ -402,6 +418,6 @@ public class MagicalDebugUI : MonoBehaviour
         // Clear the coroutine reference
         currentAnimation = null;
         
-        Debug.Log("[MagicalDebugUI] Hint animation completed, returned to ready state");
+        Debug.Log($"[MagicalDebugUI] Hint animation completed after {displayDuration}s, returned to ready state");
     }
 } 

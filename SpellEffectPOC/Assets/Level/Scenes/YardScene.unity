@@ -8489,7 +8489,7 @@ Light:
   m_GameObject: {fileID: 410087039}
   m_Enabled: 1
   serializedVersion: 10
-  m_Type: 2
+  m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 0.3
@@ -8535,7 +8535,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 2564
+  m_ColorTemperature: 3758
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -17233,7 +17233,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17768,8 +17768,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnPointConfigs:
   - spawnPoint: {fileID: 2123456790}
-    enemyPrefabs:
-    - {fileID: 4771754527510926757, guid: 8a60be3658c755c419f83fa55cb89c8d, type: 3}
+    enemyPrefabs: []
     customPortalPrefab: {fileID: 3992058561654064293, guid: 13c990b8270c70b4c9f196019286028c,
       type: 3}
   - spawnPoint: {fileID: 1133077132}
@@ -17778,15 +17777,14 @@ MonoBehaviour:
     customPortalPrefab: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791,
       type: 3}
   - spawnPoint: {fileID: 2123456790}
-    enemyPrefabs:
-    - {fileID: 510617572619742755, guid: 6912dddc4af330446ae8b4e2bcfaa01f, type: 3}
+    enemyPrefabs: []
     customPortalPrefab: {fileID: 4752457369876416285, guid: 5ad33d58a66ab154a89c9e88255601e5,
       type: 3}
   enemyPrefabs:
   - {fileID: 8318350637884156371, guid: 36ed1eab0507f704e90d912182617903, type: 3}
   spawnPoints:
   - {fileID: 1537110084}
-  spawnInterval: 3
+  spawnInterval: 5
   portalPrefab: {fileID: 4617036660772024948, guid: 52c7d057cba585641bb68312c10d7791,
     type: 3}
   portalDuration: 3
@@ -19693,6 +19691,73 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7017352863227090482, guid: f012cf6ed38d4784dbe6f7b740fb303c, type: 3}
+--- !u!1 &1836805896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1836805898}
+  - component: {fileID: 1836805897}
+  m_Layer: 0
+  m_Name: CollectibleSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1836805897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836805896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d05d1751d32fb54796a67e6e5fe8c82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialDelay: 3
+  spawnInterval: 300
+  collectionTimeLimit: 120
+  itemsPerChallenge: 4
+  chocolateFrogPrefab: {fileID: 6503958098018976490, guid: 37d95ca415731fc4881cc1446d909d65,
+    type: 3}
+  goldenEggPrefab: {fileID: 3195090420890650626, guid: 375dc32449ea84a47926485cbbc14f86,
+    type: 3}
+  minDistanceBetweenItems: 5
+  maxSpawnAttempts: 50
+  navMeshSampleDistance: 10
+  spawnCenter: {x: -30, y: 0.4520089, z: -40.3}
+  spawnRadius: 100
+  spawnHeightOffset: 1
+  chocolateFrogHeightOffset: 0.3
+  goldenEggHeightOffset: 1
+  successPoints: 200
+  failurePoints: 100
+  challengeStartSound: {fileID: 0}
+  itemCollectedSound: {fileID: 0}
+  challengeSuccessSound: {fileID: 0}
+  challengeFailSound: {fileID: 0}
+  announcementDuration: 5
+--- !u!4 &1836805898
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836805896}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -30, y: 0.4520089, z: -40.3}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1845006950 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4813541653681263856, guid: f012cf6ed38d4784dbe6f7b740fb303c,
@@ -22467,3 +22532,4 @@ SceneRoots:
   - {fileID: 1868384695}
   - {fileID: 891063292}
   - {fileID: 533604387}
+  - {fileID: 1836805898}
