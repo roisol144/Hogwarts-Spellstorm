@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1837011806367116988}
   - component: {fileID: 1029825715}
   - component: {fileID: 3944884006269990684}
+  - component: {fileID: 244322385098331281}
   m_Layer: 0
   m_Name: XR Rig
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bf296fc962d7184ab14ad1841598d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_System: {fileID: 1015881520419741323}
+  m_System: {fileID: 244322385098331281}
   m_MoveSpeed: 10
   m_EnableStrafe: 1
   m_EnableFly: 0
@@ -2004,6 +2005,32 @@ SortingGroup:
   m_SortingLayer: 0
   m_SortingOrder: 5
   m_SortAtRoot: 0
+--- !u!143 &244322385098331281
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 244322385098331280}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 1.8
+  m_Radius: 0.3
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!114 &7909532011634965454
 MonoBehaviour:
   m_ObjectHideFlags: 0

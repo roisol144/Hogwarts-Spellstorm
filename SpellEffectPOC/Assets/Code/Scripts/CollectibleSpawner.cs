@@ -38,6 +38,9 @@ public class CollectibleSpawner : MonoBehaviour
     [Tooltip("NavMesh sample distance for finding valid positions")]
     [SerializeField] private float navMeshSampleDistance = 10f;
     
+    [Tooltip("Minimum distance from NavMesh edges (walls/obstacles) to prevent spawning behind walls")]
+    [SerializeField] private float minDistanceFromEdge = 2f;
+    
     [Header("Spawn Bounds")]
     [Tooltip("Center point for spawn area")]
     [SerializeField] private Vector3 spawnCenter = Vector3.zero;
@@ -334,6 +337,17 @@ public class CollectibleSpawner : MonoBehaviour
                 
                 if (validDistance)
                 {
+                    // Check distance from NavMesh edges (walls/obstacles)
+                    NavMeshHit edgeHit;
+                    if (NavMesh.FindClosestEdge(navMeshPosition, out edgeHit, NavMesh.AllAreas))
+                    {
+                        float distanceFromEdge = Vector3.Distance(navMeshPosition, edgeHit.position);
+                        if (distanceFromEdge < minDistanceFromEdge)
+                        {
+                            continue; // Too close to edge, try again
+                        }
+                    }
+                    
                     return navMeshPosition;
                 }
             }
@@ -460,6 +474,29 @@ public class CollectibleSpawner : MonoBehaviour
         }
         
         StartCoroutine(StartCollectibleChallenge());
+    }
+    
+    /// <summary>
+    /// Tests edge distance validation by finding multiple spawn positions and logging their edge distances
+    /// </summary>
+    [ContextMenu("Test Edge Distance Validation")]
+    public void TestEdgeDistanceValidation()
+    {
+        Debug.Log($"[CollectibleSpawner] Testing edge distance validation with minimum distance: {minDistanceFromEdge}m");
+        
+        List<Vector3> testPositions = FindSpawnPositions(10); // Try to find 10 positions
+        
+        foreach (Vector3 position in testPositions)
+        {
+            NavMeshHit edgeHit;
+            if (NavMesh.FindClosestEdge(position, out edgeHit, NavMesh.AllAreas))
+            {
+                float distanceFromEdge = Vector3.Distance(position, edgeHit.position);
+                Debug.Log($"[CollectibleSpawner] Spawn position {position} is {distanceFromEdge:F2}m from nearest edge (min required: {minDistanceFromEdge}m)");
+            }
+        }
+        
+        Debug.Log($"[CollectibleSpawner] Found {testPositions.Count} valid positions out of 10 requested");
     }
     
     void OnDrawGizmos()
