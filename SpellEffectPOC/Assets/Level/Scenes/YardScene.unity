@@ -15760,6 +15760,18 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &1199062974 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1015881520419741323, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 75743857019598183}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1199062960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03a5df2202a8b96488c744be3bd0c33e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!20 &1199844852 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 1979350684208120132, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
@@ -17183,7 +17195,7 @@ PrefabInstance:
     - target: {fileID: 6598815579406187037, guid: 9f5a24a380916d14db9775daab4fe333,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -17745,7 +17757,7 @@ MonoBehaviour:
   maxSpawnAttempts: 50
   navMeshSampleDistance: 10
   minDistanceFromPlayer: 15
-  spawnInterval: 2
+  spawnInterval: 10
   portalDuration: 3
   enemySpawnDelay: 1
   enemyEmergenceDuration: 1
@@ -22349,7 +22361,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_System
       value: 
-      objectReference: {fileID: 1199062969}
+      objectReference: {fileID: 1199062974}
     - target: {fileID: 1051019167105072313, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
       propertyPath: m_EnableFly
