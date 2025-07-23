@@ -64,9 +64,10 @@ public class EnemyMovement : MonoBehaviour
         Vector3 offset = perp * wobble * wobbleAmount;
         Vector3 target = player.position - toPlayer * stopRadius + offset;
 
-        // Project the target onto the NavMesh
+        // Project the target onto the NavMesh (only walkable areas)
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(target, out hit, 2.0f, NavMesh.AllAreas))
+        int walkableAreaMask = 1 << 0; // Only include Walkable area (Area 0)
+        if (NavMesh.SamplePosition(target, out hit, 2.0f, walkableAreaMask))
         {
             agent.SetDestination(hit.position);
         }

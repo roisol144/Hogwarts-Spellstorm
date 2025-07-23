@@ -12368,6 +12368,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2105196483}
+    - targetCorrespondingSourceObject: {fileID: -1810735869532309258, guid: f012cf6ed38d4784dbe6f7b740fb303c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2105196487}
+    - targetCorrespondingSourceObject: {fileID: -1810735869532309258, guid: f012cf6ed38d4784dbe6f7b740fb303c,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2105196488}
     - targetCorrespondingSourceObject: {fileID: 3806143388624586119, guid: f012cf6ed38d4784dbe6f7b740fb303c,
         type: 3}
       insertIndex: -1
@@ -15435,37 +15443,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c79d59d66358e0f45a098f4b8a82f8be, type: 3}
---- !u!1 &1133077131
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1133077132}
-  m_Layer: 0
-  m_Name: SpawnPoint1 (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1133077132
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133077131}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14, y: 5, z: -11.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1142242757
 GameObject:
   m_ObjectHideFlags: 0
@@ -17768,7 +17745,7 @@ MonoBehaviour:
   maxSpawnAttempts: 50
   navMeshSampleDistance: 10
   minDistanceFromPlayer: 15
-  spawnInterval: 5
+  spawnInterval: 2
   portalDuration: 3
   enemySpawnDelay: 1
   enemyEmergenceDuration: 1
@@ -17850,37 +17827,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -7397996791180898210, guid: f012cf6ed38d4784dbe6f7b740fb303c, type: 3}
---- !u!1 &1537110083
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1537110084}
-  m_Layer: 0
-  m_Name: SpawnPoint1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1537110084
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1537110083}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.02, y: 0, z: -12.48}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1546513616
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19684,7 +19630,7 @@ MonoBehaviour:
   minDistanceBetweenItems: 5
   maxSpawnAttempts: 50
   navMeshSampleDistance: 10
-  minDistanceFromEdge: 2
+  minDistanceFromEdge: 3
   spawnCenter: {x: -30, y: 0.4520089, z: -40.3}
   spawnRadius: 100
   spawnHeightOffset: 1
@@ -21762,44 +21708,50 @@ MeshCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 2395404753284476232, guid: f012cf6ed38d4784dbe6f7b740fb303c, type: 3}
---- !u!1 &2123456789
-GameObject:
+--- !u!65 &2105196487
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2123456790}
-  m_Layer: 0
-  m_Name: SpawnPoint2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2123456790
-Transform:
+  m_GameObject: {fileID: 2105196479}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 82.004295, y: 51.2961, z: 0.00000930176}
+  m_Center: {x: -2.5243544e-29, y: 0.000008583069, z: -0.000018656827}
+--- !u!208 &2105196488
+NavMeshObstacle:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2123456789}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -21.77, y: 0, z: -8.2}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_GameObject: {fileID: 2105196479}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 41.002003, y: 25.648, z: 0.00001}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &2125451291
 GameObject:
   m_ObjectHideFlags: 0
@@ -22287,7 +22239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldPosition: {x: 0, y: 6, z: 22}
+  worldPosition: {x: 0, y: 20, z: -70}
   worldRotation: {x: 10, y: 180, z: 0}
   canvasScale: 0.025
   canvasSize: {x: 1000, y: 300}
@@ -22771,14 +22723,11 @@ SceneRoots:
   - {fileID: 1283987848}
   - {fileID: 2001163582}
   - {fileID: 129357665}
-  - {fileID: 1537110084}
-  - {fileID: 1133077132}
   - {fileID: 1507586506}
   - {fileID: 1622617574}
   - {fileID: 655779583}
   - {fileID: 888120098}
   - {fileID: 738066768}
-  - {fileID: 2123456790}
   - {fileID: 1198696916}
   - {fileID: 134872172}
   - {fileID: 1868384695}

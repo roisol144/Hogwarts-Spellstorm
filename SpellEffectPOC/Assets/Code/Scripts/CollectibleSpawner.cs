@@ -318,9 +318,10 @@ public class CollectibleSpawner : MonoBehaviour
             Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
             Vector3 randomPosition = spawnCenter + new Vector3(randomCircle.x, 0, randomCircle.y);
             
-            // Try to find valid NavMesh position
+            // Try to find valid NavMesh position (exclude Not Walkable areas)
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, NavMesh.AllAreas))
+            int walkableAreaMask = 1 << 0; // Only include Walkable area (Area 0)
+            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, walkableAreaMask))
             {
                 Vector3 navMeshPosition = hit.position;
                 
@@ -339,7 +340,7 @@ public class CollectibleSpawner : MonoBehaviour
                 {
                     // Check distance from NavMesh edges (walls/obstacles)
                     NavMeshHit edgeHit;
-                    if (NavMesh.FindClosestEdge(navMeshPosition, out edgeHit, NavMesh.AllAreas))
+                    if (NavMesh.FindClosestEdge(navMeshPosition, out edgeHit, walkableAreaMask))
                     {
                         float distanceFromEdge = Vector3.Distance(navMeshPosition, edgeHit.position);
                         if (distanceFromEdge < minDistanceFromEdge)

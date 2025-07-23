@@ -210,9 +210,11 @@ public class EnemySpawner : MonoBehaviour
             Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
             Vector3 randomPosition = spawnCenter + new Vector3(randomCircle.x, 0, randomCircle.y);
             
-            // Try to find valid NavMesh position
+            // Try to find valid NavMesh position (exclude Not Walkable areas)
             NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, NavMesh.AllAreas))
+            int walkableAreaMask = 1 << 0; // Only include Walkable area (Area 0)
+            Debug.Log($"[EnemySpawner] Testing position {randomPosition} with area mask {walkableAreaMask}");
+            if (NavMesh.SamplePosition(randomPosition, out hit, navMeshSampleDistance, walkableAreaMask))
             {
                 Vector3 navMeshPosition = hit.position;
                 
