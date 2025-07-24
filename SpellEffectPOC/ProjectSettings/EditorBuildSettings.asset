@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Level/Scenes/MainMenu.unity
     guid: cc10df96022b19841ac18003dab61704
   - enabled: 1
-    path: Assets/Level/Scenes/YardScene.unity
+    path: Assets/Level/Scenes/ChamberOfSecretsScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
     path: Assets/Level/Scenes/TutorialScene.unity

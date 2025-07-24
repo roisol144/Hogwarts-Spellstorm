@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 23268
+  controlID: 6714
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 23142
+  controlID: 6606
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -796,9 +796,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -61.024994, y: -53.88453, z: -12.077691}
+    m_Target: {x: -1.074608, y: 1.6619346, z: -9.248672}
     speed: 2
-    m_Value: {x: -61.024994, y: -53.88453, z: -12.077691}
+    m_Value: {x: -1.074608, y: 1.6619346, z: -9.248672}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -844,13 +844,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.29162744, y: 0.7079795, z: -0.44073778, w: -0.46852794}
+    m_Target: {x: -0.15305804, y: 0.8257561, z: -0.47236642, w: -0.2676182}
     speed: 2
-    m_Value: {x: -0.29162017, y: 0.70796186, z: -0.44072682, w: -0.46851626}
+    m_Value: {x: -0.15305427, y: 0.8257357, z: -0.47235477, w: -0.2676116}
   m_Size:
-    m_Target: 73.384254
+    m_Target: 10.520135
     speed: 2
-    m_Value: 73.384254
+    m_Value: 10.520135
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -13633,7 +13633,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 23212
+  controlID: 6657
   draggingID: 0
 --- !u!114 &19
 MonoBehaviour:
@@ -13701,7 +13701,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 4ad4fcff60d5fcffe6e3fcffbce7fcff7257feff8858feffda66feffb06afeffd677feffec78feff7287feff488bfeff5cd1feff74d2fefff6e0feffc8e4feff44f5feff5cf6feffe404ffffba08ffff0af4ffff18f5ffffaef8ffffbcf8ffff50f9ffff54f9ffff22fbffffcef60100f8f6010032f7010050fe01002aff0100b4680200de680200346b02004c6d0200b66d020010710200
+      m_ExpandedIDs: 6a9effff6aa8ffff1eadffffa4beffffe2dbffffe4dbffff8adcffff1ceeffffcceeffff22fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -13744,8 +13744,8 @@ MonoBehaviour:
     y: 629.6
     width: 638.4
     height: 381.20007
-  m_MinSize: {x: 230, y: 250}
-  m_MaxSize: {x: 10000, y: 10000}
+  m_MinSize: {x: 232, y: 271}
+  m_MaxSize: {x: 10002, y: 10021}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -13797,7 +13797,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Hovl Studio/Magic effects pack/Prefabs/Magic shields
+    - Assets/Level/Scenes
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -13805,16 +13805,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Hovl Studio/Magic effects pack/Prefabs/Magic shields
+  - Assets/Level/Scenes
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\yaron\Unity Projects\Hogwarts-Spellstorm\SpellEffectPOC
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 203.79993}
-    m_SelectedIDs: 3aa40000
-    m_LastClickedID: 42042
-    m_ExpandedIDs: 0000000088a200008aa200008ca200008ea2000090a2000010a300003ca400003ea40000
+    scrollPos: {x: 0, y: 447}
+    m_SelectedIDs: 1ea30000
+    m_LastClickedID: 41758
+    m_ExpandedIDs: 0000000086a2000088a200008aa200008ca200008ea20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -13842,7 +13842,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 56ba0000
     m_LastClickedID: 47702
-    m_ExpandedIDs: 0000000088a200008aa200008ca200008ea2000090a20000
+    m_ExpandedIDs: 0000000086a2000088a200008aa200008ca200008ea20000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -13867,9 +13867,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: d49f0200
-    m_LastClickedInstanceID: 171988
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c623000016730200fa020000c4e10000b8e10000d4e10000329000004ac000001c9000004c8f0000a68f0000da7c0000a04d0100ca020000be7f000030f3ffff9692000000930000e49c0000de8d0000808d00001a8e0000fab10100ae9d0000e0a901000e9f0000129f000054a2000050a2000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -13917,8 +13917,8 @@ MonoBehaviour:
     y: 0
     width: 720
     height: 1010.80005
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}
@@ -13966,7 +13966,7 @@ MonoBehaviour:
     m_CachedPref: -160
     m_ControlHash: -371814159
     m_PrefName: Preview_InspectorPreview
-  m_LastInspectedObjectInstanceID: 171988
+  m_LastInspectedObjectInstanceID: -1
   m_LastVerticalScrollValue: 0
   m_GlobalObjectId: 
   m_InspectorMode: 0
