@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 6714
+  controlID: 38727
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 6606
+  controlID: 38596
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -796,9 +796,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -1.074608, y: 1.6619346, z: -9.248672}
+    m_Target: {x: 21.317192, y: -58.139843, z: -29.108646}
     speed: 2
-    m_Value: {x: -1.074608, y: 1.6619346, z: -9.248672}
+    m_Value: {x: 21.317192, y: -58.139843, z: -29.108646}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -844,13 +844,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.15305804, y: 0.8257561, z: -0.47236642, w: -0.2676182}
+    m_Target: {x: 0.34966922, y: 0.649957, z: -0.49208662, w: 0.46194065}
     speed: 2
-    m_Value: {x: -0.15305427, y: 0.8257357, z: -0.47235477, w: -0.2676116}
+    m_Value: {x: 0.34962532, y: 0.6498754, z: -0.49202487, w: 0.46188268}
   m_Size:
-    m_Target: 10.520135
+    m_Target: 35.665035
     speed: 2
-    m_Value: 10.520135
+    m_Value: 35.665035
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -13602,8 +13602,8 @@ MonoBehaviour:
     y: 515.2
     width: 689.6
     height: 495.60004
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 2}
   m_Panes:
   - {fileID: 2}
@@ -13633,7 +13633,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 6657
+  controlID: 38672
   draggingID: 0
 --- !u!114 &19
 MonoBehaviour:
@@ -13701,7 +13701,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 6a9effff6aa8ffff1eadffffa4beffffe2dbffffe4dbffff8adcffff1ceeffffcceeffff22fbffff
+      m_ExpandedIDs: 32b3ffffb0faffffccfaffff00fbffff22fbffff0c87000072870000e4870000fe880000
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -13717,7 +13717,7 @@ MonoBehaviour:
         m_IsRenaming: 0
         m_OriginalEventType: 11
         m_IsRenamingFilename: 0
-        m_ClientGUIView: {fileID: 4}
+        m_ClientGUIView: {fileID: 19}
       m_SearchString: 
     m_ExpandedScenes: []
     m_CurrenRootInstanceID: 0
@@ -13744,8 +13744,8 @@ MonoBehaviour:
     y: 629.6
     width: 638.4
     height: 381.20007
-  m_MinSize: {x: 232, y: 271}
-  m_MaxSize: {x: 10002, y: 10021}
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -13797,7 +13797,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Level/Scenes
+    - Assets/harry-potter-chocolate-frog-box-cards/source
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -13805,16 +13805,16 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Level/Scenes
+  - Assets/harry-potter-chocolate-frog-box-cards/source
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\yaron\Unity Projects\Hogwarts-Spellstorm\SpellEffectPOC
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 447}
-    m_SelectedIDs: 1ea30000
-    m_LastClickedID: 41758
-    m_ExpandedIDs: 0000000086a2000088a200008aa200008ca200008ea20000
+    scrollPos: {x: 0, y: 335}
+    m_SelectedIDs: a6990000
+    m_LastClickedID: 39334
+    m_ExpandedIDs: 00000000f0920000f2920000f4920000f6920000f892000090980000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -13842,7 +13842,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 56ba0000
     m_LastClickedID: 47702
-    m_ExpandedIDs: 0000000086a2000088a200008aa200008ca200008ea20000
+    m_ExpandedIDs: 00000000f0920000f2920000f4920000f6920000f8920000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -13908,7 +13908,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 12006, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: InspectorWindow
+  m_Name: NavMeshEditorWindow
   m_EditorClassIdentifier: 
   m_Children: []
   m_Position:
@@ -13917,14 +13917,14 @@ MonoBehaviour:
     y: 0
     width: 720
     height: 1010.80005
-  m_MinSize: {x: 276, y: 71}
+  m_MinSize: {x: 301, y: 381}
   m_MaxSize: {x: 4001, y: 4021}
-  m_ActualView: {fileID: 24}
+  m_ActualView: {fileID: 25}
   m_Panes:
   - {fileID: 24}
   - {fileID: 25}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &24
 MonoBehaviour:
   m_ObjectHideFlags: 52

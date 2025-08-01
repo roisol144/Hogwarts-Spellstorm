@@ -57,6 +57,13 @@ public class CollectibleSpawner : MonoBehaviour
     [Tooltip("Additional height offset for golden egg")]
     [SerializeField] private float goldenEggHeightOffset = 0f;
     
+    [Header("Item Scale Configuration")]
+    [Tooltip("Scale multiplier for chocolate frog items (1.0 = original size)")]
+    [SerializeField] private float chocolateFrogScale = 1f;
+    
+    [Tooltip("Scale multiplier for golden egg items (1.0 = original size)")]
+    [SerializeField] private float goldenEggScale = 1f;
+    
     [Header("Scoring")]
     [Tooltip("Points awarded for successful collection")]
     [SerializeField] private int successPoints = 200;
@@ -255,6 +262,22 @@ public class CollectibleSpawner : MonoBehaviour
             // Apply height offset to prevent items from sinking into ground
             Vector3 spawnPosition = spawnPositions[i] + Vector3.up * totalHeightOffset;
             GameObject item = Instantiate(prefabToSpawn, spawnPosition, Quaternion.identity);
+            
+            // Apply scale based on item type
+            float itemScale = 1f;
+            if (prefabToSpawn == chocolateFrogPrefab)
+            {
+                itemScale = chocolateFrogScale;
+            }
+            else if (prefabToSpawn == goldenEggPrefab)
+            {
+                itemScale = goldenEggScale;
+            }
+            
+            if (itemScale != 1f)
+            {
+                item.transform.localScale = Vector3.one * itemScale;
+            }
             
             // Add collectible component if not present
             Collectible collectible = item.GetComponent<Collectible>();
