@@ -25,7 +25,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 0
-  controlID: 40789
+  controlID: 42166
   draggingID: 0
 --- !u!114 &2
 MonoBehaviour:
@@ -153,7 +153,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 40672
+  controlID: 42054
   draggingID: 0
 --- !u!114 &4
 MonoBehaviour:
@@ -796,9 +796,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 18.283583, y: 14.591427, z: -50.783207}
+    m_Target: {x: 0.8425398, y: -6.711117, z: -40.010406}
     speed: 2
-    m_Value: {x: 18.283583, y: 14.591427, z: -50.783207}
+    m_Value: {x: 0.8425398, y: -6.711117, z: -40.010406}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -844,13 +844,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.023794316, y: 0.9746189, z: 0.12583554, w: 0.1844802}
+    m_Target: {x: 0.023614952, y: 0.9436655, z: -0.32323503, w: 0.06908896}
     speed: 2
-    m_Value: {x: -0.02379056, y: 0.97446513, z: 0.12581567, w: 0.18445109}
+    m_Value: {x: 0.023611218, y: 0.94351625, z: -0.32318392, w: 0.06907803}
   m_Size:
-    m_Target: 27.152025
+    m_Target: 45.775272
     speed: 2
-    m_Value: 27.152025
+    m_Value: 45.775272
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -13633,7 +13633,7 @@ MonoBehaviour:
   m_MinSize: {x: 100, y: 100}
   m_MaxSize: {x: 8096, y: 16192}
   vertical: 1
-  controlID: 40730
+  controlID: 42105
   draggingID: 0
 --- !u!114 &19
 MonoBehaviour:
@@ -13654,8 +13654,8 @@ MonoBehaviour:
     y: 0
     width: 742.4
     height: 629.6
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 20}
   m_Panes:
   - {fileID: 20}
@@ -13701,7 +13701,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 742ffdff6c54fdff9c60fdffb461fdff926dfdff6a71fdffbc7afdfff893fdfff89bfdff8cb0fdff48d9fdffea58feff6478feff22fbffffa2380200b2380200
+      m_ExpandedIDs: 7a6efcff7a78fcffec7ffcffb49dfcff70abfcff86acfcff50b8fcff8ac5fcffa2c6fcff9cd2fcff742ffdff6c54fdff9c60fdffb461fdff926dfdff6a71fdffbc7afdfff893fdfff89bfdff8cb0fdff48d9fdffea58feff6478feff22fbffffa2380200b2380200
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -13744,8 +13744,8 @@ MonoBehaviour:
     y: 629.6
     width: 742.4
     height: 381.20007
-  m_MinSize: {x: 232, y: 271}
-  m_MaxSize: {x: 10002, y: 10021}
+  m_MinSize: {x: 230, y: 250}
+  m_MaxSize: {x: 10000, y: 10000}
   m_ActualView: {fileID: 22}
   m_Panes:
   - {fileID: 22}
@@ -13797,7 +13797,7 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Level/Scenes
+    - Assets/Code/Scripts
     m_Globs: []
     m_OriginalText: 
     m_ImportLogFlags: 0
@@ -13805,15 +13805,15 @@ MonoBehaviour:
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Level/Scenes
+  - Assets/Code/Scripts
   m_LastFoldersGridSize: 16
   m_LastProjectPath: C:\Users\yaron\Unity Projects\Hogwarts-Spellstorm\SpellEffectPOC
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 123.79993}
-    m_SelectedIDs: e6990000
-    m_LastClickedID: 39398
+    m_SelectedIDs: c6990000
+    m_LastClickedID: 39366
     m_ExpandedIDs: 00000000389400003a9400003c9400003e94000040940000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -13894,7 +13894,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 291.39996}
     m_GridSize: 16
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 312.80002
@@ -13917,8 +13917,8 @@ MonoBehaviour:
     y: 0
     width: 720
     height: 1010.80005
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 24}
   m_Panes:
   - {fileID: 24}

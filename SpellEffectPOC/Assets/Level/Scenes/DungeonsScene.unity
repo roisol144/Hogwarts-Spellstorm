@@ -1931,9 +1931,11 @@ MonoBehaviour:
   canvasSize: {x: 600, y: 400}
   backgroundColorDark: {r: 0, g: 0, b: 0, a: 0.8}
   titleColor: {r: 1, g: 0.2, b: 0.2, a: 1}
+  victoryTitleColor: {r: 0.2, g: 1, b: 0.2, a: 1}
   scoreColor: {r: 1, g: 0.84, b: 0, a: 1}
   timerColor: {r: 1, g: 1, b: 1, a: 1}
   gameOverSound: {fileID: 0}
+  victorySound: {fileID: 0}
   audioSource: {fileID: 0}
 --- !u!4 &131911777
 Transform:
