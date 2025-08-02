@@ -9,18 +9,18 @@ EditorBuildSettings:
     path: Assets/Level/Scenes/MainMenu.unity
     guid: cc10df96022b19841ac18003dab61704
   - enabled: 0
-    path: Assets/Level/Scenes/ChamberOfSecretsScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 0
     path: Assets/Level/Scenes/TutorialScene.unity
     guid: df4149b9e37ab3c428f835bf8c7e9f5c
   - enabled: 0
     path: Assets/Level/Scenes/GestureTrainingScene.unity
     guid: 9ac45132041b24642b32b3c8837bf423
+  - enabled: 1
+    path: Assets/Level/Scenes/ChamberOfSecretsScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
     path: Assets/Level/Scenes/MainMenu.unity
     guid: cc10df96022b19841ac18003dab61704
-  - enabled: 1
+  - enabled: 0
     path: Assets/Level/Scenes/DungeonsScene.unity
     guid: 5d238000ad06397438630c3f0de94b3f
   m_configObjects:

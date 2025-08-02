@@ -501,6 +501,15 @@ public class CollectibleSpawner : MonoBehaviour
     }
     
     /// <summary>
+    /// Updates the collection time limit for new challenges (called by GameLevelManager)
+    /// </summary>
+    public void UpdateCollectionTimeLimit(float newTimeLimit)
+    {
+        collectionTimeLimit = newTimeLimit;
+        Debug.Log($"[CollectibleSpawner] Collection time limit updated to {newTimeLimit} seconds ({newTimeLimit / 60f:F1} minutes)");
+    }
+    
+    /// <summary>
     /// Tests edge distance validation by finding multiple spawn positions and logging their edge distances
     /// </summary>
     [ContextMenu("Test Edge Distance Validation")]

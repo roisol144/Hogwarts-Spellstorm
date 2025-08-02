@@ -10,19 +10,21 @@ public class GameOverUI : MonoBehaviour
     [SerializeField] private float countdownTime = 5f;
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     
-    [Header("VR UI Positioning")]
-    [SerializeField] private Vector3 offsetFromCamera = new Vector3(0f, 0f, 1.2f); // Center of player's view
-    [SerializeField] private float canvasScale = 0.003f; // Scale of the world space canvas
-    [SerializeField] private Vector2 canvasSize = new Vector2(600f, 400f); // Canvas size in pixels
+    [Header("Camera-Fixed UI Settings")]
+    [SerializeField] private Vector3 offsetFromCamera = new Vector3(0f, 0f, 1.2f); // Distance from camera (only Z is used)
+    [SerializeField] private float canvasScale = 0.003f; // Legacy field - no longer used for screen space canvas
+    [SerializeField] private Vector2 canvasSize = new Vector2(600f, 400f); // Canvas panel size in pixels
     
     [Header("UI Colors")]
     [SerializeField] private Color backgroundColorDark = new Color(0f, 0f, 0f, 0.8f); // Dark background
     [SerializeField] private Color titleColor = new Color(1f, 0.2f, 0.2f, 1f); // Red for "GAME OVER"
+    [SerializeField] private Color victoryTitleColor = new Color(0.2f, 1f, 0.2f, 1f); // Green for "VICTORY!"
     [SerializeField] private Color scoreColor = new Color(1f, 0.84f, 0f, 1f); // Golden for score
     [SerializeField] private Color timerColor = new Color(1f, 1f, 1f, 1f); // White for timer
     
     [Header("Audio")]
     [SerializeField] private AudioClip gameOverSound;
+    [SerializeField] private AudioClip victorySound;
     [SerializeField] private AudioSource audioSource;
     
     // Private variables
@@ -33,6 +35,7 @@ public class GameOverUI : MonoBehaviour
     private Camera playerCamera;
     private PlayerHealth playerHealth;
     private bool isGameOver = false;
+    private bool isVictory = false;
     private Coroutine countdownCoroutine;
     
     private void Awake()
@@ -62,6 +65,10 @@ public class GameOverUI : MonoBehaviour
         {
             Debug.LogWarning("[GameOverUI] PlayerHealth component not found! Game over UI won't trigger.");
         }
+        
+        // Subscribe to victory event
+        GameLevelManager.OnVictoryAchieved += OnVictoryAchieved;
+        Debug.Log("[GameOverUI] Subscribed to GameLevelManager.OnVictoryAchieved event");
     }
     
     private void OnDestroy()
@@ -71,6 +78,8 @@ public class GameOverUI : MonoBehaviour
         {
             playerHealth.OnPlayerDied -= OnPlayerDied;
         }
+        
+        GameLevelManager.OnVictoryAchieved -= OnVictoryAchieved;
         
         // Stop any running coroutines
         if (countdownCoroutine != null)
@@ -99,49 +108,56 @@ public class GameOverUI : MonoBehaviour
         countdownCoroutine = StartCoroutine(CountdownCoroutine());
     }
     
-    private void CreateGameOverUI()
+    private void OnVictoryAchieved(int finalScore)
     {
-        // Create game over canvas (World Space)
-        GameObject canvasGO = new GameObject("GameOverCanvas_WorldSpace");
-        gameOverCanvas = canvasGO.AddComponent<Canvas>();
+        if (isGameOver) return; // Prevent multiple triggers
         
-        // Configure as World Space Canvas
-        gameOverCanvas.renderMode = RenderMode.WorldSpace;
-        gameOverCanvas.sortingOrder = 200; // Higher than other UI elements
+        isGameOver = true;
+        isVictory = true;
+        Debug.Log($"[GameOverUI] Victory achieved with {finalScore} points! Showing victory screen...");
         
-        // Position in front of player camera
-        if (playerCamera != null)
+        // Play victory sound
+        if (victorySound != null && audioSource != null)
         {
-            Vector3 cameraForward = playerCamera.transform.forward;
-            Vector3 cameraRight = playerCamera.transform.right;
-            Vector3 cameraUp = playerCamera.transform.up;
-            
-            Vector3 targetPosition = playerCamera.transform.position +
-                                   cameraForward * offsetFromCamera.z +
-                                   cameraRight * offsetFromCamera.x +
-                                   cameraUp * offsetFromCamera.y;
-            
-            canvasGO.transform.position = targetPosition;
-            
-            // Make canvas face the camera
-            Vector3 lookDirection = canvasGO.transform.position - playerCamera.transform.position;
-            canvasGO.transform.rotation = Quaternion.LookRotation(lookDirection);
+            audioSource.PlayOneShot(victorySound);
         }
         
-        // Set canvas scale and size
-        canvasGO.transform.localScale = Vector3.one * canvasScale;
-        var rectTransform = canvasGO.GetComponent<RectTransform>();
-        rectTransform.sizeDelta = canvasSize;
+        // Create and show victory UI
+        CreateGameOverUI();
         
-        // Add CanvasScaler for consistent scaling
+        // Start countdown timer
+        countdownCoroutine = StartCoroutine(CountdownCoroutine());
+    }
+    
+    private void CreateGameOverUI()
+    {
+        // Create game over canvas (Camera Space - fixed to camera)
+        GameObject canvasGO = new GameObject("GameOverCanvas_CameraSpace");
+        gameOverCanvas = canvasGO.AddComponent<Canvas>();
+        
+        // Configure as Screen Space - Camera Canvas (automatically follows camera)
+        gameOverCanvas.renderMode = RenderMode.ScreenSpaceCamera;
+        gameOverCanvas.worldCamera = playerCamera;
+        gameOverCanvas.sortingOrder = 200; // Higher than other UI elements
+        
+        // Set canvas distance from camera (using Z offset from original settings)
+        gameOverCanvas.planeDistance = offsetFromCamera.z;
+        
+        // Add CanvasScaler with original sizing approach for smaller panel
         var scaler = canvasGO.AddComponent<CanvasScaler>();
         scaler.uiScaleMode = CanvasScaler.ScaleMode.ConstantPixelSize;
-        scaler.scaleFactor = 1f;
+        scaler.scaleFactor = 0.5f; // Scale factor to make it smaller like the original
+        
+        // Canvas size is no longer needed since we use a fixed-size background panel
+        // The background panel will be 1200x700 and centered on the canvas
+        
+        // Add GraphicRaycaster for UI interactions (required for screen space canvas)
+        canvasGO.AddComponent<UnityEngine.UI.GraphicRaycaster>();
         
         // Create UI elements
         CreateGameOverElements();
         
-        Debug.Log($"[GameOverUI] Created Game Over UI at position: {canvasGO.transform.position}");
+        Debug.Log($"[GameOverUI] Created Game Over UI fixed to camera at distance: {gameOverCanvas.planeDistance}");
     }
     
     private void CreateGameOverElements()
@@ -154,18 +170,29 @@ public class GameOverUI : MonoBehaviour
         backgroundImage.color = backgroundColorDark;
         
         RectTransform backgroundRect = backgroundImage.rectTransform;
-        backgroundRect.anchorMin = Vector2.zero;
-        backgroundRect.anchorMax = Vector2.one;
-        backgroundRect.offsetMin = Vector2.zero;
-        backgroundRect.offsetMax = Vector2.zero;
+        // Center the panel instead of stretching it to fill the screen
+        backgroundRect.anchorMin = new Vector2(0.5f, 0.5f);
+        backgroundRect.anchorMax = new Vector2(0.5f, 0.5f);
+        backgroundRect.anchoredPosition = Vector2.zero;
+        backgroundRect.sizeDelta = new Vector2(1200f, 700f); // Larger panel size for better visibility
         
-        // Title Text: "GAME OVER"
+        // Title Text: "GAME OVER" or "VICTORY!"
         GameObject titleObject = new GameObject("TitleText");
         titleObject.transform.SetParent(backgroundPanel.transform, false);
         titleText = titleObject.AddComponent<TextMeshProUGUI>();
-        titleText.text = "GAME OVER";
-        titleText.fontSize = 64f;
-        titleText.color = titleColor;
+        
+        if (isVictory)
+        {
+            titleText.text = "VICTORY!";
+            titleText.color = victoryTitleColor;
+        }
+        else
+        {
+            titleText.text = "GAME OVER";
+            titleText.color = titleColor;
+        }
+        
+        titleText.fontSize = 80f; // Increased from 64f
         titleText.alignment = TextAlignmentOptions.Center;
         titleText.fontStyle = FontStyles.Bold;
         
@@ -187,8 +214,17 @@ public class GameOverUI : MonoBehaviour
             finalScore = ScoreManager.Instance.GetCurrentScore();
         }
         
-        scoreText.text = $"Final Score: {finalScore}";
-        scoreText.fontSize = 48f;
+        if (isVictory)
+        {
+            string levelName = GameLevelManager.Instance != null ? GameLevelManager.Instance.CurrentLevelName : "Unknown";
+            int winScore = GameLevelManager.Instance != null ? GameLevelManager.Instance.CurrentWinScore : 0;
+            scoreText.text = $"🎉 {levelName} Level Completed! 🎉\nFinal Score: {finalScore} / {winScore}";
+        }
+        else
+        {
+            scoreText.text = $"Final Score: {finalScore}";
+        }
+        scoreText.fontSize = 60f; // Increased from 48f
         scoreText.color = scoreColor;
         scoreText.alignment = TextAlignmentOptions.Center;
         scoreText.fontStyle = FontStyles.Bold;
@@ -204,7 +240,7 @@ public class GameOverUI : MonoBehaviour
         timerObject.transform.SetParent(backgroundPanel.transform, false);
         timerText = timerObject.AddComponent<TextMeshProUGUI>();
         timerText.text = $"Returning to Main Menu in {countdownTime:F0}s";
-        timerText.fontSize = 32f;
+        timerText.fontSize = 40f; // Increased from 32f
         timerText.color = timerColor;
         timerText.alignment = TextAlignmentOptions.Center;
         timerText.fontStyle = FontStyles.Normal;

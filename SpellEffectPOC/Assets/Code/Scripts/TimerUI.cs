@@ -159,7 +159,7 @@ public class TimerUI : MonoBehaviour
         textObject.transform.SetParent(timerContainer.transform, false);
         timerText = textObject.AddComponent<TextMeshProUGUI>();
         timerText.text = "2:00";
-        timerText.fontSize = 42f;
+        timerText.fontSize = 36f;
         timerText.color = timerTextNormal;
         timerText.alignment = TextAlignmentOptions.Center;
         timerText.fontStyle = FontStyles.Bold;

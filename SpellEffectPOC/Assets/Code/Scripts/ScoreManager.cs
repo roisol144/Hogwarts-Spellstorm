@@ -14,13 +14,13 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image scoreBackground;
     
-    [Header("VR UI Positioning (Legacy - Use StaticScoreDisplay instead)")]
-    [SerializeField] private bool enableCameraFollowingUI = false; // DISABLED: Use StaticScoreDisplay instead
+    [Header("VR UI Positioning")]
+    [SerializeField] private bool enableCameraFollowingUI = true; // ENABLED: Display like TimerUI but on right side
     [SerializeField] private Vector3 offsetFromCamera = new Vector3(0.4f, 0.3f, 0.8f); // Position relative to camera (right, above spell debug, forward)
     [SerializeField] private float followSpeed = 5f; // How fast to follow (0 = instant, higher = smoother)
     [SerializeField] private bool lookAtCamera = true; // Whether to face the camera
     [SerializeField] private float canvasScale = 0.003f; // Scale of the world space canvas (same as spell debug)
-    [SerializeField] private Vector2 canvasSize = new Vector2(300f, 80f); // Canvas size in pixels (adjustable in editor)
+    [SerializeField] private Vector2 canvasSize = new Vector2(200f, 80f); // Canvas size in pixels (same as timer)
     
     [Header("Visual Effects")]
     [SerializeField] private Color scoreTextColor = new Color(1f, 0.84f, 0f, 1f); // Golden color
@@ -146,7 +146,7 @@ public class ScoreManager : MonoBehaviour
         containerRect.anchorMin = new Vector2(0.5f, 0.5f);
         containerRect.anchorMax = new Vector2(0.5f, 0.5f);
         containerRect.anchoredPosition = Vector2.zero;
-        containerRect.sizeDelta = new Vector2(280f, 60f); // Score container (slightly smaller than canvas)
+        containerRect.sizeDelta = new Vector2(180f, 60f); // Score container (same size as timer)
         
         // Background
         GameObject bgObject = new GameObject("Background");

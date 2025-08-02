@@ -24,6 +24,10 @@ public class EnemyPortalConfig
     
     [Tooltip("Maximum height offset for random height (dementors)")]
     public float maxHeightOffset = 5f;
+    
+    [Header("Scale Configuration")]
+    [Tooltip("Scale multiplier for this enemy (1.0 = original size)")]
+    public float enemyScale = 1f;
 }
 
 public class EnemySpawner : MonoBehaviour
@@ -187,8 +191,16 @@ public class EnemySpawner : MonoBehaviour
         GameObject spawned = Instantiate(config.enemyPrefab, portalPosition, portalRotation);
         Debug.Log($"[EnemySpawner] Spawned {spawned.name} at position {spawned.transform.position}");
 
-        // Add enemy emergence animation to the final ground position
-        StartCoroutine(AnimateEnemyEmergence(spawned, portalPosition, enemySpawnPosition));
+        // Calculate final scale (prefab scale * configured scale)
+        Vector3 finalScale = spawned.transform.localScale;
+        if (config.enemyScale != 1f)
+        {
+            finalScale = spawned.transform.localScale * config.enemyScale;
+            Debug.Log($"[EnemySpawner] Final scale for {spawned.name}: {finalScale} (prefab: {spawned.transform.localScale} * config: {config.enemyScale})");
+        }
+
+        // Add enemy emergence animation to the final ground position with proper scale
+        StartCoroutine(AnimateEnemyEmergence(spawned, portalPosition, enemySpawnPosition, finalScale));
 
         // Add to active enemies list if using single enemy mode
         if (!useTimerBasedSpawning)
@@ -268,13 +280,22 @@ public class EnemySpawner : MonoBehaviour
     /// </summary>
     private IEnumerator AnimateEnemyEmergence(GameObject enemy, Vector3 startPos, Vector3 endPos)
     {
+        // Use current transform scale as target scale for backwards compatibility
+        return AnimateEnemyEmergence(enemy, startPos, endPos, enemy.transform.localScale);
+    }
+
+    /// <summary>
+    /// Animates enemy emerging from portal - moves down and scales up with natural falling motion
+    /// </summary>
+    private IEnumerator AnimateEnemyEmergence(GameObject enemy, Vector3 startPos, Vector3 endPos, Vector3 targetScale)
+    {
         if (enemy == null) yield break;
 
         float elapsedTime = 0f;
-        Vector3 originalScale = enemy.transform.localScale;
         
-        // Start with smaller scale for dramatic effect
-        enemy.transform.localScale = originalScale * 0.1f;
+        // Start with smaller scale for dramatic effect (10% of target scale)
+        Vector3 startScale = targetScale * 0.1f;
+        enemy.transform.localScale = startScale;
 
         while (elapsedTime < enemyEmergenceDuration)
         {
@@ -292,8 +313,8 @@ public class EnemySpawner : MonoBehaviour
             // Animate position with gravity-like acceleration
             enemy.transform.position = Vector3.Lerp(startPos, endPos, fallT);
             
-            // Animate scale smoothly
-            enemy.transform.localScale = Vector3.Lerp(originalScale * 0.1f, originalScale, scaleT);
+            // Animate scale smoothly from start scale to target scale
+            enemy.transform.localScale = Vector3.Lerp(startScale, targetScale, scaleT);
 
             elapsedTime += Time.deltaTime;
             yield return null;
@@ -303,7 +324,7 @@ public class EnemySpawner : MonoBehaviour
         if (enemy != null)
         {
             enemy.transform.position = endPos;
-            enemy.transform.localScale = originalScale;
+            enemy.transform.localScale = targetScale;
         }
     }
 
