@@ -95,6 +95,9 @@ public class GameLevelManager : MonoBehaviour
         // Apply current level settings
         ApplyCurrentLevel();
         
+        // Play defend castle announcement when game begins
+        GameAnnouncementAudio.PlayDefendTheCastleAnnouncement();
+        
         Debug.Log($"[GameLevelManager] Game started on {CurrentLevelName} level. Win condition: {CurrentWinScore} points");
     }
     
@@ -230,6 +233,9 @@ public class GameLevelManager : MonoBehaviour
         {
             audioSource.PlayOneShot(victorySound);
         }
+        
+        // Play Hogwarts is safe announcement
+        GameAnnouncementAudio.PlayHogwartsIsSafeAnnouncement();
         
         // Notify listeners (GameOverUI will handle the victory screen)
         OnVictoryAchieved?.Invoke(finalScore);

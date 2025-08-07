@@ -489,6 +489,9 @@ public class PlayerHealth : MonoBehaviour
             audioSource.PlayOneShot(deathSound);
         }
         
+        // Play defeat announcement
+        GameAnnouncementAudio.PlayDefeatAnnouncement();
+        
         // Update UI
         UpdateHealthUI();
         

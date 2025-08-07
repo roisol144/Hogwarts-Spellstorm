@@ -301,6 +301,9 @@ public class CollectibleSpawner : MonoBehaviour
             audioSource.PlayOneShot(challengeStartSound);
         }
         
+        // Play collect item announcement
+        GameAnnouncementAudio.PlayCollectTheItemAnnouncement();
+        
         // Notify UI
         OnChallengeStarted?.Invoke(spawnedItems.Count, (int)collectionTimeLimit);
         

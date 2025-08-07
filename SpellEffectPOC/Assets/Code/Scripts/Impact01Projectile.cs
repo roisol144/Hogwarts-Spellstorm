@@ -75,6 +75,9 @@ public class Impact01Projectile : MonoBehaviour
                     string correctSpell = GetCorrectSpellForEnemy(enemyType);
                     MagicalDebugUI.ShowHint($"Try using {correctSpell}...");
                     
+                    // Play audio hint for the enemy type
+                    EnemySpellHintAudio.PlayHintForEnemy(enemyType);
+                    
                     // Reduce points for using wrong spell (penalty: -5 points)
                     ScoreManager.NotifyPenalty(5, $"Wrong spell: {spellIntent} used on {enemyType}");
                     Debug.Log($"[Impact01] Applied penalty for wrong spell usage");
