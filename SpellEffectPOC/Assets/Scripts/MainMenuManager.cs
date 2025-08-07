@@ -8,6 +8,7 @@ public class MainMenuManager : MonoBehaviour
 {
     [Header("Menu Buttons")]
     [SerializeField] private Button playButton;
+    [SerializeField] private Button tutorialButton;
     [SerializeField] private Button scoreboardButton;
     [SerializeField] private Button spellsBookButton;
     [SerializeField] private Button quitButton;
@@ -47,6 +48,15 @@ public class MainMenuManager : MonoBehaviour
             playButton.onClick.AddListener(() => {
                 PlayButtonSound();
                 LoadScene("YardScene");
+            });
+        }
+
+        // Tutorial Button - Load Tutorial Scene
+        if (tutorialButton != null)
+        {
+            tutorialButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                LoadScene("TutorialScene");
             });
         }
 
