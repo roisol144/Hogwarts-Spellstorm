@@ -18,7 +18,15 @@ public class CollectibleUI : MonoBehaviour
     [SerializeField] private Image magicalBorder;
     [SerializeField] private Image backgroundGlow;
     
+    [Header("Font Settings")]
+    [SerializeField] private TMP_FontAsset customFont; // Custom font to use (if null, will try to auto-load magical font)
+    [SerializeField] private float timerFontSize = 42f;
+    [SerializeField] private float progressFontSize = 28f;
+    [SerializeField] private float messageFontSize = 22f;
+    [SerializeField] private Vector2 textPadding = new Vector2(15f, 5f); // Padding from container edges
+    
     [Header("VR UI Positioning")]
+    [SerializeField] private bool enableCameraFollowingUI = true; // Enable camera following behavior
     [SerializeField] private Vector3 offsetFromCamera = new Vector3(-0.6f, 0.2f, 1.2f); // More subtle positioning
     [SerializeField] private float followSpeed = 3f; // Slower, more graceful movement
     [SerializeField] private bool lookAtCamera = true;
@@ -108,8 +116,8 @@ public class CollectibleUI : MonoBehaviour
     
     void LateUpdate()
     {
-        // Follow the camera smoothly for VR UI with gentle floating motion
-        if (playerCamera != null && uiCanvas != null && isVisible)
+        // Follow the camera smoothly for VR UI with gentle floating motion (only if enabled)
+        if (enableCameraFollowingUI && playerCamera != null && uiCanvas != null && isVisible)
         {
             FollowCameraWithMagicalMotion();
         }
@@ -189,6 +197,9 @@ public class CollectibleUI : MonoBehaviour
         
         // Enchanted message text
         CreateMagicalMessageText(panelObject);
+        
+        // Load custom fonts for all text components
+        LoadMagicalFonts();
     }
     
     /// <summary>
@@ -202,7 +213,7 @@ public class CollectibleUI : MonoBehaviour
         
         // Configure magical timer appearance
         timerText.text = "2:00";
-        timerText.fontSize = 42f;
+        timerText.fontSize = timerFontSize;
         timerText.color = enchantedSilver;
         timerText.alignment = TextAlignmentOptions.Center;
         timerText.fontStyle = FontStyles.Bold;
@@ -213,8 +224,8 @@ public class CollectibleUI : MonoBehaviour
         RectTransform timerRect = timerText.rectTransform;
         timerRect.anchorMin = new Vector2(0f, 0.65f);
         timerRect.anchorMax = new Vector2(1f, 0.95f);
-        timerRect.offsetMin = new Vector2(15, 5);
-        timerRect.offsetMax = new Vector2(-15, -5);
+        timerRect.offsetMin = textPadding;
+        timerRect.offsetMax = -textPadding;
     }
     
     /// <summary>
@@ -227,7 +238,7 @@ public class CollectibleUI : MonoBehaviour
         progressText = progressObject.AddComponent<TextMeshProUGUI>();
         
         progressText.text = "0 of 4 Treasures Found";
-        progressText.fontSize = 28f;
+        progressText.fontSize = progressFontSize;
         progressText.color = magicalGold;
         progressText.alignment = TextAlignmentOptions.Center;
         progressText.fontStyle = FontStyles.Normal;
@@ -238,8 +249,8 @@ public class CollectibleUI : MonoBehaviour
         RectTransform progressRect = progressText.rectTransform;
         progressRect.anchorMin = new Vector2(0f, 0.4f);
         progressRect.anchorMax = new Vector2(1f, 0.65f);
-        progressRect.offsetMin = new Vector2(15, 5);
-        progressRect.offsetMax = new Vector2(-15, -5);
+        progressRect.offsetMin = textPadding;
+        progressRect.offsetMax = -textPadding;
     }
     
     /// <summary>
@@ -286,7 +297,7 @@ public class CollectibleUI : MonoBehaviour
         challengeMessageText = messageObject.AddComponent<TextMeshProUGUI>();
         
         challengeMessageText.text = "Seek the magical treasures...";
-        challengeMessageText.fontSize = 22f;
+        challengeMessageText.fontSize = messageFontSize;
         challengeMessageText.color = new Color(magicalGold.r, magicalGold.g, magicalGold.b, 0.9f);
         challengeMessageText.alignment = TextAlignmentOptions.Center;
         challengeMessageText.fontStyle = FontStyles.Italic;
@@ -297,8 +308,8 @@ public class CollectibleUI : MonoBehaviour
         RectTransform messageRect = challengeMessageText.rectTransform;
         messageRect.anchorMin = new Vector2(0f, 0.05f);
         messageRect.anchorMax = new Vector2(1f, 0.25f);
-        messageRect.offsetMin = new Vector2(15, 5);
-        messageRect.offsetMax = new Vector2(-15, -5);
+        messageRect.offsetMin = textPadding;
+        messageRect.offsetMax = -textPadding;
     }
     
     /// <summary>
@@ -309,6 +320,114 @@ public class CollectibleUI : MonoBehaviour
         // For now, return null - this would require custom shader setup
         // In a full implementation, you'd create a material with glow shader
         return null;
+    }
+    
+    /// <summary>
+    /// Loads custom fonts for all text components
+    /// </summary>
+    private void LoadMagicalFonts()
+    {
+        TMP_FontAsset fontToUse = null;
+        
+        // First priority: Use custom font if assigned
+        if (customFont != null)
+        {
+            fontToUse = customFont;
+        }
+        else
+        {
+            // Fallback: Try to load Harry Potter style font from Resources
+            fontToUse = Resources.Load<TMP_FontAsset>("Fonts/HarryPotter");
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/MagicalFont");
+            }
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/WizardFont");
+            }
+        }
+        
+        if (fontToUse != null)
+        {
+            if (timerText != null) timerText.font = fontToUse;
+            if (progressText != null) progressText.font = fontToUse;
+            if (challengeMessageText != null) challengeMessageText.font = fontToUse;
+            Debug.Log("[CollectibleUI] Loaded font: " + fontToUse.name);
+        }
+        else if (customFont == null)
+        {
+            Debug.LogWarning("[CollectibleUI] No custom font assigned and no magical font found in Resources.");
+        }
+    }
+    
+    /// <summary>
+    /// Applies current font and size settings to all text components. Useful for runtime changes.
+    /// </summary>
+    public void RefreshTextSettings()
+    {
+        if (timerText != null)
+        {
+            timerText.fontSize = timerFontSize;
+            var timerRect = timerText.rectTransform;
+            timerRect.offsetMin = textPadding;
+            timerRect.offsetMax = -textPadding;
+        }
+        
+        if (progressText != null)
+        {
+            progressText.fontSize = progressFontSize;
+            var progressRect = progressText.rectTransform;
+            progressRect.offsetMin = textPadding;
+            progressRect.offsetMax = -textPadding;
+        }
+        
+        if (challengeMessageText != null)
+        {
+            challengeMessageText.fontSize = messageFontSize;
+            var messageRect = challengeMessageText.rectTransform;
+            messageRect.offsetMin = textPadding;
+            messageRect.offsetMax = -textPadding;
+        }
+        
+        LoadMagicalFonts();
+    }
+    
+    private void OnValidate()
+    {
+        // Apply inspector changes in editor and play mode
+        if (timerText != null)
+        {
+            timerText.fontSize = timerFontSize;
+            var timerRect = timerText.rectTransform;
+            timerRect.offsetMin = textPadding;
+            timerRect.offsetMax = -textPadding;
+        }
+        
+        if (progressText != null)
+        {
+            progressText.fontSize = progressFontSize;
+            var progressRect = progressText.rectTransform;
+            progressRect.offsetMin = textPadding;
+            progressRect.offsetMax = -textPadding;
+        }
+        
+        if (challengeMessageText != null)
+        {
+            challengeMessageText.fontSize = messageFontSize;
+            var messageRect = challengeMessageText.rectTransform;
+            messageRect.offsetMin = textPadding;
+            messageRect.offsetMax = -textPadding;
+        }
+        
+        if (uiCanvas != null)
+        {
+            var rectTransform = uiCanvas.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = canvasSize;
+            uiCanvas.transform.localScale = Vector3.one * canvasScale;
+        }
+        
+        LoadMagicalFonts();
     }
     
     /// <summary>

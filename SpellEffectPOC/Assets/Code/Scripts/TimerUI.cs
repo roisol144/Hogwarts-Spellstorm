@@ -11,8 +11,12 @@ public class TimerUI : MonoBehaviour
     [SerializeField] private Canvas timerCanvas; // Will be created if null
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private Image timerBackground;
+    [SerializeField] private TMP_FontAsset customFont; // Custom font to use (if null, will try to auto-load magical font)
+    [SerializeField] private float fontSize = 36f;
+    [SerializeField] private Vector2 textPadding = new Vector2(10f, 10f); // Padding from container edges
     
     [Header("VR UI Positioning")]
+    [SerializeField] private bool enableCameraFollowingUI = true; // Enable camera following behavior
     [SerializeField] private Vector3 offsetFromCamera = new Vector3(-0.4f, 0.3f, 0.8f); // Position relative to camera (LEFT side, opposite of score)
     [SerializeField] private float followSpeed = 5f; // How fast to follow (0 = instant, higher = smoother)
     [SerializeField] private bool lookAtCamera = true; // Whether to face the camera
@@ -78,8 +82,8 @@ public class TimerUI : MonoBehaviour
     
     private void LateUpdate()
     {
-        // Follow the camera smoothly for VR UI
-        if (playerCamera != null && timerCanvas != null && isTimerActive)
+        // Follow the camera smoothly for VR UI (only if enabled)
+        if (enableCameraFollowingUI && playerCamera != null && timerCanvas != null && isTimerActive)
         {
             FollowCamera();
         }
@@ -159,7 +163,7 @@ public class TimerUI : MonoBehaviour
         textObject.transform.SetParent(timerContainer.transform, false);
         timerText = textObject.AddComponent<TextMeshProUGUI>();
         timerText.text = "2:00";
-        timerText.fontSize = 36f;
+        timerText.fontSize = fontSize;
         timerText.color = timerTextNormal;
         timerText.alignment = TextAlignmentOptions.Center;
         timerText.fontStyle = FontStyles.Bold;
@@ -167,8 +171,8 @@ public class TimerUI : MonoBehaviour
         RectTransform textRect = timerText.rectTransform;
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(10, 10);
-        textRect.offsetMax = new Vector2(-10, -10);
+        textRect.offsetMin = textPadding;
+        textRect.offsetMax = -textPadding;
         
         // Try to load a magical font (same as ScoreManager)
         LoadMagicalFont();
@@ -178,21 +182,47 @@ public class TimerUI : MonoBehaviour
     
     private void LoadMagicalFont()
     {
-        // Try to load Harry Potter style font from Resources
-        var magicalFont = Resources.Load<TMP_FontAsset>("Fonts/HarryPotter");
-        if (magicalFont == null)
+        TMP_FontAsset fontToUse = null;
+        
+        // First priority: Use custom font if assigned
+        if (customFont != null)
         {
-            magicalFont = Resources.Load<TMP_FontAsset>("Fonts/MagicalFont");
+            fontToUse = customFont;
         }
-        if (magicalFont == null)
+        else
         {
-            magicalFont = Resources.Load<TMP_FontAsset>("Fonts/WizardFont");
+            // Fallback: Try to load Harry Potter style font from Resources
+            fontToUse = Resources.Load<TMP_FontAsset>("Fonts/HarryPotter");
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/MagicalFont");
+            }
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/WizardFont");
+            }
         }
         
-        if (magicalFont != null && timerText != null)
+        if (fontToUse != null && timerText != null)
         {
-            timerText.font = magicalFont;
-            Debug.Log("[TimerUI] Loaded magical font: " + magicalFont.name);
+            timerText.font = fontToUse;
+            Debug.Log("[TimerUI] Loaded font: " + fontToUse.name);
+        }
+        else if (customFont == null)
+        {
+            Debug.LogWarning("[TimerUI] No custom font assigned and no magical font found in Resources.");
+        }
+    }
+
+    /// <summary>
+    /// Applies current font and size settings to the timer text. Useful for runtime changes.
+    /// </summary>
+    public void RefreshTextSettings()
+    {
+        if (timerText != null)
+        {
+            LoadMagicalFont();
+            timerText.fontSize = fontSize;
         }
     }
     

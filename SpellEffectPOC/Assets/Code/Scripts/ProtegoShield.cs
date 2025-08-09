@@ -57,8 +57,11 @@ public class ProtegoShield : MonoBehaviour
         isActive = true;
         Debug.Log("[ProtegoShield] Shield activated!");
         
-        // Create visual effect
-        CreateShieldVisual();
+        // Create visual effect only if no external prefab instance is already provided
+        if (protegoPrefabInstance == null)
+        {
+            CreateShieldVisual();
+        }
         
         // Play activation sound
         if (shieldActivateSound != null && audioSource != null)
@@ -268,5 +271,17 @@ public class ProtegoShield : MonoBehaviour
     {
         protegoPrefabInstance = prefabInstance;
         Debug.Log($"[ProtegoShield] Protego prefab instance set: {prefabInstance?.name}");
+    }
+
+    // Public setter to override shield radius dynamically
+    public void SetShieldRadius(float radius)
+    {
+        shieldRadius = Mathf.Max(0f, radius);
+
+        // If using the built-in sphere visual, update its scale to reflect new radius
+        if (shieldVisual != null && protegoPrefabInstance == null)
+        {
+            shieldVisual.transform.localScale = Vector3.one * shieldRadius * 2f;
+        }
     }
 } 

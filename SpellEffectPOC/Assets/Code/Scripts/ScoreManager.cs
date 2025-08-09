@@ -13,6 +13,9 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private Canvas scoreCanvas; // Will be created if null
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private Image scoreBackground;
+    [SerializeField] private TMP_FontAsset customFont; // Custom font to use (if null, will try to auto-load magical font)
+    [SerializeField] private float fontSize = 36f;
+    [SerializeField] private Vector2 textPadding = new Vector2(10f, 10f); // Padding from container edges
     
     [Header("VR UI Positioning")]
     [SerializeField] private bool enableCameraFollowingUI = true; // ENABLED: Display like TimerUI but on right side
@@ -165,7 +168,7 @@ public class ScoreManager : MonoBehaviour
         textObject.transform.SetParent(scoreContainer.transform, false);
         scoreText = textObject.AddComponent<TextMeshProUGUI>();
         scoreText.text = "Score: 0";
-        scoreText.fontSize = 36f;
+        scoreText.fontSize = fontSize;
         scoreText.color = scoreTextColor;
         scoreText.alignment = TextAlignmentOptions.Center;
         scoreText.fontStyle = FontStyles.Bold;
@@ -173,8 +176,8 @@ public class ScoreManager : MonoBehaviour
         RectTransform textRect = scoreText.rectTransform;
         textRect.anchorMin = Vector2.zero;
         textRect.anchorMax = Vector2.one;
-        textRect.offsetMin = new Vector2(10, 10);
-        textRect.offsetMax = new Vector2(-10, -10);
+        textRect.offsetMin = textPadding;
+        textRect.offsetMax = -textPadding;
         
         // Try to load a magical font (same as MagicalDebugUI)
         LoadMagicalFont();
@@ -184,25 +187,47 @@ public class ScoreManager : MonoBehaviour
     
     private void LoadMagicalFont()
     {
-        // Try to load Harry Potter style font from Resources
-        var magicalFont = Resources.Load<TMP_FontAsset>("Fonts/HarryPotter");
-        if (magicalFont == null)
-        {
-            magicalFont = Resources.Load<TMP_FontAsset>("Fonts/MagicalFont");
-        }
-        if (magicalFont == null)
-        {
-            magicalFont = Resources.Load<TMP_FontAsset>("Fonts/WizardFont");
-        }
+        TMP_FontAsset fontToUse = null;
         
-        if (magicalFont != null && scoreText != null)
+        // First priority: Use custom font if assigned
+        if (customFont != null)
         {
-            scoreText.font = magicalFont;
-            Debug.Log("[ScoreManager] Loaded magical font: " + magicalFont.name);
+            fontToUse = customFont;
         }
         else
         {
-            Debug.LogWarning("[ScoreManager] No magical font found. Using default font.");
+            // Fallback: Try to load Harry Potter style font from Resources
+            fontToUse = Resources.Load<TMP_FontAsset>("Fonts/HarryPotter");
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/MagicalFont");
+            }
+            if (fontToUse == null)
+            {
+                fontToUse = Resources.Load<TMP_FontAsset>("Fonts/WizardFont");
+            }
+        }
+        
+        if (fontToUse != null && scoreText != null)
+        {
+            scoreText.font = fontToUse;
+            Debug.Log("[ScoreManager] Loaded font: " + fontToUse.name);
+        }
+        else if (customFont == null)
+        {
+            Debug.LogWarning("[ScoreManager] No custom font assigned and no magical font found in Resources.");
+        }
+    }
+
+    /// <summary>
+    /// Applies current font and size settings to the score text. Useful for runtime changes.
+    /// </summary>
+    public void RefreshTextSettings()
+    {
+        if (scoreText != null)
+        {
+            LoadMagicalFont();
+            scoreText.fontSize = fontSize;
         }
     }
     

@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -39,6 +41,14 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private AudioClip lowHealthHeartbeat;
     [SerializeField] private AudioClip deathSound;
     [SerializeField] private AudioSource audioSource;
+
+    [Header("Haptics - Damage")]
+    [SerializeField] private XRBaseController leftHandController;
+    [SerializeField] private XRBaseController rightHandController;
+    [SerializeField, Range(0f, 1f)] private float damageHapticAmplitude = 0.85f;
+    [SerializeField, Min(0f)] private float damageHapticDuration = 0.08f;
+    [SerializeField, Min(1)] private int damageHapticPulseCount = 3;
+    [SerializeField, Min(0.01f)] private float damageHapticInterval = 0.08f;
     
     // Private variables
     private bool isDead = false;
@@ -47,6 +57,7 @@ public class PlayerHealth : MonoBehaviour
     private Coroutine damageEffectCoroutine;
     private Coroutine lowHealthEffectCoroutine;
     private Camera playerCamera;
+    private Coroutine damageHapticsCoroutine;
     
     // Events
     public System.Action<float> OnHealthChanged; // float = health percentage (0-1)
@@ -73,6 +84,9 @@ public class PlayerHealth : MonoBehaviour
         
         // Setup UI
         SetupHealthUI();
+
+        // Try to auto-assign XR controllers if not set
+        AutoAssignControllersIfNeeded();
     }
     
     private void Start()
@@ -287,6 +301,9 @@ public class PlayerHealth : MonoBehaviour
             audioSource.PlayOneShot(damageSound);
         }
         
+        // Haptics: burst on both controllers
+        TriggerDamageHaptics();
+
         // Trigger damage visual effects
         TriggerDamageEffect();
         
@@ -321,6 +338,70 @@ public class PlayerHealth : MonoBehaviour
                 StartLowHealthEffects();
             }
         }
+    }
+
+    private void AutoAssignControllersIfNeeded()
+    {
+        if (leftHandController == null || rightHandController == null)
+        {
+            var legacyControllers = FindObjectsOfType<XRController>(true);
+            foreach (var ctrl in legacyControllers)
+            {
+                if (ctrl.controllerNode == XRNode.LeftHand && leftHandController == null)
+                {
+                    leftHandController = ctrl;
+                }
+                else if (ctrl.controllerNode == XRNode.RightHand && rightHandController == null)
+                {
+                    rightHandController = ctrl;
+                }
+            }
+
+            if (leftHandController == null || rightHandController == null)
+            {
+                var controllers = FindObjectsOfType<XRBaseController>(true);
+                foreach (var ctrl in controllers)
+                {
+                    var nameLower = ctrl.name.ToLowerInvariant();
+                    if (leftHandController == null && nameLower.Contains("left"))
+                    {
+                        leftHandController = ctrl;
+                    }
+                    else if (rightHandController == null && nameLower.Contains("right"))
+                    {
+                        rightHandController = ctrl;
+                    }
+                }
+            }
+        }
+    }
+
+    private void TriggerDamageHaptics()
+    {
+        if (damageHapticsCoroutine != null)
+        {
+            StopCoroutine(damageHapticsCoroutine);
+        }
+        damageHapticsCoroutine = StartCoroutine(DamageHapticsBurst());
+    }
+
+    private IEnumerator DamageHapticsBurst()
+    {
+        int pulses = Mathf.Max(1, damageHapticPulseCount);
+        var wait = new WaitForSeconds(damageHapticInterval);
+        for (int i = 0; i < pulses; i++)
+        {
+            if (leftHandController != null)
+            {
+                try { HapticController.SendHaptics(leftHandController, damageHapticAmplitude, damageHapticDuration); } catch {}
+            }
+            if (rightHandController != null)
+            {
+                try { HapticController.SendHaptics(rightHandController, damageHapticAmplitude, damageHapticDuration); } catch {}
+            }
+            yield return wait;
+        }
+        damageHapticsCoroutine = null;
     }
     
     public void Heal(float amount)

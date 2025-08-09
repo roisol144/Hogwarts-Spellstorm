@@ -308,7 +308,7 @@ public class CollectibleSpawner : MonoBehaviour
         OnChallengeStarted?.Invoke(spawnedItems.Count, (int)collectionTimeLimit);
         
         // Show challenge message
-        string message = $"Collectible Challenge Started! Collect all {spawnedItems.Count} {itemType} in {collectionTimeLimit / 60f:F1} minutes!";
+        string message = $"Collectible Challenge Started!\nCollect all {spawnedItems.Count} {itemType} in {collectionTimeLimit / 60f:F1} minutes!";
         MagicalDebugUI.ShowHint(message, announcementDuration);
         
         Debug.Log($"[CollectibleSpawner] Spawned {spawnedItems.Count} {itemType} at various locations. Challenge started!");

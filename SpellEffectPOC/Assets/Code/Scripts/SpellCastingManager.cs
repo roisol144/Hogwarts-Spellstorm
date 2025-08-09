@@ -1,8 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.InputSystem;
 using TMPro;
+using UnityEngine.XR;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class SpellCastingManager : MonoBehaviour
 {
@@ -20,6 +23,7 @@ public class SpellCastingManager : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private InputAction triggerAction;
+    [SerializeField] private InputAction gripAction;
 
     [Header("Audio")]
     [SerializeField] private AudioSource audioSource;
@@ -31,6 +35,19 @@ public class SpellCastingManager : MonoBehaviour
     [SerializeField] private AudioClip bombardoCastSound;
     [SerializeField] private AudioClip expectoPatronumCastSound;
     [SerializeField] private AudioClip accioCastSound;
+
+    [Header("Haptics")]
+    [SerializeField] private XRBaseController rightHandController;
+    [SerializeField, Range(0f, 1f)] private float weakHapticAmplitude = 0.25f;
+    [SerializeField, Range(0f, 1f)] private float strongHapticAmplitude = 0.75f;
+    [SerializeField, Min(0f)] private float hapticDuration = 0.1f;
+    [SerializeField, Min(0.01f)] private float gripHapticInterval = 0.1f;
+    [SerializeField, Range(0f, 1f)] private float gripHoldAmplitude = 0.10f;
+    [SerializeField, Min(0f)] private float specialHapticDuration = 0.2f;
+    [SerializeField, Min(0f)] private float gripSuppressAfterSpecialSeconds = 0.2f;
+    private bool _isGripHeld = false;
+    private Coroutine _gripHapticsRoutine = null;
+    private float _gripSuppressUntilTime = 0f;
 
     [Header("UI - Legacy (now handled by MagicalDebugUI)")]
     [SerializeField] private TextMeshProUGUI spellCastText; // Keep for backward compatibility but use MagicalDebugUI instead
@@ -138,6 +155,43 @@ public class SpellCastingManager : MonoBehaviour
                 Debug.LogWarning("[SpellCastingManager] Could not load grip cast sound from Resources/Sounds/magic_spell");
             }
         }
+
+        // Try to auto-assign right-hand controller if not set
+        if (rightHandController == null)
+        {
+            // Prefer legacy XRController with RightHand node
+            var legacyControllers = FindObjectsOfType<XRController>(true);
+            foreach (var ctrl in legacyControllers)
+            {
+                if (ctrl.controllerNode == XRNode.RightHand)
+                {
+                    rightHandController = ctrl;
+                    Debug.Log("[SpellCastingManager] Auto-assigned rightHandController from XRController (RightHand)");
+                    break;
+                }
+            }
+
+            // Fallback: pick any XRBaseController with name hint
+            if (rightHandController == null)
+            {
+                var controllers = FindObjectsOfType<XRBaseController>(true);
+                foreach (var ctrl in controllers)
+                {
+                    var nameLower = ctrl.name.ToLowerInvariant();
+                    if (nameLower.Contains("right"))
+                    {
+                        rightHandController = ctrl;
+                        Debug.Log("[SpellCastingManager] Auto-assigned rightHandController by name hint: " + ctrl.name);
+                        break;
+                    }
+                }
+            }
+
+            if (rightHandController == null)
+            {
+                Debug.LogWarning("[SpellCastingManager] rightHandController not assigned. Assign an XR controller in the inspector for haptics.");
+            }
+        }
         
         if (movementRecognizer != null)
             movementRecognizer.OnRecognized.AddListener(OnGestureRecognized);
@@ -146,22 +200,77 @@ public class SpellCastingManager : MonoBehaviour
 
         // Setup trigger input
         triggerAction.performed += OnTriggerPressed;
+
+        // Setup grip input for continuous weak haptics while held
+        if (gripAction != null)
+        {
+            // Provide common default bindings if none set
+            if (gripAction.bindings.Count == 0)
+            {
+                gripAction.AddBinding("<XRController>{RightHand}/gripPressed");
+                gripAction.AddBinding("<OculusTouchController>{RightHand}/gripPressed");
+            }
+            gripAction.started += OnGripStarted;
+            gripAction.canceled += OnGripCanceled;
+        }
     }
 
     void OnEnable()
     {
         triggerAction.Enable();
+        if (gripAction != null) gripAction.Enable();
     }
 
     void OnDisable()
     {
         triggerAction.Disable();
+        if (gripAction != null) gripAction.Disable();
+        if (_gripHapticsRoutine != null)
+        {
+            StopCoroutine(_gripHapticsRoutine);
+            _gripHapticsRoutine = null;
+        }
+        _isGripHeld = false;
     }
 
     private void OnTriggerPressed(InputAction.CallbackContext context)
     {
         Debug.Log("[SpellCastingManager] Trigger pressed, casting default fireball!");
         CastSpellEffect("default");
+        TriggerHaptics(weakHapticAmplitude, hapticDuration);
+    }
+
+    private void OnGripStarted(InputAction.CallbackContext context)
+    {
+        _isGripHeld = true;
+        if (_gripHapticsRoutine == null)
+        {
+            _gripHapticsRoutine = StartCoroutine(GripHapticsLoop());
+        }
+    }
+
+    private void OnGripCanceled(InputAction.CallbackContext context)
+    {
+        _isGripHeld = false;
+        if (_gripHapticsRoutine != null)
+        {
+            StopCoroutine(_gripHapticsRoutine);
+            _gripHapticsRoutine = null;
+        }
+    }
+
+    private IEnumerator GripHapticsLoop()
+    {
+        // Gentle continuous pulses while grip is held
+        var wait = new WaitForSeconds(gripHapticInterval);
+        while (_isGripHeld)
+        {
+            if (Time.time >= _gripSuppressUntilTime)
+            {
+                TriggerHaptics(gripHoldAmplitude, hapticDuration);
+            }
+            yield return wait;
+        }
     }
 
     private void OnGestureRecognized(string gestureName)
@@ -203,6 +312,10 @@ public class SpellCastingManager : MonoBehaviour
                 PlayGripCastSound(lastRecognizedIntent);
                 
                 CastSpellEffect(lastRecognizedIntent);
+                
+                // Strong haptics for successful special spell
+                TriggerHaptics(strongHapticAmplitude, specialHapticDuration);
+                _gripSuppressUntilTime = Time.time + specialHapticDuration + gripSuppressAfterSpecialSeconds;
                 // Reset so it doesn't double-fire
                 lastRecognizedGesture = null;
                 lastRecognizedIntent = null;
@@ -215,6 +328,28 @@ public class SpellCastingManager : MonoBehaviour
         else
         {
             Debug.Log($"[SpellCastingManager] Intent '{lastRecognizedIntent}' not found in mapping.");
+        }
+    }
+
+    private bool _hapticsWarnedOnce = false;
+    private void TriggerHaptics(float amplitude, float duration)
+    {
+        if (rightHandController != null)
+        {
+            var clamped = Mathf.Clamp01(amplitude);
+            try
+            {
+                HapticController.SendHaptics(rightHandController, clamped, duration);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[SpellCastingManager] Failed to send haptics: {ex.Message}");
+            }
+        }
+        else if (!_hapticsWarnedOnce)
+        {
+            _hapticsWarnedOnce = true;
+            Debug.LogWarning("[SpellCastingManager] No right-hand XR controller assigned; haptics disabled.");
         }
     }
 
@@ -446,6 +581,43 @@ public class SpellCastingManager : MonoBehaviour
         if (protegoPrefabInstance != null)
         {
             protegoShield.SetProtegoPrefabInstance(protegoPrefabInstance);
+        }
+
+        // Apply per-enemy Protego configuration if available
+        ProtegoConfig protegoConfig = targetEnemy.GetComponent<ProtegoConfig>();
+        if (protegoConfig != null)
+        {
+            // Set logical radius for shield logic & gizmos
+            protegoShield.SetShieldRadius(protegoConfig.shieldRadius);
+
+            // Adjust particle systems' Start Size on the instantiated prefab, if present
+            if (protegoPrefabInstance != null)
+            {
+                var particleSystems = protegoPrefabInstance.GetComponentsInChildren<ParticleSystem>(true);
+                foreach (var ps in particleSystems)
+                {
+                    // Skip any particle system that is on or under a GameObject named "Trails"
+                    Transform t = ps.transform;
+                    bool isUnderTrails = false;
+                    while (t != null)
+                    {
+                        if (t.name == "Trails")
+                        {
+                            isUnderTrails = true;
+                            break;
+                        }
+                        t = t.parent;
+                    }
+                    if (isUnderTrails) continue;
+
+                    var main = ps.main;
+                    // Only override if flagged to do so, otherwise leave prefab default
+                    if (protegoConfig.overrideStartSize)
+                    {
+                        main.startSize = protegoConfig.startSize;
+                    }
+                }
+            }
         }
         
         Debug.Log($"[SpellCastingManager] Protego shield created around enemy {targetEnemy.name} at {targetEnemy.transform.position}");

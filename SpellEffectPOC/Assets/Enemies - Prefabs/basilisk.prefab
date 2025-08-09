@@ -152,6 +152,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2222222222222222222}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e1b84e16f5d19bd44ba4e72b64f68993,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1712845269049350950}
   m_SourcePrefab: {fileID: 100100000, guid: e1b84e16f5d19bd44ba4e72b64f68993, type: 3}
 --- !u!1 &4771754527510926757 stripped
 GameObject:
@@ -274,3 +278,18 @@ MonoBehaviour:
   attackType: 0
   autoAttack: 1
   autoAttackInterval: 3.5
+--- !u!114 &1712845269049350950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4771754527510926757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5bb8b859df7f443a6b3d9a986d722c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shieldRadius: 5
+  overrideStartSize: 1
+  startSize: 6

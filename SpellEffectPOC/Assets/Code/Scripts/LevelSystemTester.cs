@@ -8,6 +8,26 @@ public class LevelSystemTester : MonoBehaviour
     [Header("Testing")]
     [SerializeField] private bool showDebugInfo = true;
     
+    [Header("Hotkeys (Configurable)")]
+    [Tooltip("Key to log current level info to the console")] 
+    [SerializeField] private KeyCode keyLogLevelInfo = KeyCode.L;
+    
+    [Tooltip("Key to switch to Level 1 (index 0)")] 
+    [SerializeField] private KeyCode keySwitchLevel1 = KeyCode.Alpha1;
+    [Tooltip("Key to switch to Level 2 (index 1)")] 
+    [SerializeField] private KeyCode keySwitchLevel2 = KeyCode.Alpha2;
+    [Tooltip("Key to switch to Level 3 (index 2)")] 
+    [SerializeField] private KeyCode keySwitchLevel3 = KeyCode.Alpha3;
+    
+    [Tooltip("Key to trigger the victory test")] 
+    [SerializeField] private KeyCode keyTestVictory = KeyCode.V;
+    
+    [Tooltip("Key to add score for testing")] 
+    [SerializeField] private KeyCode keyAddScore = KeyCode.S;
+    
+    [Tooltip("Amount of score to add when the add-score hotkey is pressed")] 
+    [SerializeField] private int addScoreAmount = 100;
+    
     void Start()
     {
         if (showDebugInfo)
@@ -18,33 +38,33 @@ public class LevelSystemTester : MonoBehaviour
     
     void Update()
     {
-        if (showDebugInfo && Input.GetKeyDown(KeyCode.L))
+        if (showDebugInfo && Input.GetKeyDown(keyLogLevelInfo))
         {
             LogCurrentLevelInfo();
         }
         
         // Test level switching with number keys
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (Input.GetKeyDown(keySwitchLevel1))
         {
             SwitchToLevel(0, "Beginner");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (Input.GetKeyDown(keySwitchLevel2))
         {
             SwitchToLevel(1, "Intermediate");
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (Input.GetKeyDown(keySwitchLevel3))
         {
             SwitchToLevel(2, "Advanced");
         }
         
         // Test victory condition
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Input.GetKeyDown(keyTestVictory))
         {
             TestVictory();
         }
         
         // Add score for testing
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(keyAddScore))
         {
             AddTestScore();
         }
@@ -100,8 +120,8 @@ public class LevelSystemTester : MonoBehaviour
     {
         if (ScoreManager.Instance != null)
         {
-            ScoreManager.Instance.AddScore(100);
-            Debug.Log("[LevelSystemTester] Added 100 points!");
+            ScoreManager.Instance.AddScore(addScoreAmount);
+            Debug.Log($"[LevelSystemTester] Added {addScoreAmount} points!");
         }
     }
     
@@ -133,10 +153,10 @@ public class LevelSystemTester : MonoBehaviour
         
         GUILayout.Space(10);
         GUILayout.Label("Controls:");
-        GUILayout.Label("1/2/3 - Switch Levels");
-        GUILayout.Label("S - Add 100 Score");
-        GUILayout.Label("V - Test Victory");
-        GUILayout.Label("L - Log Level Info");
+        GUILayout.Label($"{keySwitchLevel1}/{keySwitchLevel2}/{keySwitchLevel3} - Switch Levels");
+        GUILayout.Label($"{keyAddScore} - Add {addScoreAmount} Score");
+        GUILayout.Label($"{keyTestVictory} - Test Victory");
+        GUILayout.Label($"{keyLogLevelInfo} - Log Level Info");
         
         GUILayout.EndArea();
     }
