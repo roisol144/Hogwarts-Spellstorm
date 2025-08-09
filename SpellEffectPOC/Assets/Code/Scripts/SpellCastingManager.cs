@@ -59,7 +59,6 @@ public class SpellCastingManager : MonoBehaviour
 
     private Dictionary<string, string> intentToGesture = new Dictionary<string, string>
     {
-        { "cast_accio", "cast_accio" },
         { "cast_bombardo", "cast_bombardo" },
         { "cast_expecto_patronum", "cast_expecto_patronum" },
         { "cast_protego", "cast_protego" },

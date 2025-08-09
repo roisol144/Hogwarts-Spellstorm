@@ -7,12 +7,17 @@ using Meta.WitAi.Data.Intents;
 using Oculus.Voice;
 using TMPro;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class TutorialVoiceTrainer : MonoBehaviour
 {
     [Header("Voice Recognition")]
     [SerializeField] private AppVoiceExperience appVoiceExperience;
     [SerializeField] private AudioSource voiceRecognitionAudioSource; // For voice feedback sounds
+    
+    [Header("Spell Casting Integration")]
+    [SerializeField] private SpellCastingManager spellCastingManager;
+    [SerializeField] private MovementRecognizer movementRecognizer;
     
     [Header("Tutorial Audio")]
     [SerializeField] private AudioSource tutorialAudioSource; // Separate audio source for tutorial sounds
@@ -39,6 +44,7 @@ public class TutorialVoiceTrainer : MonoBehaviour
     [Header("Input")]
     [SerializeField] private InputAction triggerAction = new InputAction("Trigger", InputActionType.Button);
     [SerializeField] private InputAction spellSwitchAction = new InputAction("Spell Switch", InputActionType.Button);
+    [SerializeField] private InputAction returnToMenuAction = new InputAction("Return to Menu", InputActionType.Button);
     
     [Header("Feedback")]
     [SerializeField] private Color correctColor = Color.green;
@@ -61,6 +67,13 @@ public class TutorialVoiceTrainer : MonoBehaviour
     // Progress tracking
     private int consecutiveSuccesses = 0;
     
+    // Spell casting tracking
+    private string lastRecognizedVoice = null;
+    private float lastVoiceTime = -10f;
+    private string lastRecognizedGesture = null;
+    private float lastGestureTime = -10f;
+    private float spellMatchWindow = 3f; // Time window for voice + gesture matching
+    
     // Spell name mappings for user-friendly display
     private Dictionary<string, string> spellDisplayNames = new Dictionary<string, string>
     {
@@ -68,12 +81,15 @@ public class TutorialVoiceTrainer : MonoBehaviour
         { "cast_expecto_patronum", "Expecto Patronum" },
         { "cast_stupefy", "Stupefy" },
         { "cast_protego", "Protego" },
-        { "cast_accio", "Accio" }
     };
 
     void Start()
     {
+        // Ensure spell array is properly initialized (fix for Quest 3 serialization issue)
+        ValidateSpellArray();
+        
         InitializeVoiceRecognition();
+        InitializeSpellCasting();
         InitializeUI();
         SetupInputActions();
         LoadWelcomeMessage();
@@ -83,6 +99,21 @@ public class TutorialVoiceTrainer : MonoBehaviour
         if (playWelcomeOnStart)
         {
             StartCoroutine(PlayWelcomeMessageDelayed(1f));
+        }
+    }
+    
+    private void ValidateSpellArray()
+    {
+        // Fix for Quest 3 serialization issue - ensure all spells are present
+        if (spellNames == null || spellNames.Length != 5)
+        {
+            spellNames = new string[]
+            {
+                "cast_bombardo",
+                "cast_expecto_patronum", 
+                "cast_stupefy",
+                "cast_protego"
+            };
         }
     }
 
@@ -107,10 +138,43 @@ public class TutorialVoiceTrainer : MonoBehaviour
         }
     }
     
+    void InitializeSpellCasting()
+    {
+        // Auto-find SpellCastingManager if not assigned
+        if (spellCastingManager == null)
+        {
+            spellCastingManager = FindObjectOfType<SpellCastingManager>();
+        }
+        
+        // Auto-find MovementRecognizer if not assigned
+        if (movementRecognizer == null)
+        {
+            movementRecognizer = FindObjectOfType<MovementRecognizer>();
+        }
+        
+        if (movementRecognizer != null)
+        {
+            movementRecognizer.OnRecognized.AddListener(OnGestureRecognized);
+            Debug.Log("[TutorialVoiceTrainer] Connected to MovementRecognizer");
+        }
+        else
+        {
+            Debug.LogWarning("[TutorialVoiceTrainer] No MovementRecognizer found!");
+        }
+        
+        if (spellCastingManager != null)
+        {
+            Debug.Log("[TutorialVoiceTrainer] Connected to SpellCastingManager");
+        }
+        else
+        {
+            Debug.LogWarning("[TutorialVoiceTrainer] No SpellCastingManager found!");
+        }
+    }
+    
     void InitializeUI()
     {
         UpdateCurrentSpellDisplay();
-        UpdateInstructions();
         
         if (recognizedSpeechText != null)
         {
@@ -143,18 +207,29 @@ public class TutorialVoiceTrainer : MonoBehaviour
         }
         spellSwitchAction.performed += OnSpellSwitchPressed;
         spellSwitchAction.Enable();
+        
+        // Setup B button for returning to main menu
+        if (returnToMenuAction.bindings.Count == 0)
+        {
+            returnToMenuAction.AddBinding("<XRController>{RightHand}/secondaryButton");
+            returnToMenuAction.AddBinding("<OculusTouchController>{RightHand}/secondaryButton");
+        }
+        returnToMenuAction.performed += OnReturnToMenuPressed;
+        returnToMenuAction.Enable();
     }
 
     void OnEnable()
     {
         triggerAction?.Enable();
         spellSwitchAction?.Enable();
+        returnToMenuAction?.Enable();
     }
 
     void OnDisable()
     {
         triggerAction?.Disable();
         spellSwitchAction?.Disable();
+        returnToMenuAction?.Disable();
     }
 
     private void OnDestroy()
@@ -166,6 +241,11 @@ public class TutorialVoiceTrainer : MonoBehaviour
             appVoiceExperience.VoiceEvents.OnStoppedListening.RemoveListener(OnStoppedListening);
             appVoiceExperience.VoiceEvents.OnFullTranscription.RemoveListener(OnFullTranscription);
             appVoiceExperience.VoiceEvents.OnResponse.RemoveListener(OnWitResponse);
+        }
+        
+        if (movementRecognizer != null)
+        {
+            movementRecognizer.OnRecognized.RemoveListener(OnGestureRecognized);
         }
     }
 
@@ -181,6 +261,23 @@ public class TutorialVoiceTrainer : MonoBehaviour
     private void OnSpellSwitchPressed(InputAction.CallbackContext context)
     {
         CycleSpell();
+    }
+    
+    private void OnReturnToMenuPressed(InputAction.CallbackContext context)
+    {
+        Debug.Log("[TutorialVoiceTrainer] B button pressed - returning to main menu");
+        SceneManager.LoadScene("MainMenu");
+    }
+    
+    private void OnGestureRecognized(string gestureName)
+    {
+        lastRecognizedGesture = gestureName;
+        lastGestureTime = Time.time;
+        
+        Debug.Log($"[TutorialVoiceTrainer] Gesture recognized: {gestureName}");
+        
+        // Check if we can complete a spell
+        CheckSpellCompletion();
     }
 
     // Voice recognition methods
@@ -262,23 +359,23 @@ public class TutorialVoiceTrainer : MonoBehaviour
             if (confidence >= confidenceThreshold)
             {
                 Debug.Log($"[TutorialVoiceTrainer] Intent recognized with high confidence: {intentName}");
+                
+                // Store voice recognition for spell matching
+                lastRecognizedVoice = intentName;
+                lastVoiceTime = Time.time;
+                
                 CheckSpellMatchByIntent(intentName, confidence);
+                CheckSpellCompletion();
             }
-                    else
-        {
-            // Low confidence - reset consecutive successes
-            consecutiveSuccesses = 0;
-            Debug.Log($"[TutorialVoiceTrainer] Intent confidence too low: {confidence} (threshold: {confidenceThreshold})");
-            Debug.Log("[TutorialVoiceTrainer] Consecutive success counter reset due to low confidence");
-            ShowLowConfidenceFeedback(intentName, confidence);
-        }
+            else
+            {
+                Debug.Log($"[TutorialVoiceTrainer] Intent confidence too low: {confidence} (threshold: {confidenceThreshold})");
+                ShowLowConfidenceFeedback(intentName, confidence);
+            }
         }
         else
         {
-            // No intent - reset consecutive successes
-            consecutiveSuccesses = 0;
             Debug.Log("[TutorialVoiceTrainer] No intent recognized");
-            Debug.Log("[TutorialVoiceTrainer] Consecutive success counter reset due to no intent");
             ShowNoIntentFeedback();
         }
         
@@ -293,7 +390,10 @@ public class TutorialVoiceTrainer : MonoBehaviour
     {
         currentSpellIndex = (currentSpellIndex + 1) % spellNames.Length;
         UpdateCurrentSpellDisplay();
-        UpdateInstructions();
+        
+        // Reset spell tracking when switching spells
+        lastRecognizedVoice = null;
+        lastRecognizedGesture = null;
         
         // Reset feedback when switching spells
         if (recognizedSpeechText != null)
@@ -341,25 +441,10 @@ public class TutorialVoiceTrainer : MonoBehaviour
         // Check if the recognized intent matches the current spell
         if (intentName == currentSpell)
         {
-            // Correct spell - increment consecutive successes
-            consecutiveSuccesses++;
-            Debug.Log($"[TutorialVoiceTrainer] Consecutive successes: {consecutiveSuccesses}/{consecutiveSuccessTarget}");
-            
             ShowCorrectFeedback(expectedSpellName, confidence);
-            
-            // Check if we reached the target for reward
-            if (consecutiveSuccesses >= consecutiveSuccessTarget)
-            {
-                StartCoroutine(PlaySuccessRewardDelayed());
-                consecutiveSuccesses = 0; // Reset counter
-            }
         }
         else
         {
-            // Wrong spell - reset consecutive successes
-            consecutiveSuccesses = 0;
-            Debug.Log("[TutorialVoiceTrainer] Consecutive success counter reset due to wrong spell");
-            
             // Show what intent was recognized vs what was expected
             string recognizedSpellName = spellDisplayNames.ContainsKey(intentName) ? 
                 spellDisplayNames[intentName] : intentName;
@@ -422,6 +507,127 @@ public class TutorialVoiceTrainer : MonoBehaviour
             default:
                 return false;
         }
+    }
+    
+    private void CheckSpellCompletion()
+    {
+        string currentSpell = spellNames[currentSpellIndex];
+        bool hasValidVoice = lastRecognizedVoice != null && (Time.time - lastVoiceTime) <= spellMatchWindow;
+        bool hasValidGesture = lastRecognizedGesture != null && (Time.time - lastGestureTime) <= spellMatchWindow;
+        bool voiceMatches = hasValidVoice && lastRecognizedVoice == currentSpell;
+        bool gestureMatches = hasValidGesture && lastRecognizedGesture == currentSpell;
+        
+        Debug.Log($"[TutorialVoiceTrainer] CheckSpellCompletion - Current: {currentSpell}, Voice: {lastRecognizedVoice} ({voiceMatches}), Gesture: {lastRecognizedGesture} ({gestureMatches})");
+        
+        // Case 1: Both voice and gesture match the SELECTED spell - Success!
+        if (voiceMatches && gestureMatches)
+        {
+            consecutiveSuccesses++;
+            string displayName = spellDisplayNames.ContainsKey(currentSpell) ? spellDisplayNames[currentSpell] : currentSpell;
+            ShowSpellSuccessFeedback(displayName);
+            
+            // Clear the tracking variables
+            lastRecognizedVoice = null;
+            lastRecognizedGesture = null;
+            
+            if (consecutiveSuccesses >= consecutiveSuccessTarget)
+            {
+                StartCoroutine(PlaySuccessRewardDelayed());
+                consecutiveSuccesses = 0;
+            }
+            return;
+        }
+        
+        // TUTORIAL-SPECIFIC: If player casts a different spell correctly, give feedback but don't cast
+        if (hasValidVoice && hasValidGesture && lastRecognizedVoice == lastRecognizedGesture)
+        {
+            // Player performed a valid spell combination, but is it the selected one?
+            if (lastRecognizedVoice != currentSpell)
+            {
+                consecutiveSuccesses = 0;
+                string attemptedSpellName = spellDisplayNames.ContainsKey(lastRecognizedVoice) ? spellDisplayNames[lastRecognizedVoice] : lastRecognizedVoice;
+                string currentSpellName = spellDisplayNames.ContainsKey(currentSpell) ? spellDisplayNames[currentSpell] : currentSpell;
+                ShowSpellFeedback($"Good {attemptedSpellName}! Now try {currentSpellName}");
+                
+                // Clear tracking to prevent confusion
+                lastRecognizedVoice = null;
+                lastRecognizedGesture = null;
+                return;
+            }
+        }
+        
+        // Case 2: Has valid voice but wrong/no gesture (for selected spell)
+        if (hasValidVoice && lastRecognizedVoice == currentSpell && (!hasValidGesture || !gestureMatches))
+        {
+            consecutiveSuccesses = 0;
+            ShowSpellFeedback("Check your gesture");
+            return;
+        }
+        
+        // Case 3: Has valid gesture but wrong/no voice (for selected spell)
+        if (hasValidGesture && lastRecognizedGesture == currentSpell && (!hasValidVoice || !voiceMatches))
+        {
+            consecutiveSuccesses = 0;
+            ShowSpellFeedback("Say the spell");
+            return;
+        }
+        
+        // Case 4: Voice doesn't match selected spell but gesture might
+        if (hasValidVoice && lastRecognizedVoice != currentSpell)
+        {
+            consecutiveSuccesses = 0;
+            string currentSpellName = spellDisplayNames.ContainsKey(currentSpell) ? spellDisplayNames[currentSpell] : currentSpell;
+            ShowSpellFeedback($"Say {currentSpellName}");
+            return;
+        }
+        
+        // Case 5: Gesture doesn't match selected spell but voice might
+        if (hasValidGesture && lastRecognizedGesture != currentSpell)
+        {
+            consecutiveSuccesses = 0;
+            string currentSpellName = spellDisplayNames.ContainsKey(currentSpell) ? spellDisplayNames[currentSpell] : currentSpell;
+            ShowSpellFeedback($"Draw {currentSpellName} gesture");
+            return;
+        }
+        
+        // Case 6: Both attempted but neither matches selected spell
+        if (hasValidVoice && hasValidGesture && !voiceMatches && !gestureMatches)
+        {
+            consecutiveSuccesses = 0;
+            string currentSpellName = spellDisplayNames.ContainsKey(currentSpell) ? spellDisplayNames[currentSpell] : currentSpell;
+            ShowSpellFeedback($"Try {currentSpellName}");
+            return;
+        }
+    }
+    
+    private void ShowSpellSuccessFeedback(string spellName)
+    {
+        if (feedbackCoroutine != null)
+        {
+            StopCoroutine(feedbackCoroutine);
+        }
+        
+        feedbackCoroutine = StartCoroutine(ShowFeedbackCoroutine(
+            $"✓ Perfect! {spellName} cast successfully!", 
+            correctColor
+        ));
+        
+        Debug.Log($"[TutorialVoiceTrainer] Spell successfully cast: {spellName}");
+    }
+    
+    private void ShowSpellFeedback(string message)
+    {
+        if (feedbackCoroutine != null)
+        {
+            StopCoroutine(feedbackCoroutine);
+        }
+        
+        feedbackCoroutine = StartCoroutine(ShowFeedbackCoroutine(
+            message, 
+            incorrectColor
+        ));
+        
+        Debug.Log($"[TutorialVoiceTrainer] Spell feedback: {message}");
     }
     
     private void ShowCorrectFeedback(string spellName, float confidence)
