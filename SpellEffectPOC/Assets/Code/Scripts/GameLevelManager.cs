@@ -36,9 +36,9 @@ public class GameLevelManager : MonoBehaviour
     [Header("Level Configurations")]
     [SerializeField] private LevelConfig[] levels = new LevelConfig[]
     {
-        new LevelConfig("Beginner", 500, 10f, 180f),    // Level 1: 500 points, 10s enemy spawn, 3min collectible
-        new LevelConfig("Intermediate", 800, 8f, 120f), // Level 2: 800 points, 8s enemy spawn, 2min collectible  
-        new LevelConfig("Advanced", 1000, 5f, 90f)      // Level 3: 1000 points, 5s enemy spawn, 1.5min collectible
+        new LevelConfig("Beginner", 10, 10f, 180f),    // Level 1: 500 points, 10s enemy spawn, 3min collectible
+        new LevelConfig("Intermediate", 20, 5f, 120f), // Level 2: 800 points, 5s enemy spawn, 2min collectible  
+        new LevelConfig("Advanced", 30, 2f, 90f)      // Level 3: 1000 points, 2s enemy spawn, 1.5min collectible
     };
     
     [Header("Audio")]
@@ -62,14 +62,18 @@ public class GameLevelManager : MonoBehaviour
     
     void Awake()
     {
+        Debug.Log("[GameLevelManager] Awake() called!");
+        
         // Singleton setup
         if (Instance == null)
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
+            Debug.Log("[GameLevelManager] Set as singleton instance");
         }
         else
         {
+            Debug.Log("[GameLevelManager] Another instance exists, destroying this one");
             Destroy(gameObject);
             return;
         }
@@ -82,14 +86,31 @@ public class GameLevelManager : MonoBehaviour
         
         // Validate level configurations
         ValidateLevelConfigs();
+        Debug.Log($"[GameLevelManager] Awake complete. Current level: {CurrentLevelName} (index {currentLevelIndex})");
     }
     
     void Start()
     {
+        // Load difficulty from PlayerPrefs if set from menu
+        if (PlayerPrefs.HasKey("SelectedDifficulty"))
+        {
+            int savedDifficulty = PlayerPrefs.GetInt("SelectedDifficulty", 0);
+            currentLevelIndex = Mathf.Clamp(savedDifficulty, 0, levels.Length - 1);
+            Debug.Log($"[GameLevelManager] Loaded difficulty from PlayerPrefs: {savedDifficulty} -> {CurrentLevelName}");
+            
+            // Clear the PlayerPrefs after loading
+            PlayerPrefs.DeleteKey("SelectedDifficulty");
+        }
+        
         // Subscribe to score changes to check for win condition
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.OnScoreChanged += CheckWinCondition;
+            Debug.Log($"[GameLevelManager] Subscribed to ScoreManager.OnScoreChanged event");
+        }
+        else
+        {
+            Debug.LogError("[GameLevelManager] ScoreManager.Instance is NULL! Victory condition will not work!");
         }
         
         // Apply current level settings
@@ -99,6 +120,37 @@ public class GameLevelManager : MonoBehaviour
         GameAnnouncementAudio.PlayDefendTheCastleAnnouncement();
         
         Debug.Log($"[GameLevelManager] Game started on {CurrentLevelName} level. Win condition: {CurrentWinScore} points");
+        Debug.Log($"[GameLevelManager] Enemy spawn interval: {CurrentLevel.enemySpawnInterval}s, Collectible time: {CurrentLevel.collectibleTimeLimit}s");
+        
+        // Start periodic win condition check as failsafe
+        InvokeRepeating(nameof(PeriodicWinCheck), 1f, 1f);
+    }
+    
+    void Update()
+    {
+        // Manual win condition check as additional failsafe
+        if (!hasWon && ScoreManager.Instance != null)
+        {
+            int currentScore = ScoreManager.Instance.GetCurrentScore();
+            if (currentScore >= CurrentWinScore)
+            {
+                Debug.Log("[GameLevelManager] WIN DETECTED IN UPDATE! Triggering victory...");
+                CheckWinCondition(currentScore);
+            }
+        }
+    }
+    
+    void PeriodicWinCheck()
+    {
+        if (!hasWon && ScoreManager.Instance != null)
+        {
+            int currentScore = ScoreManager.Instance.GetCurrentScore();
+            if (currentScore >= CurrentWinScore)
+            {
+                Debug.Log("[GameLevelManager] WIN DETECTED IN PERIODIC CHECK! Triggering victory...");
+                CheckWinCondition(currentScore);
+            }
+        }
     }
     
     void OnDestroy()
@@ -174,8 +226,9 @@ public class GameLevelManager : MonoBehaviour
         EnemySpawner enemySpawner = FindObjectOfType<EnemySpawner>();
         if (enemySpawner != null)
         {
+            float oldInterval = enemySpawner.spawnInterval;
             enemySpawner.spawnInterval = level.enemySpawnInterval;
-            Debug.Log($"[GameLevelManager] Updated enemy spawn interval to {level.enemySpawnInterval}s");
+            Debug.Log($"[GameLevelManager] Updated enemy spawn interval from {oldInterval}s to {level.enemySpawnInterval}s");
         }
         else
         {
@@ -212,12 +265,24 @@ public class GameLevelManager : MonoBehaviour
     /// </summary>
     private void CheckWinCondition(int currentScore)
     {
-        if (hasWon) return; // Already won, don't trigger again
+        Debug.Log($"[GameLevelManager] CheckWinCondition called: {currentScore}/{CurrentWinScore} on {CurrentLevelName} level");
+        
+        if (hasWon) 
+        {
+            Debug.Log("[GameLevelManager] Already won, ignoring score change");
+            return; // Already won, don't trigger again
+        }
         
         if (currentScore >= CurrentWinScore)
         {
+            Debug.Log($"[GameLevelManager] WIN CONDITION MET! {currentScore} >= {CurrentWinScore}");
             hasWon = true;
             TriggerVictory(currentScore);
+        }
+        else
+        {
+            float progress = (float)currentScore / CurrentWinScore * 100f;
+            Debug.Log($"[GameLevelManager] Progress: {progress:F1}% ({currentScore}/{CurrentWinScore})");
         }
     }
     

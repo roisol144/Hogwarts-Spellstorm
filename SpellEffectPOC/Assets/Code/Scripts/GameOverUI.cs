@@ -218,7 +218,7 @@ public class GameOverUI : MonoBehaviour
         {
             string levelName = GameLevelManager.Instance != null ? GameLevelManager.Instance.CurrentLevelName : "Unknown";
             int winScore = GameLevelManager.Instance != null ? GameLevelManager.Instance.CurrentWinScore : 0;
-            scoreText.text = $"🎉 {levelName} Level Completed! 🎉\nFinal Score: {finalScore} / {winScore}";
+            scoreText.text = $" ~ {levelName} Level Completed! ~ \nFinal Score: {finalScore} / {winScore}";
         }
         else
         {

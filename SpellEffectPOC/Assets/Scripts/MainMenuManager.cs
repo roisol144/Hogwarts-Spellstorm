@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using TMPro;
+using System.Collections;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -33,21 +34,50 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Image spellBookImage;
     [SerializeField] private Sprite[] spellBookPages;
 
+    [Header("Menu Panels")]
+    [SerializeField] private GameObject mainMenuPanel;
+    [SerializeField] private GameObject mapSelectionPanel;
+    [SerializeField] private GameObject difficultySelectionPanel;
+    [SerializeField] private GameObject playerNamePanel;
+
+    [Header("Map Selection")]
+    [SerializeField] private Button dungeonsMapButton;
+    [SerializeField] private Button chamberMapButton;
+    [SerializeField] private Button mapBackButton;
+
+    [Header("Difficulty Selection")]
+    [SerializeField] private Button beginnerButton;
+    [SerializeField] private Button intermediateButton;
+    [SerializeField] private Button advancedButton;
+    [SerializeField] private Button difficultyBackButton;
+
+    [Header("Player Name")]
+    [SerializeField] private TMP_InputField playerNameInput;
+    [SerializeField] private Button saveAndPlayButton;
+    [SerializeField] private Button nameBackButton;
+    [SerializeField] private GameObject ovrKeyboard;
+
+    // Game state storage
+    private string selectedMap = "";
+    private int selectedDifficulty = 0;
+    private string playerName = "";
+
     private void Start()
     {
         InitializeButtons();
         SetupBackgroundMusic();
         InitializePopups();
+        InitializeMenuFlow();
     }
 
     private void InitializeButtons()
     {
-        // Play Button - Load YardScene
+        // Play Button - Show Map Selection
         if (playButton != null)
         {
             playButton.onClick.AddListener(() => {
                 PlayButtonSound();
-                LoadScene("YardScene");
+                ShowMapSelection();
             });
         }
 
@@ -313,6 +343,227 @@ public class MainMenuManager : MonoBehaviour
                 backgroundMusicSource.Pause();
             else
                 backgroundMusicSource.UnPause();
+        }
+    }
+    #endregion
+
+    #region Menu Flow System
+    private void InitializeMenuFlow()
+    {
+        // Initialize panel states
+        SetActivePanel(mainMenuPanel);
+        
+        // Setup map selection buttons
+        if (dungeonsMapButton != null)
+        {
+            dungeonsMapButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                selectedMap = "DungeonsScene";
+                ShowDifficultySelection();
+            });
+        }
+        
+        if (chamberMapButton != null)
+        {
+            chamberMapButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                selectedMap = "ChamberOfSecretsScene";
+                ShowDifficultySelection();
+            });
+        }
+        
+        if (mapBackButton != null)
+        {
+            mapBackButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                ShowMainMenu();
+            });
+        }
+        
+        // Setup difficulty selection buttons
+        if (beginnerButton != null)
+        {
+            beginnerButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                selectedDifficulty = 0;
+                ShowPlayerNameInput();
+            });
+        }
+        
+        if (intermediateButton != null)
+        {
+            intermediateButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                selectedDifficulty = 1;
+                ShowPlayerNameInput();
+            });
+        }
+        
+        if (advancedButton != null)
+        {
+            advancedButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                selectedDifficulty = 2;
+                ShowPlayerNameInput();
+            });
+        }
+        
+        if (difficultyBackButton != null)
+        {
+            difficultyBackButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                ShowMapSelection();
+            });
+        }
+        
+        // Setup player name buttons
+        if (saveAndPlayButton != null)
+        {
+            saveAndPlayButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                OnSaveAndPlay();
+            });
+        }
+        
+        if (nameBackButton != null)
+        {
+            nameBackButton.onClick.AddListener(() => {
+                PlayButtonSound();
+                ShowDifficultySelection();
+            });
+        }
+        
+        // Virtual keyboard no longer needed - Quest will handle it natively
+    }
+    
+    private void ShowMainMenu()
+    {
+        SetActivePanel(mainMenuPanel);
+    }
+    
+    private void ShowMapSelection()
+    {
+        SetActivePanel(mapSelectionPanel);
+    }
+    
+    private void ShowDifficultySelection()
+    {
+        SetActivePanel(difficultySelectionPanel);
+    }
+    
+    private void ShowPlayerNameInput()
+    {
+        SetActivePanel(playerNamePanel);
+        
+        // Set a pre-defined name so user can just click Save & Play
+        if (playerNameInput != null)
+        {
+            // Generate a random wizard name for testing
+            string[] wizardNames = {
+                "Harry Potter", "Hermione Granger", "Ron Weasley", 
+                "Draco Malfoy", "Luna Lovegood", "Neville Longbottom",
+                "Ginny Weasley", "Cedric Diggory", "Cho Chang", "Dean Thomas"
+            };
+            
+            string randomName = wizardNames[Random.Range(0, wizardNames.Length)];
+            playerNameInput.text = randomName;
+            
+            // Make it editable if user wants to change it (but not required)
+            playerNameInput.interactable = true;
+        }
+    }
+    
+    private void SetActivePanel(GameObject activePanel)
+    {
+        // Hide all panels
+        if (mainMenuPanel != null) mainMenuPanel.SetActive(false);
+        if (mapSelectionPanel != null) mapSelectionPanel.SetActive(false);
+        if (difficultySelectionPanel != null) difficultySelectionPanel.SetActive(false);
+        if (playerNamePanel != null) playerNamePanel.SetActive(false);
+        
+        // Hide OVR keyboard when switching panels
+        if (ovrKeyboard != null && activePanel != playerNamePanel)
+        {
+            ovrKeyboard.SetActive(false);
+        }
+        
+        // Show active panel
+        if (activePanel != null)
+        {
+            activePanel.SetActive(true);
+            
+            // Position in front of player for VR (except main menu)
+            if (activePanel != mainMenuPanel)
+            {
+                PositionPopupInFrontOfPlayer(activePanel);
+            }
+        }
+    }
+    
+    private void OnSaveAndPlay()
+    {
+        // Validate player name
+        if (playerNameInput != null && !string.IsNullOrEmpty(playerNameInput.text.Trim()))
+        {
+            playerName = playerNameInput.text.Trim();
+            
+            // Limit name length
+            if (playerName.Length > 20)
+            {
+                playerName = playerName.Substring(0, 20);
+            }
+            
+            StartGameWithSettings();
+        }
+        else
+        {
+            Debug.LogWarning("Player name is required!");
+            // Optionally show a message to the player
+            if (playerNameInput != null)
+            {
+                playerNameInput.ActivateInputField();
+            }
+        }
+    }
+    
+    private void StartGameWithSettings()
+    {
+        Debug.Log($"Starting game - Map: {selectedMap}, Difficulty: {selectedDifficulty}, Player: {playerName}");
+        
+        // Store player name for scoreboard
+        PlayerPrefs.SetString("CurrentPlayerName", playerName);
+        PlayerPrefs.Save();
+        
+        // Always store difficulty in PlayerPrefs for the game scene to load
+        PlayerPrefs.SetInt("SelectedDifficulty", selectedDifficulty);
+        Debug.Log($"[MainMenuManager] Stored difficulty {selectedDifficulty} ({GetDifficultyName(selectedDifficulty)}) in PlayerPrefs");
+        
+        // Also set on GameLevelManager if available (though it probably isn't in menu scene)
+        if (GameLevelManager.Instance != null)
+        {
+            GameLevelManager.Instance.SetLevel(selectedDifficulty);
+            Debug.Log("[MainMenuManager] Applied difficulty to existing GameLevelManager");
+        }
+        
+        // Load selected map
+        if (!string.IsNullOrEmpty(selectedMap))
+        {
+            LoadScene(selectedMap);
+        }
+        else
+        {
+            Debug.LogError("No map selected!");
+        }
+    }
+    
+    private string GetDifficultyName(int difficultyIndex)
+    {
+        switch (difficultyIndex)
+        {
+            case 0: return "Beginner";
+            case 1: return "Intermediate"; 
+            case 2: return "Advanced";
+            default: return "Unknown";
         }
     }
     #endregion
