@@ -6,6 +6,11 @@ using System.Collections.Generic;
 /// <summary>
 /// Manages the collectible challenge system - spawns chocolate frogs or golden eggs
 /// every 5 minutes starting at 2 minutes, gives player 2 minutes to collect all items
+/// 
+/// Audio System:
+/// - Primary: Uses GameAnnouncementAudio.PlayAllItemsCollectedAnnouncement() for success sound
+/// - Fallback: Uses local AudioSource with challengeSuccessSound if GameAnnouncementAudio unavailable
+/// - To add success sound: Assign audio clip to GameAnnouncementAudio's "All Items Collected Announcement" field
 /// </summary>
 public class CollectibleSpawner : MonoBehaviour
 {
@@ -78,7 +83,7 @@ public class CollectibleSpawner : MonoBehaviour
     [Tooltip("Sound played when item is collected")]
     [SerializeField] private AudioClip itemCollectedSound;
     
-    [Tooltip("Sound played when challenge succeeds")]
+    [Tooltip("Sound played when challenge succeeds (fallback if GameAnnouncementAudio not available)")]
     [SerializeField] private AudioClip challengeSuccessSound;
     
     [Tooltip("Sound played when challenge fails")]
@@ -424,6 +429,10 @@ public class CollectibleSpawner : MonoBehaviour
             // Success!
             ScoreManager.NotifyScore(successPoints);
             
+            // Play success sound using GameAnnouncementAudio system (preferred)
+            GameAnnouncementAudio.PlayAllItemsCollectedAnnouncement();
+            
+            // Fallback to local audio source if GameAnnouncementAudio doesn't have the sound
             if (challengeSuccessSound != null && audioSource != null)
             {
                 audioSource.PlayOneShot(challengeSuccessSound);

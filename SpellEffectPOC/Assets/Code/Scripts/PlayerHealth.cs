@@ -1,3 +1,12 @@
+/// <summary>
+/// Player health system with damage indicators, health regeneration, and audio feedback
+/// 
+/// Audio System:
+/// - Primary: Uses GameAnnouncementAudio.PlayPlayerAttackedAnnouncement() for damage sound
+/// - Fallback: Uses local AudioSource with damageSound if GameAnnouncementAudio unavailable
+/// - To add damage sound: Assign audio clip to GameAnnouncementAudio's "Player Attacked Announcement" field
+/// - Haptic feedback: Provides tactile feedback on VR controllers when taking damage
+/// </summary>
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
@@ -37,7 +46,7 @@ public class PlayerHealth : MonoBehaviour
     [SerializeField] private float heartbeatPulseSpeed = 2f;
     
     [Header("Audio")]
-    [SerializeField] private AudioClip damageSound;
+    [SerializeField] private AudioClip damageSound; // Fallback damage sound (if GameAnnouncementAudio not available)
     [SerializeField] private AudioClip lowHealthHeartbeat;
     [SerializeField] private AudioClip deathSound;
     [SerializeField] private AudioSource audioSource;
@@ -295,7 +304,10 @@ public class PlayerHealth : MonoBehaviour
         
         Debug.Log($"[PlayerHealth] Player took {damage} damage. Health: {previousHealth:F1} → {currentHealth:F1}/{maxHealth}");
         
-        // Play damage sound
+        // Play damage sound using GameAnnouncementAudio system (preferred)
+        GameAnnouncementAudio.PlayPlayerAttackedAnnouncement();
+        
+        // Fallback to local audio source if GameAnnouncementAudio doesn't have the sound
         if (damageSound != null && audioSource != null)
         {
             audioSource.PlayOneShot(damageSound);

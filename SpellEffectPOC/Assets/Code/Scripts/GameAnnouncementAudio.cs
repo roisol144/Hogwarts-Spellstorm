@@ -7,6 +7,8 @@ public class GameAnnouncementAudio : MonoBehaviour
     [SerializeField] private AudioClip collectTheItemAnnouncement;
     [SerializeField] private AudioClip defendTheCastleAnnouncement;
     [SerializeField] private AudioClip hogwartsIsSafeAnnouncement;
+    [SerializeField] private AudioClip allItemsCollectedAnnouncement; // New field for collectible completion sound
+    [SerializeField] private AudioClip playerAttackedAnnouncement; // New field for player attack sound
     
     [Header("Audio Settings")]
     [SerializeField] private AudioSource audioSource;
@@ -123,6 +125,36 @@ public class GameAnnouncementAudio : MonoBehaviour
         else
         {
             Debug.LogWarning("[GameAnnouncementAudio] No instance available to play Hogwarts safe announcement");
+        }
+    }
+    
+    /// <summary>
+    /// Plays the all items collected announcement when collectible challenge is completed successfully
+    /// </summary>
+    public static void PlayAllItemsCollectedAnnouncement()
+    {
+        if (Instance != null)
+        {
+            Instance.PlayAudio(Instance.allItemsCollectedAnnouncement, "All Items Collected Announcement");
+        }
+        else
+        {
+            Debug.LogWarning("[GameAnnouncementAudio] No instance available to play all items collected announcement");
+        }
+    }
+    
+    /// <summary>
+    /// Plays the player attacked announcement when player takes damage from enemies
+    /// </summary>
+    public static void PlayPlayerAttackedAnnouncement()
+    {
+        if (Instance != null)
+        {
+            Instance.PlayAudio(Instance.playerAttackedAnnouncement, "Player Attacked Announcement");
+        }
+        else
+        {
+            Debug.LogWarning("[GameAnnouncementAudio] No instance available to play player attacked announcement");
         }
     }
     
