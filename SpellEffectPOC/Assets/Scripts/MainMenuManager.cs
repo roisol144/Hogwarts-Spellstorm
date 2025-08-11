@@ -56,6 +56,9 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button saveAndPlayButton;
     [SerializeField] private Button nameBackButton;
     [SerializeField] private GameObject ovrKeyboard;
+    
+    [Header("Scene Transition")]
+    [SerializeField] private SceneTransitionManager sceneTransitionManager;
 
     // Game state storage
     private string selectedMap = "";
@@ -68,6 +71,7 @@ public class MainMenuManager : MonoBehaviour
         SetupBackgroundMusic();
         InitializePopups();
         InitializeMenuFlow();
+        SetupSceneTransition();
     }
 
     private void InitializeButtons()
@@ -174,12 +178,69 @@ public class MainMenuManager : MonoBehaviour
         if (spellsBookPopup != null)
             spellsBookPopup.SetActive(false);
     }
+    
+    private void SetupSceneTransition()
+    {
+        // Auto-find SceneTransitionManager if not assigned
+        if (sceneTransitionManager == null)
+        {
+            sceneTransitionManager = FindObjectOfType<SceneTransitionManager>();
+            if (sceneTransitionManager != null)
+            {
+                Debug.Log("[MainMenuManager] Found SceneTransitionManager automatically");
+            }
+            else
+            {
+                Debug.LogWarning("[MainMenuManager] No SceneTransitionManager found! Scene transitions will not have fade effects.");
+            }
+        }
+    }
 
     #region Scene Management
     private void LoadScene(string sceneName)
     {
         Debug.Log($"Loading scene: {sceneName}");
-        SceneManager.LoadScene(sceneName);
+        
+        // Use scene transition manager if available for fade effect
+        if (sceneTransitionManager != null)
+        {
+            // Get scene index by name
+            int sceneIndex = GetSceneIndexByName(sceneName);
+            if (sceneIndex >= 0)
+            {
+                sceneTransitionManager.GoToScene(sceneIndex);
+            }
+            else
+            {
+                Debug.LogWarning($"Scene '{sceneName}' not found in build settings, using direct load");
+                SceneManager.LoadScene(sceneName);
+            }
+        }
+        else
+        {
+            // Fallback to direct scene loading if no transition manager
+            SceneManager.LoadScene(sceneName);
+        }
+    }
+    
+    /// <summary>
+    /// Gets the scene index by scene name from build settings
+    /// </summary>
+    private int GetSceneIndexByName(string sceneName)
+    {
+        for (int i = 0; i < SceneManager.sceneCountInBuildSettings; i++)
+        {
+            string scenePath = SceneUtility.GetScenePathByBuildIndex(i);
+            string sceneNameFromPath = System.IO.Path.GetFileNameWithoutExtension(scenePath);
+            
+            if (sceneNameFromPath.Equals(sceneName, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return i;
+            }
+        }
+        
+        Debug.LogWarning($"Scene '{sceneName}' not found in build settings");
+        return -1;
     }
 
     private void QuitGame()
@@ -198,6 +259,12 @@ public class MainMenuManager : MonoBehaviour
     {
         if (scoreboardPopup != null)
         {
+            // Hide the main menu when showing the scoreboard
+            if (mainMenuPanel != null)
+            {
+                mainMenuPanel.SetActive(false);
+            }
+            
             scoreboardPopup.SetActive(true);
             PopulateScoreboard();
         }
@@ -206,7 +273,15 @@ public class MainMenuManager : MonoBehaviour
     private void HideScoreboardPopup()
     {
         if (scoreboardPopup != null)
+        {
             scoreboardPopup.SetActive(false);
+            
+            // Show the main menu again when closing the scoreboard
+            if (mainMenuPanel != null)
+            {
+                mainMenuPanel.SetActive(true);
+            }
+        }
     }
 
     private void ShowSpellsBookPopup()
@@ -214,6 +289,12 @@ public class MainMenuManager : MonoBehaviour
         if (spellsBookPopup != null)
         {
             Debug.Log("Opening Spells Book Popup");
+            
+            // Hide the main menu when showing the spell book
+            if (mainMenuPanel != null)
+            {
+                mainMenuPanel.SetActive(false);
+            }
             
             // Position popup in front of player
             PositionPopupInFrontOfPlayer(spellsBookPopup);
@@ -259,6 +340,12 @@ public class MainMenuManager : MonoBehaviour
             
             // Force refresh to ensure it's hidden
             spellsBookPopup.transform.gameObject.SetActive(false);
+            
+            // Show the main menu again when closing the spell book
+            if (mainMenuPanel != null)
+            {
+                mainMenuPanel.SetActive(true);
+            }
         }
         else
         {

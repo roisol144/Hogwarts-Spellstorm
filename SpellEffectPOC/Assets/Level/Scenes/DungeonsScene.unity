@@ -26065,6 +26065,10 @@ MonoBehaviour:
     type: 3}
   hogwartsIsSafeAnnouncement: {fileID: 8300000, guid: ab3efa747e9e94a0585b1f003a2e784f,
     type: 3}
+  allItemsCollectedAnnouncement: {fileID: 8300000, guid: 8e9386ce947ba44ba935641c3311d61e,
+    type: 3}
+  playerAttackedAnnouncement: {fileID: 8300000, guid: cd9dcc588bced4c13a475baf75078357,
+    type: 3}
   audioSource: {fileID: 1056637513}
   volume: 1
   spatialBlend2D: 1
