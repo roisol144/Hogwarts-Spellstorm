@@ -3015,7 +3015,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1091410118}
         m_TargetAssemblyTypeName: MagicSparkleController, Assembly-CSharp
         m_MethodName: PlaySparkles
         m_Mode: 1
@@ -3027,7 +3027,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1091410117}
         m_TargetAssemblyTypeName: MagicTrailController, Assembly-CSharp
         m_MethodName: EnableTrail
         m_Mode: 1
@@ -3066,7 +3066,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1091410118}
         m_TargetAssemblyTypeName: MagicSparkleController, Assembly-CSharp
         m_MethodName: StopSparkles
         m_Mode: 1
@@ -3078,7 +3078,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 1091410117}
         m_TargetAssemblyTypeName: MagicTrailController, Assembly-CSharp
         m_MethodName: DisableTrail
         m_Mode: 1
@@ -10780,6 +10780,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 244322385098331280, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 244322385098331280, guid: 794cb044da1e5e84c9c2a1f8b4b143ec,
+        type: 3}
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
@@ -16722,7 +16727,7 @@ TrailRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 0}
+  - {fileID: 2100000, guid: ad4325a5c3f5cd94f8406285290fa2e1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
