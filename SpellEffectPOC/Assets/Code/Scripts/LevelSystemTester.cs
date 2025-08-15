@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 /// <summary>
 /// Test script to verify the level system functionality
@@ -28,11 +29,27 @@ public class LevelSystemTester : MonoBehaviour
     [Tooltip("Amount of score to add when the add-score hotkey is pressed")] 
     [SerializeField] private int addScoreAmount = 100;
     
+    [Header("VR Controller Input")]
+    [Tooltip("Enable left controller X button for adding score")] 
+    [SerializeField] private bool enableVRScoreInput = true;
+    
+    [Header("Input Actions")]
+    [SerializeField] private InputAction leftXButtonAction;
+    
+    // Private variables
+    private bool wasLeftXButtonPressed = false;
+    
     void Start()
     {
         if (showDebugInfo)
         {
             LogCurrentLevelInfo();
+        }
+        
+        // Setup VR input action if enabled
+        if (enableVRScoreInput)
+        {
+            SetupVRInput();
         }
     }
     
@@ -67,6 +84,12 @@ public class LevelSystemTester : MonoBehaviour
         if (Input.GetKeyDown(keyAddScore))
         {
             AddTestScore();
+        }
+        
+        // Handle VR controller input
+        if (enableVRScoreInput)
+        {
+            HandleVRInput();
         }
     }
     
@@ -125,6 +148,48 @@ public class LevelSystemTester : MonoBehaviour
         }
     }
     
+    private void SetupVRInput()
+    {
+        // Setup input action for left controller X button
+        if (leftXButtonAction.bindings.Count == 0)
+        {
+            leftXButtonAction = new InputAction("LeftXButton", InputActionType.Button);
+            leftXButtonAction.AddBinding("<XRController>{LeftHand}/primaryButton");
+            leftXButtonAction.AddBinding("<OculusTouchController>{LeftHand}/primaryButton");
+        }
+        
+        Debug.Log($"[LevelSystemTester] VR input setup complete - Press X on left controller to gain {addScoreAmount} points");
+    }
+    
+    void OnEnable()
+    {
+        if (enableVRScoreInput && leftXButtonAction != null)
+        {
+            leftXButtonAction.Enable();
+        }
+    }
+    
+    void OnDisable()
+    {
+        if (leftXButtonAction != null)
+        {
+            leftXButtonAction.Disable();
+        }
+    }
+    
+    private void HandleVRInput()
+    {
+        bool isLeftXButtonPressed = leftXButtonAction.ReadValue<float>() > 0.5f;
+        
+        // Check for button press (not hold)
+        if (isLeftXButtonPressed && !wasLeftXButtonPressed)
+        {
+            AddTestScore();
+        }
+        
+        wasLeftXButtonPressed = isLeftXButtonPressed;
+    }
+    
     void OnGUI()
     {
         if (!showDebugInfo) return;
@@ -155,6 +220,10 @@ public class LevelSystemTester : MonoBehaviour
         GUILayout.Label("Controls:");
         GUILayout.Label($"{keySwitchLevel1}/{keySwitchLevel2}/{keySwitchLevel3} - Switch Levels");
         GUILayout.Label($"{keyAddScore} - Add {addScoreAmount} Score");
+        if (enableVRScoreInput)
+        {
+            GUILayout.Label($"Left Controller X - Add {addScoreAmount} Score (VR)");
+        }
         GUILayout.Label($"{keyTestVictory} - Test Victory");
         GUILayout.Label($"{keyLogLevelInfo} - Log Level Info");
         
