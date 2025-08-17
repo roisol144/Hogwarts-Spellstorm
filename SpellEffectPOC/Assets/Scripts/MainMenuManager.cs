@@ -10,17 +10,17 @@ using Microsoft.MixedReality.Toolkit.Experimental.UI;
 public class MainMenuManager : MonoBehaviour
 {
     [Header("Menu Buttons")]
-    [SerializeField] private Button playButton;
-    [SerializeField] private Button tutorialButton;
-    [SerializeField] private Button scoreboardButton;
-    [SerializeField] private Button spellsBookButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] public Button playButton;
+    [SerializeField] public Button tutorialButton;
+    [SerializeField] public Button scoreboardButton;
+    [SerializeField] public Button spellsBookButton;
+    [SerializeField] public Button quitButton;
 
     [Header("Popup Windows")]
     [SerializeField] private GameObject scoreboardPopup;
     [SerializeField] private GameObject spellsBookPopup;
-    [SerializeField] private Button closeScoreboardButton;
-    [SerializeField] private Button closeSpellsBookButton;
+    [SerializeField] public Button closeScoreboardButton;
+    [SerializeField] public Button closeSpellsBookButton;
 
     [Header("Audio")]
     [SerializeField] private AudioSource backgroundMusicSource;
@@ -43,20 +43,20 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private GameObject playerNamePanel;
 
     [Header("Map Selection")]
-    [SerializeField] private Button dungeonsMapButton;
-    [SerializeField] private Button chamberMapButton;
-    [SerializeField] private Button mapBackButton;
+    [SerializeField] public Button dungeonsMapButton;
+    [SerializeField] public Button chamberMapButton;
+    [SerializeField] public Button mapBackButton;
 
     [Header("Difficulty Selection")]
-    [SerializeField] private Button beginnerButton;
-    [SerializeField] private Button intermediateButton;
-    [SerializeField] private Button advancedButton;
-    [SerializeField] private Button difficultyBackButton;
+    [SerializeField] public Button beginnerButton;
+    [SerializeField] public Button intermediateButton;
+    [SerializeField] public Button advancedButton;
+    [SerializeField] public Button difficultyBackButton;
 
     [Header("Player Name")]
     [SerializeField] private TMP_InputField playerNameInput;
-    [SerializeField] private Button saveAndPlayButton;
-    [SerializeField] private Button nameBackButton;
+    [SerializeField] public Button saveAndPlayButton;
+    [SerializeField] public Button nameBackButton;
     [SerializeField] private GameObject ovrKeyboard;
     [SerializeField] private KeyboardInputManager keyboardInputManager;
     
@@ -305,8 +305,8 @@ public class MainMenuManager : MonoBehaviour
                 mainMenuPanel.SetActive(false);
             }
             
-            // Position popup in front of player (simple VR positioning)
-            PositionSpellsBookInFrontOfPlayer(spellsBookPopup);
+            // Note: Removed automatic positioning - spells book should stay in its Canvas position
+            // This ensures it appears in the center like other menu panels
             
             spellsBookPopup.SetActive(true);
             LoadSpellsBookContent();
@@ -575,11 +575,9 @@ public class MainMenuManager : MonoBehaviour
         {
             activePanel.SetActive(true);
             
-            // Position in front of player for VR (except main menu)
-            if (activePanel != mainMenuPanel)
-            {
-                PositionPanelInFrontOfPlayer(activePanel);
-            }
+            // Note: Removed automatic positioning for all menu panels and popups
+            // All UI elements should stay in their designed Canvas positions
+            // This ensures consistent behavior across all menu screens
         }
     }
     
