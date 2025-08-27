@@ -24,6 +24,13 @@ public class SceneTransitionManager : MonoBehaviour
     IEnumerator GoToSceneRoutine(int sceneIndex)
     {
         fadeScreen.FadeOut();
+        
+        // Start ML warmup during fade transition
+        if (MLWarmupManager.Instance != null)
+        {
+            MLWarmupManager.Instance.StartWarmupDuringTransition();
+        }
+        
         yield return new WaitForSeconds(fadeScreen.fadeDuration);
 
         //Launch the new scene
@@ -38,6 +45,13 @@ public class SceneTransitionManager : MonoBehaviour
     IEnumerator GoToSceneAsyncRoutine(int sceneIndex)
     {
         fadeScreen.FadeOut();
+        
+        // Start ML warmup during fade transition
+        if (MLWarmupManager.Instance != null)
+        {
+            MLWarmupManager.Instance.StartWarmupDuringTransition();
+        }
+        
         //Launch the new scene
         AsyncOperation operation = SceneManager.LoadSceneAsync(sceneIndex);
         operation.allowSceneActivation = false;

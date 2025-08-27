@@ -67,6 +67,12 @@ public class SpellCastingManager : MonoBehaviour
 
     void Start()
     {
+        // Ensure ML warmup is completed for scenes that bypass scene transitions
+        if (MLWarmupManager.Instance != null)
+        {
+            MLWarmupManager.Instance.EnsureWarmupCompleted();
+        }
+        
         Debug.Log($"[SpellCastingManager] Start called. movementRecognizer: {movementRecognizer}, witAiAgent: {witAiAgent}");
         Debug.Log($"[SpellCastingManager] References - fireballPrefab: {fireballPrefab}, stupefyPrefab: {stupefyPrefab}, bombardoPrefab: {bombardoPrefab}, expectoPatronumPrefab: {expectoPatronumPrefab}, protegoPrefab: {protegoPrefab}, accioPrefab: {accioPrefab}, wandTip: {wandTip}");
         

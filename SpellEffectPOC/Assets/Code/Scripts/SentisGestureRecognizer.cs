@@ -37,8 +37,30 @@ public class SentisGestureRecognizer : MonoBehaviour
         model = ModelLoader.Load(modelAsset);
         worker = new Worker(model, BackendType.CPU);
         
-        // Warm up the ML model with dummy inference calls
-        StartCoroutine(WarmUpModel());
+        // Check if MLWarmupManager has already started warmup
+        if (MLWarmupManager.Instance != null && MLWarmupManager.Instance.IsWarmupCompleted)
+        {
+            Debug.Log("[SentisGestureRecognizer] Warmup already completed by MLWarmupManager");
+            isWarmedUp = true;
+        }
+        else
+        {
+            // Fallback: Start warmup immediately if no MLWarmupManager
+            // This ensures backward compatibility for scenes without scene transitions
+            StartCoroutine(WarmUpModel());
+        }
+    }
+    
+    /// <summary>
+    /// Public method to force start warmup (called by MLWarmupManager)
+    /// </summary>
+    public void ForceStartWarmup()
+    {
+        if (!isWarmedUp && worker != null)
+        {
+            Debug.Log("[SentisGestureRecognizer] Force starting warmup via MLWarmupManager");
+            StartCoroutine(WarmUpModel());
+        }
     }
 
     public string RecognizeGesture(List<Vector2> points)

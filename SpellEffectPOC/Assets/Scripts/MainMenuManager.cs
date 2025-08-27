@@ -429,7 +429,7 @@ public class MainMenuManager : MonoBehaviour
             beginnerButton.onClick.AddListener(() => {
                 PlayButtonSound();
                 selectedDifficulty = 0;
-                ShowPlayerNameInput();
+                StartGameWithSettings();
             });
         }
         
@@ -438,7 +438,7 @@ public class MainMenuManager : MonoBehaviour
             intermediateButton.onClick.AddListener(() => {
                 PlayButtonSound();
                 selectedDifficulty = 1;
-                ShowPlayerNameInput();
+                StartGameWithSettings();
             });
         }
         
@@ -447,7 +447,7 @@ public class MainMenuManager : MonoBehaviour
             advancedButton.onClick.AddListener(() => {
                 PlayButtonSound();
                 selectedDifficulty = 2;
-                ShowPlayerNameInput();
+                StartGameWithSettings();
             });
         }
         
@@ -459,42 +459,16 @@ public class MainMenuManager : MonoBehaviour
             });
         }
         
-        // Setup player name buttons
-        if (saveAndPlayButton != null)
-        {
-            saveAndPlayButton.onClick.AddListener(() => {
-                PlayButtonSound();
-                OnSaveAndPlay();
-            });
-        }
-        
-        if (nameBackButton != null)
-        {
-            nameBackButton.onClick.AddListener(() => {
-                PlayButtonSound();
-                ShowDifficultySelection();
-            });
-        }
-        
-        // Setup keyboard integration
-        SetupKeyboardIntegration();
+        // Note: Player name input UI elements are no longer used
+        // since we skip directly from difficulty selection to game start
+        // Keeping UI references for potential future use or manual testing
     }
 
     private void SetupKeyboardIntegration()
     {
-        // Initialize keyboard manager with the player name input field
-        if (keyboardInputManager != null && playerNameInput != null)
-        {
-            keyboardInputManager.SetTargetInputField(playerNameInput);
-            Debug.Log("Keyboard integration setup complete");
-        }
-        else
-        {
-            if (keyboardInputManager == null)
-                Debug.LogWarning("KeyboardInputManager not assigned in MainMenuManager!");
-            if (playerNameInput == null)
-                Debug.LogWarning("Player Name Input Field not assigned in MainMenuManager!");
-        }
+        // Keyboard integration no longer needed since name input is skipped
+        // Keeping method for backward compatibility
+        Debug.Log("Keyboard integration skipped - name input no longer used");
     }
     
     private void ShowMainMenu()
@@ -514,19 +488,9 @@ public class MainMenuManager : MonoBehaviour
     
     private void ShowPlayerNameInput()
     {
-        SetActivePanel(playerNamePanel);
-        
-        // Keep the input field empty initially - let user type their own name
-        if (playerNameInput != null && !string.IsNullOrEmpty(playerNameInput.text.Trim()))
-        {
-            Debug.Log($"Preserving existing player name: '{playerNameInput.text}'");
-        }
-        else if (playerNameInput != null)
-        {
-            // Keep field empty so user can enter their own name
-            playerNameInput.text = "";
-            Debug.Log("Player name field is ready for user input");
-        }
+        // This method is no longer used since we skip name input
+        // Keeping for backward compatibility with UI references
+        Debug.Log("ShowPlayerNameInput called but name input is disabled");
 
         // Make sure input field is interactable
         if (playerNameInput != null)
@@ -583,32 +547,16 @@ public class MainMenuManager : MonoBehaviour
     
     private void OnSaveAndPlay()
     {
-        // Validate player name
-        if (playerNameInput != null && !string.IsNullOrEmpty(playerNameInput.text.Trim()))
-        {
-            playerName = playerNameInput.text.Trim();
-            
-            // Limit name length
-            if (playerName.Length > 20)
-            {
-                playerName = playerName.Substring(0, 20);
-            }
-            
-            StartGameWithSettings();
-        }
-        else
-        {
-            Debug.LogWarning("Player name is required!");
-            // Optionally show a message to the player
-            if (playerNameInput != null)
-            {
-                playerNameInput.ActivateInputField();
-            }
-        }
+        // This method is no longer used since we skip name input
+        // Keeping for backward compatibility with UI references
+        StartGameWithSettings();
     }
     
     private void StartGameWithSettings()
     {
+        // Set default player name since we're skipping name input
+        playerName = "Player";
+        
         Debug.Log($"Starting game - Map: {selectedMap}, Difficulty: {selectedDifficulty}, Player: {playerName}");
         
         // Initialize score system with current player and game settings
