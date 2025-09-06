@@ -33838,6 +33838,70 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1435433675}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1436017907
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1436017909}
+  - component: {fileID: 1436017908}
+  m_Layer: 0
+  m_Name: BackgroundMusicManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1436017908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436017907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bb49a44653de41a1840245cfdea4329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundMusic: {fileID: 8300000, guid: 96587f55cd1cd47f9a8d550a0481bc6c, type: 3}
+  musicAudioSource: {fileID: 0}
+  musicVolume: 0.27
+  playOnStart: 1
+  loopMusic: 1
+  enableFadeIn: 1
+  fadeInDuration: 2
+  enableFadeOut: 1
+  fadeOutDuration: 1
+  autoDetectScene: 1
+  dungeonSceneName: DungeonsScene
+  chamberSceneName: ChamberOfSecretsScene
+  volumeSlider: {fileID: 0}
+  muteButton: {fileID: 0}
+  volumeText: {fileID: 0}
+  muteButtonImage: {fileID: 0}
+  mutedSprite: {fileID: 0}
+  unmutedSprite: {fileID: 0}
+  spatialBlend2D: 1
+  priority: 128
+--- !u!4 &1436017909
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1436017907}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.0004402846, y: 1.503351, z: -4.655005}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1436470268
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -44994,6 +45058,7 @@ SceneRoots:
   - {fileID: 806390488}
   - {fileID: 1974393528}
   - {fileID: 647431398}
+  - {fileID: 1436017909}
   - {fileID: 1812510839}
   - {fileID: 1691629026}
   - {fileID: 241934370}
