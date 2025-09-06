@@ -7771,7 +7771,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 586214307}
   m_LocalRotation: {x: -0.0000000026375346, y: 0.33133033, z: -0.0017273504, w: 0.9435133}
-  m_LocalPosition: {x: 0, y: 0, z: -124.58}
+  m_LocalPosition: {x: 0, y: 0, z: -85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7779,7 +7779,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0.066, y: 38.699, z: -0.187}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 268.3, y: 212.13}
+  m_AnchoredPosition: {x: 220, y: 227}
   m_SizeDelta: {x: 215.06, y: 170.3}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &586214309
@@ -13047,7 +13047,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868166408}
   m_LocalRotation: {x: 0.000000003981768, y: 0.18710646, z: -0.00097545737, w: 0.9823392}
-  m_LocalPosition: {x: 0, y: 0, z: -237}
+  m_LocalPosition: {x: 0, y: 0, z: -221.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -13055,7 +13055,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0.021, y: 21.568, z: -0.11}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 226, y: 131}
+  m_AnchoredPosition: {x: 187.2, y: 140.5}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &868166410
@@ -13078,7 +13078,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Hold Left Grip\n to Run"
+  m_text: 'Hold Left Grip to Run
+
+    Hold ''A'' to see the spellbook'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ad087f1b19d79cd44a4d2798d6fcdd0f, type: 2}
   m_sharedMaterial: {fileID: 2536598635715409100, guid: ad087f1b19d79cd44a4d2798d6fcdd0f,
